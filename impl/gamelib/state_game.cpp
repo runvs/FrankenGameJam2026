@@ -23,6 +23,15 @@ void StateGame::onCreate()
     m_background->setIgnoreCamMovement(true);
     m_background->update(0.0f);
 
+    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(),
+        "assets/test_level.json" };
+
+    m_level = std::make_shared<Level>(m_world);
+
+    add(m_level);
+    m_level->loadTileLayers(loader);
+    m_level->loadLevelCollisions(loader);
+
     createPlayer();
 
     m_vignette = std::make_shared<jt::Vignette>(GP::GetScreenSize());
@@ -42,15 +51,6 @@ void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
         m_world->step(elapsed, GP::PhysicSubSteps());
-        // update game logic here
-        if (getGame()->input().keyboard()->justPressed(jt::KeyCode::A)) {
-            m_scoreP1++;
-            m_hud->getObserverScoreP1()->notify(m_scoreP1);
-        }
-        if (getGame()->input().keyboard()->justPressed(jt::KeyCode::D)) {
-            m_scoreP2++;
-            m_hud->getObserverScoreP2()->notify(m_scoreP2);
-        }
         if (getGame()->input().keyboard()->pressed(jt::KeyCode::LShift)
             && getGame()->input().keyboard()->pressed(jt::KeyCode::Escape)) {
             endGame();
@@ -64,9 +64,10 @@ void StateGame::onUpdate(float const elapsed)
 void StateGame::onDraw() const
 {
     m_background->draw(renderTarget());
-    drawObjects();
-    m_vignette->draw();
-    m_hud->draw();
+    // drawObjects();
+    m_level->draw();
+    // m_vignette->draw();
+    // m_hud->draw();
 }
 
 void StateGame::endGame()

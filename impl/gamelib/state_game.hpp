@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "level.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
 #include <memory>
@@ -27,8 +28,8 @@ private:
     bool m_running { true };
     bool m_hasEnded { false };
 
-    int m_scoreP1 { 0 };
-    int m_scoreP2 { 0 };
+    std::shared_ptr<Level> m_level { nullptr };
+
 
     void onCreate() override;
     void onEnter() override;

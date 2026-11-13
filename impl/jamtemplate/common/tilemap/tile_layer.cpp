@@ -73,11 +73,12 @@ void jt::tilemap::TileLayer::doDraw(std::shared_ptr<jt::RenderTargetLayer> const
         if (m_colorFunction != nullptr) {
             color = m_colorFunction(tile.position);
         }
-        m_tileSetSprites.at(id)->setColor(color);
-        m_tileSetSprites.at(id)->setScale(m_scale);
-        m_tileSetSprites.at(id)->update(0.0f);
-        m_tileSetSprites.at(id)->setBlendMode(getBlendMode());
-        m_tileSetSprites.at(id)->draw(sptr);
+        auto& t = *m_tileSetSprites.at(id);
+        t.setColor(color);
+        t.setScale(m_scale);
+        t.update(0.0f);
+        t.setBlendMode(getBlendMode());
+        t.draw(sptr);
     }
 }
 
