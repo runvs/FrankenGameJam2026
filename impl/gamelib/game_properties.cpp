@@ -25,6 +25,35 @@ jt::Palette createPalette()
 
 } // namespace
 
+std::string GP::GameName() { return "MyAwesomeGame"; }
+
+std::string GP::AuthorName() { return "TODO"; }
+
+std::string GP::JamName() { return "TODO"; }
+
+std::string GP::JamDate() { return "TODO"; }
+
+std::string GP::ExplanationText()
+{
+    return "Win the game\n[W,A,S,D] to move \n[Space] to jump\n[M/U] to mute/unmute audio";
+}
+
+jt::Vector2f GP::GetWindowSize() { return jt::Vector2f { 1280, 960 }; }
+
+float GP::GetZoom() { return 4.0f; }
+
+jt::Vector2f GP::GetScreenSize() { return GetWindowSize() * (1.0f / GetZoom()); }
+
+jt::Color GP::PaletteBackground() { return GP::getPalette().getColor(4); }
+
+jt::Color GP::PaletteFontFront() { return GP::getPalette().getColor(0); }
+
+jt::Color GP::PalleteFrontHighlight() { return GP::getPalette().getColor(1); }
+
+jt::Color GP::PaletteFontShadow() { return GP::getPalette().getColor(2); }
+
+jt::Color GP::PaletteFontCredits() { return GP::getPalette().getColor(1); }
+
 jt::Palette GP::getPalette()
 {
     static auto const p = createPalette();
@@ -34,3 +63,17 @@ jt::Palette GP::getPalette()
 int GP::PhysicSubSteps() { return 4; }
 
 jt::Vector2f GP::PlayerSize() { return jt::Vector2f { 16.0f, 16.0f }; }
+
+int GP::LevelZLayerBelowPlayer() { return 0; }
+
+int GP::LevelZLayerPlayer() { return 1; }
+
+int GP::LevelZLayerAbovePlayer() { return 3; }
+
+int GP::LevelZLayerAboveAll() { return 4; }
+
+std::vector<int> GP::LevelZLayerAllLayers()
+{
+    return { GP::LevelZLayerBelowPlayer(), GP::LevelZLayerPlayer(), GP::LevelZLayerAbovePlayer(),
+        GP::LevelZLayerAboveAll() };
+}

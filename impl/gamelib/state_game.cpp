@@ -12,6 +12,10 @@ void StateGame::onCreate()
 {
     m_world = std::make_shared<jt::Box2DWorldImpl>(jt::Vector2f { 0.0f, 0.0f });
 
+    for (auto const layerID : GP::LevelZLayerAllLayers()) {
+        getGame()->gfx().createZLayer(layerID);
+    }
+
     float const w = static_cast<float>(GP::GetWindowSize().x);
     float const h = static_cast<float>(GP::GetWindowSize().y);
 
@@ -22,6 +26,7 @@ void StateGame::onCreate()
     m_background->setColor(GP::PaletteBackground());
     m_background->setIgnoreCamMovement(true);
     m_background->update(0.0f);
+    m_background->setZ(GP::LevelZLayerBelowPlayer());
 
     jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(),
         "assets/test_level.json" };
@@ -36,6 +41,8 @@ void StateGame::onCreate()
 
     m_vignette = std::make_shared<jt::Vignette>(GP::GetScreenSize());
     add(m_vignette);
+    m_vignette->setZ(GP::LevelZLayerAboveAll());
+
     m_hud = std::make_shared<Hud>();
     add(m_hud);
 
@@ -64,10 +71,9 @@ void StateGame::onUpdate(float const elapsed)
 void StateGame::onDraw() const
 {
     m_background->draw(renderTarget());
-    // drawObjects();
-    m_level->draw();
-    // m_vignette->draw();
-    // m_hud->draw();
+    drawObjects();
+    m_vignette->draw();
+    m_hud->draw();
 }
 
 void StateGame::endGame()

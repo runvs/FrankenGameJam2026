@@ -1,5 +1,6 @@
 
 #include "level.hpp"
+#include "game_properties.hpp"
 
 Level::Level(std::weak_ptr<jt::Box2DWorldInterface> world)
     : m_world { world }
@@ -11,13 +12,15 @@ void Level::doCreate() { }
 void Level::doUpdate(float const elapsed)
 {
     m_tileLayerGround->update(elapsed);
-    m_tileLayerOverlay->update(elapsed);
+    m_tileLayerGroundDecals->update(elapsed);
+    m_tileLayerOverhead->update(elapsed);
 }
 
 void Level::doDraw() const
 {
     m_tileLayerGround->draw(renderTarget());
-    m_tileLayerOverlay->draw(renderTarget());
+    m_tileLayerGroundDecals->draw(renderTarget());
+    m_tileLayerOverhead->draw(renderTarget());
 }
 
 void Level::loadLevelCollisions(jt::tilemap::TilesonLoader& loader)
@@ -45,17 +48,19 @@ void Level::loadTileLayers(jt::tilemap::TilesonLoader& loader)
 {
     m_tileLayerGround = std::make_shared<jt::tilemap::TileLayer>(
         loader.loadTilesFromLayer("ground", textureManager(), "assets/"));
-    m_tileLayerGround->setScreenSizeHint(jt::Vector2f { 400, 300 });
+    m_tileLayerGround->setScreenSizeHint(GP::GetScreenSize());
+    m_tileLayerGround->setZ(GP::LevelZLayerBelowPlayer());
 
-    m_tileLayerOverlay = std::make_shared<jt::tilemap::TileLayer>(
-        loader.loadTilesFromLayer("overlay", textureManager(), "assets/"));
-    
-    m_tileLayerOverlay->setScreenSizeHint(jt::Vector2f { 400, 300 });
+    m_tileLayerGroundDecals = std::make_shared<jt::tilemap::TileLayer>(
+        loader.loadTilesFromLayer("ground_decals", textureManager(), "assets/"));
+    m_tileLayerGroundDecals->setScreenSizeHint(GP::GetScreenSize());
+    m_tileLayerGroundDecals->setZ(GP::LevelZLayerBelowPlayer());
 
-    m_itemsLayer = std::make_shared<jt::tilemap::ObjectLayer>(loader.loadObjectsFromLayer("items"));
+    m_tileLayerOverhead = std::make_shared<jt::tilemap::TileLayer>(
+        loader.loadTilesFromLayer("overhead", textureManager(), "assets/"));
+    m_tileLayerOverhead->setScreenSizeHint(GP::GetScreenSize());
+    m_tileLayerOverhead->setZ(GP::LevelZLayerAbovePlayer());
 }
-
-std::vector<jt::tilemap::InfoRect> Level::getItemObjects() { return m_itemsLayer->getObjects(); }
 
 std::vector<jt::tilemap::InfoRect> Level::getObjects() { return m_invObjectsLayer->getObjects(); }
 
