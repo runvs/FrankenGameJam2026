@@ -2,6 +2,7 @@
 #include <game_interface.hpp>
 #include <game_properties.hpp>
 #include <math_helper.hpp>
+#include <vector.hpp>
 
 Player::Player(std::shared_ptr<jt::Box2DWorldInterface> world)
 {
@@ -53,6 +54,25 @@ void Player::updateAnimation(float const elapsed)
 void Player::handleMovement(float const elapsed)
 {
     // TODO check input and set internal physics/state/position
+    jt::Vector2f newVelocity { 0.0f, 0.0f };
+
+    float const speed = 85.0f;
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::D)) {
+        newVelocity += jt::Vector2f { speed, 0.0f };
+    }
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::A)) {
+        newVelocity += jt::Vector2f { -speed, 0.0f };
+    }
+
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::W)) {
+        newVelocity += jt::Vector2f { 0.0f, -speed };
+    }
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::S)) {
+        newVelocity += jt::Vector2f { 0.0f, speed };
+    }
+
+    // physObject.setVelocity(newVelocity);
+    m_physicsObject->setVelocity(newVelocity);
 }
 
 void Player::doDraw() const { m_animation->draw(renderTarget()); }
