@@ -11,10 +11,7 @@
 #include <state_menu.hpp>
 
 // constructor
-StateEncounter::StateEncounter(EncounterInfo encounter_info)
-{
-    m_encounter_info = encounter_info;
-}
+StateEncounter::StateEncounter(EncounterInfo encounter_info) { m_encounter_info = encounter_info; }
 
 // destructor
 // StateEncounter::~StateEncounter() { }
@@ -32,8 +29,8 @@ void StateEncounter::onCreate()
 
     using jt::Shape;
 
-    m_background = std::make_shared<jt::Sprite>(
-        m_encounter_info.backgroundSprite, textureManager());
+    m_background
+        = std::make_shared<jt::Sprite>(m_encounter_info.backgroundSprite, textureManager());
 
     // loadLevel();
 
