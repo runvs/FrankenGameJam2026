@@ -146,8 +146,8 @@
                  "type":"player_start",
                  "visible":true,
                  "width":24,
-                 "x":144,
-                 "y":288
+                 "x":168,
+                 "y":360
                 }, 
                 {
                  "height":24,

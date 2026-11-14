@@ -146,8 +146,8 @@
                  "type":"player_start",
                  "visible":true,
                  "width":24,
-                 "x":120,
-                 "y":96
+                 "x":96,
+                 "y":48
                 }, 
                 {
                  "height":24,
@@ -159,6 +159,11 @@
                          "name":"new_level_name",
                          "type":"string",
                          "value":"test_level2.json"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"exit"
                         }],
                  "rotation":0,
                  "type":"",
