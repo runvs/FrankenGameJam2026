@@ -24,16 +24,9 @@ void StateEncounter::onCreate()
         getGame()->gfx().createZLayer(layerID);
     }
 
-    float const w = static_cast<float>(GP::GetWindowSize().x);
-    float const h = static_cast<float>(GP::GetWindowSize().y);
-
-    using jt::Shape;
-
     m_background = std::make_shared<jt::Sprite>(
         (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite).string(),
         textureManager());
-
-    // loadLevel();
 
     createPlayer();
 
@@ -52,18 +45,26 @@ void StateEncounter::onEnter() { };
 
 void StateEncounter::createPlayer()
 {
-    m_player = std::make_shared<Player>(m_world);
-    add(m_player);
+    m_player = std::make_shared<jt::Animation>();
+    m_player->loadFromAseprite("assets/chars.aseprite", textureManager());
+    m_player->play("idle");
     // TODO adjust player position
-    m_player->setPosition(jt::Vector2f(256, 720));
+    m_player->setPosition(jt::Vector2f(16.0f, 16.0f));
 }
 
 std::string StateEncounter::getName() const { return "State Encounter"; }
 
+void StateEncounter::onUpdate(float const elapsed)
+{
+    m_background->update(elapsed);
+    m_player->update(elapsed);
+    m_vignette->update(elapsed);
+}
+
 void StateEncounter::onDraw() const
 {
     m_background->draw(renderTarget());
-    drawObjects();
+    m_player->draw(renderTarget());
 
     m_vignette->draw();
     m_hud->draw();
@@ -79,10 +80,4 @@ void StateEncounter::endGame()
     m_running = false;
 
     getGame()->stateManager().switchToStoredState("menu");
-}
-
-void StateEncounter::onUpdate(float const elapsed)
-{
-    m_background->update(elapsed);
-    m_vignette->update(elapsed);
 }

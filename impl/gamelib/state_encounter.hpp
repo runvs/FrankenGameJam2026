@@ -34,7 +34,7 @@ private:
 
     std::shared_ptr<Level> m_level { nullptr };
 
-    std::shared_ptr<Player> m_player { nullptr };
+    std::shared_ptr<jt::Animation> m_player { nullptr };
 
     void onCreate() override;
     void onEnter() override;
