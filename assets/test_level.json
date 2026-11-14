@@ -96,11 +96,29 @@
          "y":0
         }, 
         {
-         "color":"#ffaa00",
+         "color":"#ff2200",
          "draworder":"topdown",
          "id":5,
-         "name":"temp",
-         "objects":[],
+         "name":"encounters",
+         "objects":[
+                {
+                 "height":24,
+                 "id":133,
+                 "name":"",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"encounter_info",
+                         "type":"string",
+                         "value":"test_encounter.json"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":24,
+                 "x":144,
+                 "y":288
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -144,7 +162,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":133,
+ "nextobjectid":135,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2-2-geb83ddb9",

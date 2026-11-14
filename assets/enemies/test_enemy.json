@@ -1,0 +1,5 @@
+{
+  "spritesheet": "assets/chars.aseprite",
+  "hitPoints": 10.0,
+  "hitPointsMax": 10.0
+}
