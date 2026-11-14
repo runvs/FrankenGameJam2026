@@ -132,6 +132,7 @@ void BattleMenu::doUpdate(float const elapsed)
                 // TODO check available options based on player inventory
             } else if (m_selectorMenu1Index == 1) {
                 m_menu2Text0->setText("Medkit");
+                
                 m_menu2Text1->setText("Molotov");
                 // TODO check available options based on player inventory
             }

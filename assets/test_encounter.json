@@ -11,6 +11,6 @@
       "position": 1
     }
   ],
-  "level_sprite": "world_test_encounter.aseprite",
+  "level_sprite": "enemy_robot_red_eye.aseprite",
   "background_sprite": "encounterBackground.png"
 }
