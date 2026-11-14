@@ -119,7 +119,11 @@ void StateEncounter::nextActor()
 void StateEncounter::damagePlayer(float const damage)
 {
     m_stateGame->m_playerInfo.getDamage(damage);
-    m_player->flash(0.25f, jt::colors::Red);
+    if (damage > 0) {
+        m_player->flash(0.25f, jt::colors::Red);
+    } else {
+        m_player->flash(0.25f, jt::colors::Green);
+    }
 }
 
 void StateEncounter::onUpdate(float const elapsed)

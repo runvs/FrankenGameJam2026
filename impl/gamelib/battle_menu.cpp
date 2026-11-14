@@ -149,10 +149,9 @@ void BattleMenu::doUpdate(float const elapsed)
                     m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {
-
                 // TODO limit number of available items so they cannot be reused over and over again
                 if (m_selectorMenu2Index == 0) {
-                    // TODO heal
+                    m_stateEncounter->damagePlayer(-4.0f);
                     m_triggerNextActor();
                 } else if (m_selectorMenu2Index == 1) {
                     // Molotov
