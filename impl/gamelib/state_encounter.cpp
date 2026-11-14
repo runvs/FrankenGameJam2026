@@ -11,10 +11,7 @@
 #include <state_menu.hpp>
 
 // constructor
-StateEncounter::StateEncounter(EncounterInfo encounter_info)
-{
-    m_encounter_info = encounter_info;
-}
+StateEncounter::StateEncounter(EncounterInfo encounter_info) { m_encounter_info = encounter_info; }
 
 // destructor
 // StateEncounter::~StateEncounter() { }
@@ -28,8 +25,7 @@ void StateEncounter::onCreate()
     }
 
     m_background = std::make_shared<jt::Sprite>(
-        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite)
-            .string(),
+        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite).string(),
         textureManager());
 
     createPlayer();
@@ -53,10 +49,7 @@ void StateEncounter::onEnter() { };
 
 void StateEncounter::createEnemies()
 {
-    for (auto const enemy_encounter_info : m_encounter_info.enemies) {
-
-        draw_enemy(enemy_encounter_info);
-    }
+    for (auto const enemy_encounter_info : m_encounter_info.enemies) { }
 }
 
 void draw_enemy(EnemyEncounterInfo enemy_encounter_info) { }

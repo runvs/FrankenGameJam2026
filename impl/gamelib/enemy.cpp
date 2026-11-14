@@ -1,5 +1,5 @@
 #include "enemy.hpp"
-#include <encounter_info.hpp>
+#include <encounter/encounter_info.hpp>
 #include <game_interface.hpp>
 #include <game_properties.hpp>
 #include <math_helper.hpp>
@@ -16,14 +16,11 @@ Enemy::Enemy(EnemyEncounterInfo enemy_encounter_info)
 
     // load sprite / animation
     m_animation = std::make_shared<jt::Animation>();
-    m_animation->loadFromAsperite(
-        (std::filesystem::path { "assets" }
-            / enemy_encounter_info.enemyBase.spritesheet)
-            .sting(),
+    m_animation->loadFromAseprite(
+        (std::filesystem::path { "assets" } / enemy_encounter_info.enemyBase.spritesheet).string(),
         textureManager());
-    m_animation->setPosition(
-        enemy_pos_to_vector(enemy_encounter_info.position));
-    m_animation.setScale(jt::Vector2f(2.0, 2.0));
+    m_animation->setPosition(enemy_pos_to_vector(enemy_encounter_info.position));
+    m_animation->setScale(jt::Vector2f(2.0, 2.0));
 }
 
 void Enemy::doCreate() { m_animation->play("idle"); }

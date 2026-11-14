@@ -2,7 +2,7 @@
 
 #include <animation.hpp>
 #include <box2dwrapper/box2d_object.hpp>
-#include <encounter_info.hpp>
+#include <encounter/encounter_info.hpp>
 #include <game_object.hpp>
 #include <particle_system.hpp>
 #include <shape.hpp>
