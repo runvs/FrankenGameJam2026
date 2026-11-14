@@ -29,8 +29,9 @@ void StateEncounter::onCreate()
 
     using jt::Shape;
 
-    m_background
-        = std::make_shared<jt::Sprite>(m_encounter_info.backgroundSprite, textureManager());
+    m_background = std::make_shared<jt::Sprite>(
+        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite).string(),
+        textureManager());
 
     // loadLevel();
 
@@ -47,9 +48,9 @@ void StateEncounter::onCreate()
     setAutoDraw(false);
 }
 
-void EncounterState::onEnter() { };
+void StateEncounter::onEnter() { };
 
-void EncounterState::createPlayer()
+void StateEncounter::createPlayer()
 {
     m_player = std::make_shared<Player>(m_world);
     add(m_player);

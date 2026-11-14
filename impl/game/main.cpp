@@ -67,19 +67,16 @@ int main(int /*argc*/, char* /*argv*/[])
     // jt::StateManager stateManager { std::make_shared<StateStartWithButton>()
     // };
     // TODO: Thomas load encouter state here for debugging
-    std::ifstream f {
-        "/home/thomas/projects/franken_game_jam_2026/assets/test_encounter.json"
-    };
+    std::ifstream f { "assets/test_encounter.json" };
     nlohmann::json const j = nlohmann::json::parse(f);
     EncounterInfo encounterInfo = j;
-    jt::StateManager stateManager { std::make_shared<StateEncounter>(
-        encounterInfo) };
+    jt::StateManager stateManager { std::make_shared<StateEncounter>(encounterInfo) };
     jt::LoggingStateManager loggingStateManager { stateManager, logger };
 
     jt::ActionCommandManager actionCommandManager(logger);
 
-    game = std::make_shared<jt::Game>(gfx, input, audio, loggingStateManager,
-        logger, actionCommandManager, cache);
+    game = std::make_shared<jt::Game>(
+        gfx, input, audio, loggingStateManager, logger, actionCommandManager, cache);
 
     addBasicActionCommands(game);
     game->startGame(gameloop);
