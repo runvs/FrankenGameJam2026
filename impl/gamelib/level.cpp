@@ -62,12 +62,12 @@ void Level::loadTileLayers(jt::tilemap::TilesonLoader& loader)
     m_tileLayerOverhead->setZ(GP::LevelZLayerAbovePlayer());
 }
 
-std::vector<jt::tilemap::InfoRect> Level::getObjects() { return m_invObjectsLayer->getObjects(); }
+std::vector<jt::tilemap::InfoRect> Level::getObjects() { return m_objectsLayer->getObjects(); }
 
 jt::Vector2f Level::getPlayerStartingPos() const
 {
 
-    for (auto const& obj : m_invObjectsLayer->getObjects()) {
+    for (auto const& obj : m_objectsLayer->getObjects()) {
         auto const type = obj.properties.strings.at("type");
         if (type == "player_start") {
             return obj.position;

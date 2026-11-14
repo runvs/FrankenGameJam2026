@@ -11,7 +11,7 @@
 
 class Level : public jt::GameObject {
 public:
-    Level(std::weak_ptr<jt::Box2DWorldInterface> world);
+    explicit Level(std::weak_ptr<jt::Box2DWorldInterface> world);
 
     void loadTileLayers(jt::tilemap::TilesonLoader& loader);
     void loadLevelCollisions(jt::tilemap::TilesonLoader& loader);
@@ -28,7 +28,7 @@ private:
     std::weak_ptr<jt::Box2DWorldInterface> m_world;
     std::vector<std::shared_ptr<jt::Box2DObject>> m_colliders { };
 
-    std::shared_ptr<jt::tilemap::ObjectLayer> m_invObjectsLayer { nullptr };
+    std::shared_ptr<jt::tilemap::ObjectLayer> m_objectsLayer { nullptr };
 
     void doCreate() override;
     void doUpdate(float elapsed) override;
