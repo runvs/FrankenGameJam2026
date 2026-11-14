@@ -76,10 +76,18 @@ std::string StateEncounter::getName() const { return "State Encounter"; }
 
 void StateEncounter::onUpdate(float const elapsed)
 {
-    m_background->update(elapsed);
-    m_player->update(elapsed);
-    m_vignette->update(elapsed);
-    m_enemies->update(elapsed);
+    if (m_running) {
+        
+        m_background->update(elapsed);
+        m_player->update(elapsed);
+        m_vignette->update(elapsed);
+        m_enemies->update(elapsed);
+
+        if (m_enemies->size() == 0) {
+            m_running = false;
+            getGame()->stateManager().switchToStoredState("beforeEncounter");
+        }
+    }
 }
 
 void StateEncounter::onDraw() const

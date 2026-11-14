@@ -46,7 +46,7 @@ void StateGame::onCreate()
     setAutoDraw(false);
 }
 
-void StateGame::onEnter() { }
+void StateGame::onEnter() { m_running = true; }
 
 void StateGame::createPlayer()
 {
@@ -108,6 +108,8 @@ void StateGame::updateLevelEncounters(float const elapsed)
             std::cout << "trigger encounter\n";
             // TODO trigger encounter
             m_running = false;
+            encounter->kill();
+            getGame()->stateManager().storeCurrentState("beforeEncounter");
             getGame()->stateManager().switchState(
                 std::make_shared<StateEncounter>(encounter->getEncounterInfo()));
         }
