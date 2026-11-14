@@ -11,6 +11,17 @@ Enemy::Enemy(EnemyEncounterInfo const& enemy_encounter_info)
     m_enemy_encounter_info = enemy_encounter_info;
 }
 
+void Enemy::getDamage(float damage)
+{
+    // TODO anim
+    m_enemy_encounter_info.enemyBase.hitPoints -= damage;
+
+    // TODO damage resistance
+    if (m_enemy_encounter_info.enemyBase.hitPoints <= 0) {
+        kill();
+    }
+}
+
 void Enemy::doCreate()
 {
     // load sprite / animation

@@ -25,6 +25,8 @@ public:
     StateEncounter(EncounterInfo);
     std::string getName() const override;
 
+    std::shared_ptr<jt::ObjectGroup<Enemy>> m_enemies;
+
 private:
     EncounterInfo m_encounter_info;
     std::shared_ptr<jt::Sprite> m_background;
@@ -36,8 +38,6 @@ private:
     bool m_hasEnded { false };
 
     std::shared_ptr<jt::Animation> m_player { nullptr };
-
-    std::shared_ptr<jt::ObjectGroup<Enemy>> m_enemies;
 
     std::shared_ptr<BattleMenu> m_battleMenu { nullptr };
 

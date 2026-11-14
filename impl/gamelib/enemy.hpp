@@ -13,6 +13,8 @@ class Enemy : public jt::GameObject {
 public:
     explicit Enemy(EnemyEncounterInfo const& enemy_encounter_info);
 
+    void getDamage(float damage);
+
 private:
     // enemy stats
     EnemyEncounterInfo m_enemy_encounter_info;
