@@ -45,7 +45,7 @@ void StateEncounter::onCreate()
 
     m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
     m_battleMenu->m_triggerNextActor = [this]() {
-        m_enemyActionTimer = 0.5f;
+        m_enemyActionTimer = GP::BattleTimeBetweenActors();
         nextActor();
     };
     m_battleMenu->m_stateEncounter = this;
@@ -100,11 +100,11 @@ void StateEncounter::nextActor()
         // std::cout << "valid enemy id " << m_currentActorIndex << " ";
         auto enemy = m_enemies->at(m_currentActorIndex).lock();
         if (!enemy) {
-            // std::cout << "!!!!!trigger next actor from nextActor invalid weakptr actor\n";
+            std::cerr << "!!!!!trigger next actor from nextActor invalid weakptr actor\n";
             nextActor();
         } else {
             // std::cout << "doAction \n";
-            m_enemyActionTimer = 0.5f;
+            m_enemyActionTimer = GP::BattleTimeBetweenActors();
             enemy->doAction(*this);
         }
     } else if (m_currentActorIndex == -1) {

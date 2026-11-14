@@ -63,4 +63,5 @@ public:
     static jt::Color BattleMenuStateBaseColor();
     static jt::Color BattleMenuStateSelectedColor();
     static float BattleMenuTweenTime();
+    static float BattleTimeBetweenActors();
 };

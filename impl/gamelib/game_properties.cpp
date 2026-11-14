@@ -101,4 +101,6 @@ jt::Color GP::BattleMenuStateSelectedColor() { return jt::Color { 255, 100, 100,
 
 float GP::BattleMenuTweenTime() { return 0.2f; }
 
+float GP::BattleTimeBetweenActors() { return 0.7f; }
+
 float GP::CameraMarginTileScaleValue() { return 3.0f; }

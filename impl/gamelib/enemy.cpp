@@ -19,7 +19,7 @@ void Enemy::getDamage(float damage)
     // TODO anim
     m_enemy_encounter_info.enemyBase.hitPoints -= damage;
     m_animation->flash(0.25f, jt::colors::Red);
-     
+
     // TODO damage resistance
     if (m_enemy_encounter_info.enemyBase.hitPoints <= 0) {
         kill();
@@ -28,11 +28,12 @@ void Enemy::getDamage(float damage)
 
 void Enemy::doAction(StateEncounter& state_encounter)
 {
+    m_animation->flash(0.25f, jt::colors::Green);
+
     state_encounter.damagePlayer(2.0f);
 
     // std::cout << "!!!!!trigger next actor from enemy doAction\n";
     state_encounter.nextActor();
-    m_animation->flash(0.25f, jt::colors::Green);
 }
 
 void Enemy::doCreate()
