@@ -4,9 +4,11 @@
 #include "level.hpp"
 #include "object_group.hpp"
 #include "player.hpp"
+#include <bar.hpp>
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <encounter/encounter_info.hpp>
 #include <game_state.hpp>
+#include <text.hpp>
 #include <memory>
 #include <vector>
 
@@ -33,6 +35,7 @@ public:
 
     void nextActor();
     void damagePlayer(float damage);
+    void drawPlayerHealth();
 
 private:
     EncounterInfo m_encounter_info;
@@ -46,8 +49,16 @@ private:
 
     std::shared_ptr<jt::Animation> m_player { nullptr };
 
+    std::shared_ptr<jt::Bar> m_playerHealthbar { nullptr };
+    jt::Vector2f m_playerHealthbarPosition { 70.0f, 140.0f };
+
+    std::shared_ptr<jt::Text> m_playerHealthtext { nullptr };
+    jt::Vector2f m_playerHealthtextPosition { 70.0f, 140.0f };
+
     std::shared_ptr<BattleMenu> m_battleMenu { nullptr };
-    int m_currentActorIndex { -1 }; // -1 = player, all others are indices in m__enemies;
+    int m_currentActorIndex {
+        -1
+    }; // -1 = player, all others are indices in m__enemies;
     float m_enemyActionTimer { -1.0f };
 
     void onCreate() override;

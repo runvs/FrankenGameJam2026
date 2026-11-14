@@ -7,7 +7,7 @@
     },
     {
       "enemyBase": "assets/enemies/test_enemy.json",
-      "level": 2,
+      "level": 4,
       "position": 1
     }
   ],

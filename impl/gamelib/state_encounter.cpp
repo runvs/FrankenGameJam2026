@@ -44,14 +44,24 @@ void StateEncounter::onCreate()
     m_battleMenu->create();
 
     m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
+    m_battleMenu->m_triggerNextActor = [this]() { nextActor(); };
+    m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
     m_battleMenu->m_triggerNextActor = [this]() {
-        m_enemyActionTimer = 0.5f;
+        m_enemyActionTimer = GP::BattleTimeBetweenActors();
         nextActor();
     };
     m_battleMenu->m_stateEncounter = this;
 
     m_hud = std::make_shared<Hud>();
     add(m_hud);
+
+    // instantiate player healtbar and text
+    m_playerHealthbar = std::make_shared<jt::Bar>(48.0f, 8.0f, true, textureManager());
+    m_playerHealthbar->setBackColor(jt::colors::Gray);
+    m_playerHealthbar->setColor(jt::colors::Red);
+    m_playerHealthbar->setMaxValue(m_stateGame->m_playerInfo.m_hitPointsMax);
+    m_playerHealthbar->setCurrentValue(m_stateGame->m_playerInfo.m_hitPoints);
+    m_playerHealthbar->setPosition(m_playerHealthbarPosition);
 
     // StateGame will call drawObjects itself.
     setAutoDraw(false);
@@ -68,8 +78,6 @@ void StateEncounter::createEnemies()
         m_enemies->push_back(enemy);
     }
 }
-
-void draw_enemy(EnemyEncounterInfo enemy_encounter_info) { }
 
 void StateEncounter::createPlayer()
 {
@@ -102,11 +110,12 @@ void StateEncounter::nextActor()
         // std::cout << "valid enemy id " << m_currentActorIndex << " ";
         auto enemy = m_enemies->at(m_currentActorIndex).lock();
         if (!enemy) {
-            // std::cout << "!!!!!trigger next actor from nextActor invalid weakptr actor\n";
+            // std::cerr << "!!!!!trigger next actor from nextActor invalid
+            // weakptr actor\n";
             nextActor();
         } else {
             // std::cout << "doAction \n";
-            m_enemyActionTimer = 0.5f;
+            m_enemyActionTimer = GP::BattleTimeBetweenActors();
             enemy->doAction(*this);
         }
     } else if (m_currentActorIndex == -1) {
@@ -124,6 +133,7 @@ void StateEncounter::damagePlayer(float const damage)
     m_stateGame->m_playerInfo.getDamage(damage);
     if (damage > 0) {
         m_player->flash(0.25f, jt::colors::Red);
+        getGame()->gfx().camera().shake(0.3f, 8);
     } else {
         m_player->flash(0.25f, jt::colors::Green);
     }
@@ -134,7 +144,7 @@ void StateEncounter::onUpdate(float const elapsed)
     if (m_running) {
 
         if (m_enemyActionTimer >= 0 && m_enemyActionTimer - elapsed <= 0) {
-            std::cout << "!!!!!trigger next actor from onUpdate\n";
+            // std::cout << "!!!!!trigger next actor from onUpdate\n";
             m_enemyActionTimer -= elapsed;
             nextActor();
         } else {
@@ -154,6 +164,15 @@ void StateEncounter::onUpdate(float const elapsed)
             m_running = false;
             getGame()->stateManager().switchToStoredState("beforeEncounter");
         }
+        // update healhbar
+        m_playerHealthbar->setMaxValue(m_stateGame->m_playerInfo.m_hitPointsMax);
+        // TODO: healthbar position wrong
+        // TODO: healthbar does not display correct value
+        m_playerHealthbar->setCurrentValue(m_stateGame->m_playerInfo.m_hitPoints);
+        m_playerHealthbar->setPosition(m_playerHealthbarPosition);
+        m_playerHealthbar->update(elapsed);
+
+        // update healthtext
     }
 }
 
@@ -161,6 +180,7 @@ void StateEncounter::onDraw() const
 {
     m_background->draw(renderTarget());
     m_player->draw(renderTarget());
+    m_playerHealthbar->draw(renderTarget());
 
     for (auto const& e : *m_enemies) {
         auto const enemy = e.lock();

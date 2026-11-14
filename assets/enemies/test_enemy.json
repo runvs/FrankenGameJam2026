@@ -1,5 +1,7 @@
 {
   "spritesheet": "assets/enemy_robot_red_eye.aseprite",
   "hitPoints": 10.0,
-  "hitPointsMax": 10.0
+  "hitPointsMax": 10.0,
+  "attack": 2.0,
+  "defense": 0.0
 }
