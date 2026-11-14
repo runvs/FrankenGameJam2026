@@ -139,9 +139,23 @@ void BattleMenu::doUpdate(float const elapsed)
     } else if (m_state == BattleMenuState::Menu2) {
 
         if (kb->justReleased(jt::KeyCode::Space)) {
-            if (m_selectorMenu1Index == 0 && m_selectorMenu2Index == 0) {
-                auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
-                enemy->getDamage(5.0f);
+            if (m_selectorMenu1Index == 0) {
+                if (m_selectorMenu2Index == 0) {
+                    auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
+                    enemy->getDamage(5.0f);
+                }
+            } else if (m_selectorMenu1Index == 1) {
+
+                // TODO limit number of available items so they cannot be reused over and over again
+                if (m_selectorMenu2Index == 0) {
+                    // TODO heal
+                } else if (m_selectorMenu2Index == 1) {
+                    // Molotov
+                    for (auto const& e : *m_stateEncounter->m_enemies) {
+                        auto const enemy = e.lock();
+                        enemy->getDamage(3.0f);
+                    }
+                }
             }
         }
         if (kb->justReleased(jt::KeyCode::Escape)) {
