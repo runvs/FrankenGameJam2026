@@ -79,6 +79,21 @@ void StateGame::loadLevel()
     }
 }
 
+void StateGame::updateLevelEncounters(float const elapsed)
+{
+    m_levelEncounters->update(elapsed);
+    for (auto const& e : *m_levelEncounters) {
+        auto encounter = e.lock();
+        auto const pos = encounter->getPosition();
+        auto const distance = jt::MathHelper::distanceBetween(
+            pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
+        if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.75f) {
+            std::cout << "trigger encounter\n";
+            // TODO trigger encounter
+        }
+    }
+}
+
 void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
@@ -92,7 +107,7 @@ void StateGame::onUpdate(float const elapsed)
 
         // TODO change level mechanic
 
-        m_levelEncounters->update(elapsed);
+        updateLevelEncounters(elapsed);
     }
 
     m_background->update(elapsed);

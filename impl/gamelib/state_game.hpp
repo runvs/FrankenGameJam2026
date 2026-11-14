@@ -37,7 +37,6 @@ private:
 
     std::shared_ptr<jt::ObjectGroup<LevelEncounter>> m_levelEncounters;
 
-
     void onCreate() override;
     void onEnter() override;
     void onUpdate(float const elapsed) override;
@@ -47,4 +46,5 @@ private:
     void createPlayer();
 
     void loadLevel();
+    void updateLevelEncounters(float elapsed);
 };

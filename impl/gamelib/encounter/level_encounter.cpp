@@ -16,7 +16,7 @@ void LevelEncounter::doCreate()
     m_animation->loadFromAseprite(
         (std::filesystem::path { "assets" } / m_info.levelSprite).string(), textureManager());
     m_animation->setPosition(m_pos);
-    
+
     m_animation->play("idle");
     m_animation->setZ(GP::LevelZLayerPlayer());
 }
@@ -24,3 +24,9 @@ void LevelEncounter::doCreate()
 void LevelEncounter::doUpdate(float const elapsed) { m_animation->update(elapsed); }
 
 void LevelEncounter::doDraw() const { m_animation->draw(renderTarget()); }
+
+jt::Vector2f LevelEncounter::getPosition() const
+{
+    // TODO adapt if encounters can move on map
+    return m_pos;
+}
