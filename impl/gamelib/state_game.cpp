@@ -1,4 +1,6 @@
 ﻿#include "state_game.hpp"
+
+#include "camera_helpers.hpp"
 #include <box2dwrapper/box2d_world_impl.hpp>
 #include <color/color.hpp>
 #include <game_interface.hpp>
@@ -126,6 +128,9 @@ void StateGame::onUpdate(float const elapsed)
         }
 
         // TODO scroll/camera mechanics
+        float m_margin = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
+        jt::CameraHelpers::followWithMargin(getGame()->gfx().camera(), m_player->getPosition(),
+            GP::GetScreenSize(), elapsed, m_margin, GP::CameraSpeed());
 
         // TODO change level mechanic
 
