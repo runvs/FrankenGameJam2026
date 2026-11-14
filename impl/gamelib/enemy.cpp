@@ -1,8 +1,10 @@
 #include "enemy.hpp"
+#include "drawable_helpers.hpp"
 #include <encounter/encounter_info.hpp>
 #include <game_interface.hpp>
 #include <game_properties.hpp>
 #include <vector.hpp>
+#include <cmath>
 
 Enemy::Enemy(EnemyEncounterInfo const& enemy_encounter_info)
 {
@@ -26,34 +28,70 @@ void Enemy::doCreate()
 {
     // load sprite / animation
     m_animation = std::make_shared<jt::Animation>();
-    m_animation->loadFromAseprite(m_enemy_encounter_info.enemyBase.spritesheet, textureManager());
-    m_animation->setPosition(enemy_pos_to_vector(m_enemy_encounter_info.position));
+    m_animation->loadFromAseprite(
+        m_enemy_encounter_info.enemyBase.spritesheet, textureManager());
+    m_animation->setPosition(
+        enemy_pos_to_vector(m_enemy_encounter_info.position));
     m_animation->setScale(jt::Vector2f(2.0, 2.0));
     m_animation->play("idle");
 
-    m_healthbar = std::make_shared<jt::Bar>(48.0f, 8.0f, true, textureManager());
+    // load healthbar
+    m_healthbar
+        = std::make_shared<jt::Bar>(48.0f, 8.0f, true, textureManager());
     m_healthbar->setBackColor(jt::colors::Gray);
     m_healthbar->setColor(jt::colors::Red);
     m_healthbar->setMaxValue(m_enemy_encounter_info.enemyBase.hitPointsMax);
     m_healthbar->setCurrentValue(m_enemy_encounter_info.enemyBase.hitPoints);
-    jt::Vector2f const offset { 0.0f, -16.0f };
-    m_healthbar->setPosition(enemy_pos_to_vector(m_enemy_encounter_info.position) + offset);
+    m_healthbar->setPosition(
+        enemy_pos_to_vector(m_enemy_encounter_info.position)
+        + m_healthbar_offset);
+
+    // load healthtext
+    m_healthtext = jt::dh::createText(renderTarget(), get_health_text(), 10u);
+    m_healthtext->setPosition(
+        enemy_pos_to_vector(m_enemy_encounter_info.position)
+        + m_healthtext_offset);
 }
 
 void Enemy::doUpdate(float const elapsed)
 {
     m_animation->update(elapsed);
+
+    // update healthbar
     m_healthbar->setMaxValue(m_enemy_encounter_info.enemyBase.hitPointsMax);
     m_healthbar->setCurrentValue(m_enemy_encounter_info.enemyBase.hitPoints);
-    jt::Vector2f const offset { 0.0f, -16.0f };
-    m_healthbar->setPosition(enemy_pos_to_vector(m_enemy_encounter_info.position) + offset);
+    m_healthbar->setPosition(
+        enemy_pos_to_vector(m_enemy_encounter_info.position)
+        + m_healthbar_offset);
     m_healthbar->update(elapsed);
+
+    // update healthtext
+    m_healthtext = jt::dh::createText(renderTarget(), get_health_text(), 10u);
+    m_healthtext->setPosition(
+        enemy_pos_to_vector(m_enemy_encounter_info.position)
+        + m_healthtext_offset);
+    m_healthtext->setTextAlign(jt::Text::TextAlign::CENTER);
+    m_healthtext->update(elapsed);
 }
 
 void Enemy::doDraw() const
 {
     m_animation->draw(renderTarget());
     m_healthbar->draw(renderTarget());
+    m_healthtext->draw(renderTarget());
+}
+
+std::string Enemy::get_health_text()
+{
+    std::string hp_string = std::to_string(static_cast<int>(
+        std::round(m_enemy_encounter_info.enemyBase.hitPoints)));
+
+    std::string hp_max_string = std::to_string(static_cast<int>(
+        std::round(m_enemy_encounter_info.enemyBase.hitPointsMax)));
+
+    std::string health_text = hp_string + " / " + hp_max_string;
+
+    return health_text;
 }
 
 jt::Vector2f enemy_pos_to_vector(int const pos_number)

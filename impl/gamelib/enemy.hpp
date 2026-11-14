@@ -7,6 +7,7 @@
 #include <game_object.hpp>
 #include <particle_system.hpp>
 #include <shape.hpp>
+#include <text.hpp>
 #include <memory>
 
 class Enemy : public jt::GameObject {
@@ -23,10 +24,16 @@ private:
 
     std::shared_ptr<jt::Animation> m_animation;
     std::shared_ptr<jt::Bar> m_healthbar;
+    std::shared_ptr<jt::Text> m_healthtext;
 
     void doCreate() override;
     void doUpdate(float elapsed) override;
     void doDraw() const override;
+
+    jt::Vector2f const m_healthbar_offset { 0.0f, -16.0f };
+    jt::Vector2f const m_healthtext_offset { 25.0f, -19.0f };
+
+    std::string get_health_text();
 };
 
 jt::Vector2f enemy_pos_to_vector(int pos_number);
