@@ -38,6 +38,10 @@ void StateEncounter::onCreate()
     add(m_vignette);
     m_vignette->setZ(GP::LevelZLayerAboveAll());
 
+    m_battleMenu = std::make_shared<BattleMenu>();
+    add(m_battleMenu);
+    m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
+
     m_hud = std::make_shared<Hud>();
     add(m_hud);
 
@@ -82,6 +86,8 @@ void StateEncounter::onDraw() const
     m_player->draw(renderTarget());
 
     m_vignette->draw();
+
+    m_battleMenu->draw();
     m_hud->draw();
 }
 
