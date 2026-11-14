@@ -69,8 +69,6 @@ void StateEncounter::createEnemies()
     }
 }
 
-void draw_enemy(EnemyEncounterInfo enemy_encounter_info) { }
-
 void StateEncounter::createPlayer()
 {
     m_player = std::make_shared<jt::Animation>();
@@ -121,7 +119,6 @@ void StateEncounter::nextActor()
 
 void StateEncounter::damagePlayer(float const damage)
 {
-
     m_stateGame->m_playerInfo.getDamage(damage);
     if (damage > 0) {
         m_player->flash(0.25f, jt::colors::Red);
@@ -136,7 +133,7 @@ void StateEncounter::onUpdate(float const elapsed)
     if (m_running) {
 
         if (m_enemyActionTimer >= 0 && m_enemyActionTimer - elapsed <= 0) {
-            std::cout << "!!!!!trigger next actor from onUpdate\n";
+            // std::cout << "!!!!!trigger next actor from onUpdate\n";
             m_enemyActionTimer -= elapsed;
             nextActor();
         } else {
