@@ -145,6 +145,7 @@ void BattleMenu::doUpdate(float const elapsed)
                 if (m_selectorMenu2Index == 0) {
                     auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
                     enemy->getDamage(5.0f);
+                    // std::cout << "!!!!!trigger next actor from battleMenu\n";
                     m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {

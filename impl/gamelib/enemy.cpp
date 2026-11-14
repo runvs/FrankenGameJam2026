@@ -28,6 +28,7 @@ void Enemy::getDamage(float damage)
 void Enemy::doAction(StateEncounter& state_encounter)
 {
     state_encounter.m_stateGame->m_playerInfo.getDamage(2.0f);
+    // std::cout << "!!!!!trigger next actor from enemy doAction\n";
     state_encounter.nextActor();
     m_animation->flash(0.25f, jt::colors::Green);
 }

@@ -97,6 +97,7 @@ void StateEncounter::nextActor()
         // std::cout << "valid enemy id " << m_currentActorIndex << " ";
         auto enemy = m_enemies->at(m_currentActorIndex).lock();
         if (!enemy) {
+            // std::cout << "!!!!!trigger next actor from nextActor invalid weakptr actor\n";
             nextActor();
         } else {
             // std::cout << "doAction \n";
@@ -108,6 +109,7 @@ void StateEncounter::nextActor()
         return;
     } else {
         // std::cout << "\n";
+        // std::cout << "!!!!!trigger next actor from nextActor\n";
         nextActor();
     }
 }
@@ -117,6 +119,7 @@ void StateEncounter::onUpdate(float const elapsed)
     if (m_running) {
 
         if (m_enemyActionTimer >= 0 && m_enemyActionTimer - elapsed <= 0) {
+            std::cout << "!!!!!trigger next actor from onUpdate\n";
             m_enemyActionTimer -= elapsed;
             nextActor();
         } else {
