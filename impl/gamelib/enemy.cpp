@@ -19,11 +19,31 @@ void Enemy::doCreate()
     m_animation->setPosition(enemy_pos_to_vector(m_enemy_encounter_info.position));
     m_animation->setScale(jt::Vector2f(2.0, 2.0));
     m_animation->play("idle");
+
+    m_healthbar = std::make_shared<jt::Bar>(48.0f, 8.0f, true, textureManager());
+    m_healthbar->setBackColor(jt::colors::Gray);
+    m_healthbar->setColor(jt::colors::Red);
+    m_healthbar->setMaxValue(m_enemy_encounter_info.enemyBase.hitPointsMax);
+    m_healthbar->setCurrentValue(m_enemy_encounter_info.enemyBase.hitPoints);
+    jt::Vector2f const offset { 0.0f, -16.0f };
+    m_healthbar->setPosition(enemy_pos_to_vector(m_enemy_encounter_info.position) + offset);
 }
 
-void Enemy::doUpdate(float const elapsed) { m_animation->update(elapsed); }
+void Enemy::doUpdate(float const elapsed)
+{
+    m_animation->update(elapsed);
+    m_healthbar->setMaxValue(m_enemy_encounter_info.enemyBase.hitPointsMax);
+    m_healthbar->setCurrentValue(m_enemy_encounter_info.enemyBase.hitPoints);
+    jt::Vector2f const offset { 0.0f, -16.0f };
+    m_healthbar->setPosition(enemy_pos_to_vector(m_enemy_encounter_info.position) + offset);
+    m_healthbar->update(elapsed);
+}
 
-void Enemy::doDraw() const { m_animation->draw(renderTarget()); }
+void Enemy::doDraw() const
+{
+    m_animation->draw(renderTarget());
+    m_healthbar->draw(renderTarget());
+}
 
 jt::Vector2f enemy_pos_to_vector(int const pos_number)
 {

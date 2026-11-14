@@ -1,5 +1,6 @@
 #pragma once
 
+#include "bar.hpp"
 #include <animation.hpp>
 #include <box2dwrapper/box2d_object.hpp>
 #include <encounter/encounter_info.hpp>
@@ -19,6 +20,7 @@ private:
     // TODO: enemy states
 
     std::shared_ptr<jt::Animation> m_animation;
+    std::shared_ptr<jt::Bar> m_healthbar;
 
     void doCreate() override;
     void doUpdate(float elapsed) override;
