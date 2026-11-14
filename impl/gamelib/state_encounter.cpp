@@ -1,4 +1,6 @@
 #include "state_encounter.hpp"
+
+#include "state_game.hpp"
 #include <box2dwrapper/box2d_world_impl.hpp>
 #include <color/color.hpp>
 #include <encounter/encounter_info.hpp>
@@ -112,6 +114,12 @@ void StateEncounter::nextActor()
         // std::cout << "!!!!!trigger next actor from nextActor\n";
         nextActor();
     }
+}
+
+void StateEncounter::damagePlayer(float const damage)
+{
+    m_stateGame->m_playerInfo.getDamage(damage);
+    m_player->flash(0.25f, jt::colors::Red);
 }
 
 void StateEncounter::onUpdate(float const elapsed)

@@ -32,6 +32,7 @@ public:
     std::shared_ptr<jt::ObjectGroup<Enemy>> m_enemies;
 
     void nextActor();
+    void damagePlayer(float damage);
 
 private:
     EncounterInfo m_encounter_info;
