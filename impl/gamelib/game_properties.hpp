@@ -56,4 +56,7 @@ public:
     static float PlayerBaseVelocity();
     static float CameraMarginTileScaleValue();
     static float CameraSpeed();
+
+    static jt::Color BattleMenuBackgroundColor();
+    static jt::Color BattleMenuSelectorColor();
 };
