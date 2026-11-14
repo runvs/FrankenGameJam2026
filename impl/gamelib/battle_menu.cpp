@@ -60,7 +60,6 @@ void BattleMenu::doUpdate(float const elapsed)
 {
     auto const& kb = getGame()->input().keyboard();
     if (m_state == BattleMenuState::Menu1) {
-        // TODO tweens
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu1Index--;
             if (m_selectorMenu1Index < 0) {
@@ -125,7 +124,6 @@ void BattleMenu::doUpdate(float const elapsed)
         if (kb->justReleased(jt::KeyCode::Escape)) {
             m_state = BattleMenuState::Menu1;
         }
-        // TODO tweens
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu2Index--;
             if (m_selectorMenu2Index < 0) {
@@ -133,7 +131,7 @@ void BattleMenu::doUpdate(float const elapsed)
                 m_selectorMenu2Index = maxIndex2;
             }
 
-            if (m_selectorMenu1Index == 0) {
+            if (m_selectorMenu2Index == 0) {
                 auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
                     GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
                 m_addTween(tw1);
@@ -142,7 +140,7 @@ void BattleMenu::doUpdate(float const elapsed)
                     GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
                 m_addTween(tw2);
 
-            } else if (m_selectorMenu1Index == 1) {
+            } else if (m_selectorMenu2Index == 1) {
                 auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
                     GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
                 m_addTween(tw1);
@@ -158,7 +156,7 @@ void BattleMenu::doUpdate(float const elapsed)
                 m_selectorMenu2Index = 0;
             }
 
-            if (m_selectorMenu1Index == 0) {
+            if (m_selectorMenu2Index == 0) {
                 auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
                     GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
                 m_addTween(tw1);
@@ -167,7 +165,7 @@ void BattleMenu::doUpdate(float const elapsed)
                     GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
                 m_addTween(tw2);
 
-            } else if (m_selectorMenu1Index == 1) {
+            } else if (m_selectorMenu2Index == 1) {
                 auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
                     GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
                 m_addTween(tw1);
