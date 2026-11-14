@@ -132,10 +132,9 @@ void StateGame::onUpdate(float const elapsed)
         m_world->step(elapsed, GP::PhysicSubSteps());
         handleDebugInput();
 
-        // TODO scroll/camera mechanics
-        float m_margin = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
+        float const margin = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
         jt::CameraHelpers::followWithMargin(getGame()->gfx().camera(), m_player->getPosition(),
-            GP::GetScreenSize(), elapsed, m_margin, GP::CameraSpeed());
+            GP::GetScreenSize(), elapsed, margin, GP::CameraSpeed());
 
         // TODO change level mechanic
 
