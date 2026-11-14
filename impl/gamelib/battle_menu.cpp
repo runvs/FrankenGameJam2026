@@ -25,7 +25,7 @@ void BattleMenu::doCreate()
     m_menu1TextAttack->setTextAlign(jt::Text::TextAlign::LEFT);
     m_menu1TextAttack->setOffset(jt::Vector2f { 0.0f, -8.0f });
     m_menu1TextAttack->setPosition({ 28.0f, 20.0f + 20.0f * 0.0f });
-    m_menu1TextAttack->setColor({ 255, 100, 100, 255 });
+    m_menu1TextAttack->setColor(GP::BattleMenuStateSelectedColor());
 
     m_menu1TextItem = jt::dh::createText(renderTarget(), "Item", 16u);
     m_menu1TextItem->setTextAlign(jt::Text::TextAlign::LEFT);
@@ -36,6 +36,7 @@ void BattleMenu::doCreate()
     m_menu2Text0->setTextAlign(jt::Text::TextAlign::LEFT);
     m_menu2Text0->setOffset(jt::Vector2f { 0.0f, -8.0f });
     m_menu2Text0->setPosition({ 130.0f, 20.0f + 20.0f * 0.0f });
+    m_menu2Text0->setColor(GP::BattleMenuStateSelectedColor());
 
     m_menu2Text1 = jt::dh::createText(renderTarget(), "Pistol", 16u);
     m_menu2Text1->setTextAlign(jt::Text::TextAlign::LEFT);
@@ -55,65 +56,130 @@ void BattleMenu::doCreate()
     m_selector2->setOffset(jt::OffsetMode::CENTER);
 }
 
+void BattleMenu::doMenu1Tweens()
+{
+    if (m_selectorMenu1Index == 0) {
+        auto tw1 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        m_addTween(tw1);
+
+        auto tw2 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        m_addTween(tw2);
+
+    } else if (m_selectorMenu1Index == 1) {
+        auto tw1 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        m_addTween(tw1);
+
+        auto tw2 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        m_addTween(tw2);
+    }
+}
+
+void BattleMenu::doMenu2Tweens()
+{
+    if (m_selectorMenu2Index == 0) {
+        auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        m_addTween(tw1);
+
+        auto tw2 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        m_addTween(tw2);
+
+    } else if (m_selectorMenu2Index == 1) {
+        auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        m_addTween(tw1);
+
+        auto tw2 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        m_addTween(tw2);
+    }
+}
+
 void BattleMenu::doUpdate(float const elapsed)
 {
     auto const& kb = getGame()->input().keyboard();
     if (m_state == BattleMenuState::Menu1) {
-        // TODO tweens
+        bool anyPressed = false;
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu1Index--;
             if (m_selectorMenu1Index < 0) {
-
                 m_selectorMenu1Index = maxIndex1;
             }
-            if (m_selectorMenu1Index == 0) {
-                jt::Color white = { 255, 255, 255, 255 };
-                jt::Color red = { 255, 100, 100, 255 };
-                float time = 0.5f;
-                auto tw1 = jt::TweenColor::create(m_menu1TextAttack, time, white, red);
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu1TextItem, time, red, white);
-                m_addTween(tw2);
-
-            } else if (m_selectorMenu1Index == 1) {
-                m_menu1TextAttack->setColor({ 255, 255, 255, 255 });
-                m_menu1TextItem->setColor({ 255, 100, 100, 255 });
-            }
+            anyPressed = true;
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
             m_selectorMenu1Index++;
             if (m_selectorMenu1Index > maxIndex1) {
                 m_selectorMenu1Index = 0;
             }
+            anyPressed = true;
         }
+
+        if (anyPressed) {
+            doMenu1Tweens();
+        }
+
         if (kb->justReleased(jt::KeyCode::Space)) {
             m_state = BattleMenuState::Menu2;
+            if (m_selectorMenu1Index == 0) {
+                m_menu2Text0->setText("Melee");
+                m_menu2Text1->setText("Pistol");
+                // TODO check available options based on player inventory
+            } else if (m_selectorMenu1Index == 1) {
+                m_menu2Text0->setText("Medkit");
+                m_menu2Text1->setText("Molotov");
+                // TODO check available options based on player inventory
+            }
         }
     } else if (m_state == BattleMenuState::Menu2) {
 
         if (kb->justReleased(jt::KeyCode::Space)) {
-            if (m_selectorMenu2Index == 0) {
-                auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
-                enemy->getDamage(5.0f);
+            if (m_selectorMenu1Index == 0) {
+                if (m_selectorMenu2Index == 0) {
+                    auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
+                    enemy->getDamage(5.0f);
+                }
+            } else if (m_selectorMenu1Index == 1) {
+
+                // TODO limit number of available items so they cannot be reused over and over again
+                if (m_selectorMenu2Index == 0) {
+                    // TODO heal
+                } else if (m_selectorMenu2Index == 1) {
+                    // Molotov
+                    for (auto const& e : *m_stateEncounter->m_enemies) {
+                        auto const enemy = e.lock();
+                        enemy->getDamage(3.0f);
+                    }
+                }
             }
         }
         if (kb->justReleased(jt::KeyCode::Escape)) {
             m_state = BattleMenuState::Menu1;
         }
-        // TODO tweens
+        bool anyPressed = false;
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu2Index--;
             if (m_selectorMenu2Index < 0) {
 
                 m_selectorMenu2Index = maxIndex2;
             }
+
+            anyPressed = true;
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
             m_selectorMenu2Index++;
             if (m_selectorMenu2Index > maxIndex2) {
                 m_selectorMenu2Index = 0;
             }
+            anyPressed = true;
+        }
+        if (anyPressed) {
+            doMenu2Tweens();
         }
     }
 

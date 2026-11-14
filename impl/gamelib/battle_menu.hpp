@@ -18,6 +18,8 @@ public:
 
 private:
     void doCreate() override;
+    void doMenu1Tweens();
+    void doMenu2Tweens();
     void doUpdate(float elapsed) override;
     void doDraw() const override;
 
