@@ -112,9 +112,10 @@ void StateGame::updateLevelEncounters(float const elapsed)
             m_running = false;
             encounter->kill();
             getGame()->stateManager().storeCurrentState("beforeEncounter");
-            getGame()->stateManager().switchState(
-                std::make_shared<StateEncounter>(
-                    encounter->getEncounterInfo()));
+            auto encounter_state = std::make_shared<StateEncounter>(
+                encounter->getEncounterInfo());
+            encounter_state->m_stateGame = this;
+            getGame()->stateManager().switchState(encounter_state);
         }
     }
 }

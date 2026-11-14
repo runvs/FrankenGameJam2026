@@ -15,6 +15,7 @@ public:
     explicit Enemy(EnemyEncounterInfo const& enemy_encounter_info);
 
     void getDamage(float damage);
+    float doAttack();
 
 private:
     // enemy stats
