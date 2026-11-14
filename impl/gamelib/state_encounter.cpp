@@ -14,7 +14,10 @@
 #include <state_menu.hpp>
 
 // constructor
-StateEncounter::StateEncounter(EncounterInfo encounter_info) { m_encounter_info = encounter_info; }
+StateEncounter::StateEncounter(EncounterInfo encounter_info)
+{
+    m_encounter_info = encounter_info;
+}
 
 // destructor
 // StateEncounter::~StateEncounter() { }
@@ -28,7 +31,8 @@ void StateEncounter::onCreate()
     }
 
     m_background = std::make_shared<jt::Sprite>(
-        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite).string(),
+        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite)
+            .string(),
         textureManager());
 
     createPlayer();
@@ -43,12 +47,22 @@ void StateEncounter::onCreate()
     m_battleMenu->setGameInstance(getGame());
     m_battleMenu->create();
 
-    m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
+    m_battleMenu->m_addTween
+        = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
     m_battleMenu->m_triggerNextActor = [this]() { nextActor(); };
     m_battleMenu->m_stateEncounter = this;
 
     m_hud = std::make_shared<Hud>();
     add(m_hud);
+
+    // instantiate player healtbar and text
+    m_playerHealthbar
+        = std::make_shared<jt::Bar>(48.0f, 8.0f, true, textureManager());
+    m_playerHealthbar->setBackColor(jt::colors::Gray);
+    m_playerHealthbar->setColor(jt::colors::Red);
+    m_playerHealthbar->setMaxValue(m_stateGame->m_playerInfo.m_hitPointsMax);
+    m_playerHealthbar->setCurrentValue(m_stateGame->m_playerInfo.m_hitPoints);
+    m_playerHealthbar->setPosition(m_playerHealthbarPosition);
 
     // StateGame will call drawObjects itself.
     setAutoDraw(false);
@@ -99,7 +113,8 @@ void StateEncounter::nextActor()
         // std::cout << "valid enemy id " << m_currentActorIndex << " ";
         auto enemy = m_enemies->at(m_currentActorIndex).lock();
         if (!enemy) {
-            // std::cout << "!!!!!trigger next actor from nextActor invalid weakptr actor\n";
+            // std::cout << "!!!!!trigger next actor from nextActor invalid
+            // weakptr actor\n";
             nextActor();
         } else {
             // std::cout << "doAction \n";
@@ -151,6 +166,16 @@ void StateEncounter::onUpdate(float const elapsed)
             m_running = false;
             getGame()->stateManager().switchToStoredState("beforeEncounter");
         }
+        // update healhbar
+        m_playerHealthbar->setMaxValue(
+            m_stateGame->m_playerInfo.m_hitPointsMax);
+        // TODO: healthbar position wrong
+        // TODO: healthbar does not display correct value
+        m_playerHealthbar->setCurrentValue(
+            m_stateGame->m_playerInfo.m_hitPoints);
+        m_playerHealthbar->setPosition(m_playerHealthbarPosition);
+
+        // update healthtext
     }
 }
 
@@ -158,6 +183,7 @@ void StateEncounter::onDraw() const
 {
     m_background->draw(renderTarget());
     m_player->draw(renderTarget());
+    m_playerHealthbar->draw(renderTarget());
 
     for (auto const& e : *m_enemies) {
         auto const enemy = e.lock();
