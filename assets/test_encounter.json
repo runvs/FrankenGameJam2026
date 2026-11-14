@@ -1,15 +1,16 @@
 {
-  "enemies": [
-    {
-      "enemyBase": "assets/enemies/test_enemy.json",
-      "level": 1,
-      "position": 0
-    },
-    {
-      "enemyBase": "assets/enemies/test_enemy.json",
-      "level": 2,
-      "position": 1
-    }
-  ],
-  "level_sprite": "world_test_encounter.aseprite"
+    "enemies": [
+        {
+            "enemyBase": "assets/enemies/test_enemy.json",
+            "level": 1,
+            "position": 0
+        },
+        {
+            "enemyBase": "assets/enemies/test_enemy.json",
+            "level": 2,
+            "position": 1
+        }
+    ],
+    "level_sprite": "world_test_encounter.aseprite",
+    "background_sprite": "encounter_test_background.png"
 }

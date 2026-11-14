@@ -1,5 +1,6 @@
 ﻿#include "main.hpp"
 
+#include "state_encounter.hpp"
 #include "state_game.hpp"
 #include <action_commands/action_command_manager.hpp>
 #include <action_commands/basic_action_commands.hpp>
@@ -63,14 +64,22 @@ int main(int /*argc*/, char* /*argv*/[])
 
     jt::AudioImpl audio { };
 
-    // jt::StateManager stateManager { std::make_shared<StateStartWithButton>() };
-    jt::StateManager stateManager { std::make_shared<StateGame>() };
+    // jt::StateManager stateManager { std::make_shared<StateStartWithButton>()
+    // };
+    // TODO: Thomas load encouter state here for debugging
+    std::ifstream f {
+        "/home/thomas/projects/franken_game_jam_2026/assets/test_encounter.json"
+    };
+    nlohmann::json const j = nlohmann::json::parse(f);
+    EncounterInfo encounterInfo = j;
+    jt::StateManager stateManager { std::make_shared<StateEncounter>(
+        encounterInfo) };
     jt::LoggingStateManager loggingStateManager { stateManager, logger };
 
     jt::ActionCommandManager actionCommandManager(logger);
 
-    game = std::make_shared<jt::Game>(
-        gfx, input, audio, loggingStateManager, logger, actionCommandManager, cache);
+    game = std::make_shared<jt::Game>(gfx, input, audio, loggingStateManager,
+        logger, actionCommandManager, cache);
 
     addBasicActionCommands(game);
     game->startGame(gameloop);

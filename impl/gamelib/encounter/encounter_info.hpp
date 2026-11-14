@@ -19,6 +19,7 @@ struct EnemyEncounterInfo {
 struct EncounterInfo {
     std::vector<EnemyEncounterInfo> enemies;
     std::string levelSprite;
+    std::string backgroundSprite;
 };
 
 void from_json(nlohmann::json const& j, EnemyBaseInfo& v);
