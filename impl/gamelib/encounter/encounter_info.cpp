@@ -21,7 +21,11 @@ void from_json(nlohmann::json const& j, EnemyEncounterInfo& v)
     j.at("position").get_to(v.position);
 }
 
-void from_json(nlohmann::json const& j, EncounterInfo& v) { j.at("enemies").get_to(v.enemies); }
+void from_json(nlohmann::json const& j, EncounterInfo& v)
+{
+    j.at("enemies").get_to(v.enemies);
+    j.at("level_sprite").get_to(v.levelSprite);
+}
 
 nlohmann::json loadJsonFromFile(std::string const& fileName)
 {

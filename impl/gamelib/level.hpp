@@ -15,7 +15,8 @@ public:
     void loadTileLayers(jt::tilemap::TilesonLoader& loader);
     void loadLevelCollisions(jt::tilemap::TilesonLoader& loader);
 
-    std::vector<jt::tilemap::InfoRect> getObjects();
+    std::vector<jt::tilemap::InfoRect> getObjects() const;
+    std::vector<jt::tilemap::InfoRect> getEncounters() const;
 
     jt::Vector2f getPlayerStartingPos() const;
 
@@ -28,6 +29,7 @@ private:
     std::vector<std::shared_ptr<jt::Box2DObject>> m_colliders { };
 
     std::shared_ptr<jt::tilemap::ObjectLayer> m_objectsLayer { nullptr };
+    std::shared_ptr<jt::tilemap::ObjectLayer> m_encountersLayer { nullptr };
 
     void doCreate() override;
     void doUpdate(float elapsed) override;

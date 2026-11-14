@@ -10,5 +10,6 @@
       "level": 2,
       "position": 1
     }
-  ]
+  ],
+  "level_sprite": "world_test_encounter.aseprite"
 }

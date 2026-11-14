@@ -63,9 +63,20 @@ void Level::loadTileLayers(jt::tilemap::TilesonLoader& loader)
 
     m_objectsLayer
         = std::make_shared<jt::tilemap::ObjectLayer>(loader.loadObjectsFromLayer("objects"));
+
+    m_encountersLayer
+        = std::make_shared<jt::tilemap::ObjectLayer>(loader.loadObjectsFromLayer("encounters"));
 }
 
-std::vector<jt::tilemap::InfoRect> Level::getObjects() { return m_objectsLayer->getObjects(); }
+std::vector<jt::tilemap::InfoRect> Level::getObjects() const
+{
+    return m_objectsLayer->getObjects();
+}
+
+std::vector<jt::tilemap::InfoRect> Level::getEncounters() const
+{
+    return m_encountersLayer->getObjects();
+}
 
 jt::Vector2f Level::getPlayerStartingPos() const
 {
