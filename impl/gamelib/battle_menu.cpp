@@ -129,7 +129,7 @@ void BattleMenu::doUpdate(float const elapsed)
             m_state = BattleMenuState::Menu2;
             if (m_selectorMenu1Index == 0) {
                 m_menu2Text0->setText("Melee");
-                m_menu2Text1->setText("Pistol");
+                m_menu2Text1->setText("Shotgun");
                 // TODO check available options based on player inventory
             } else if (m_selectorMenu1Index == 1) {
                 m_menu2Text0->setText("Medkit");
@@ -143,9 +143,17 @@ void BattleMenu::doUpdate(float const elapsed)
         if (kb->justReleased(jt::KeyCode::Space)) {
             if (m_selectorMenu1Index == 0) {
                 if (m_selectorMenu2Index == 0) {
+                    // Melee
                     auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
                     enemy->getDamage(5.0f);
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
+                    m_triggerNextActor();
+                } else if (m_selectorMenu2Index == 1) {
+                    // Shotgun
+                    for (auto const& e : *m_stateEncounter->m_enemies) {
+                        auto const enemy = e.lock();
+                        enemy->getDamage(1.0f);
+                    }
                     m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {

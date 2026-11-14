@@ -50,6 +50,12 @@ void StateEncounter::onCreate()
     m_battleMenu->m_addTween
         = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
     m_battleMenu->m_triggerNextActor = [this]() { nextActor(); };
+    m_battleMenu->m_addTween
+        = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
+    m_battleMenu->m_triggerNextActor = [this]() {
+        m_enemyActionTimer = 0.5f;
+        nextActor();
+    };
     m_battleMenu->m_stateEncounter = this;
 
     m_hud = std::make_shared<Hud>();
@@ -133,9 +139,11 @@ void StateEncounter::nextActor()
 
 void StateEncounter::damagePlayer(float const damage)
 {
+
     m_stateGame->m_playerInfo.getDamage(damage);
     if (damage > 0) {
         m_player->flash(0.25f, jt::colors::Red);
+        getGame()->gfx().camera().shake(0.3f, 8);
     } else {
         m_player->flash(0.25f, jt::colors::Green);
     }
