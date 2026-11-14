@@ -19,7 +19,7 @@ void Player::doCreate()
 
     m_animation->loadFromAseprite("assets/chars.aseprite", textureManager());
     m_animation->play("idle");
-    m_animation->setOffset(jt::OffsetMode::CENTER);
+    m_animation->setOrigin(jt::OriginMode::CENTER);
     m_animation->setZ(GP::LevelZLayerPlayer());
 
     auto const bodyId = m_physicsObject->getBodyId();
@@ -49,6 +49,14 @@ void Player::updateAnimation(float const elapsed)
 {
     // TODO play animation based on movement
     m_animation->update(elapsed);
+
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::D)) {
+        m_animation->setScale({ -1.0f, 1.0f });
+    }
+
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::A)) {
+        m_animation->setScale({ 1.0f, 1.0f });
+    }
 }
 
 void Player::handleMovement(float const elapsed)
@@ -56,7 +64,7 @@ void Player::handleMovement(float const elapsed)
     // TODO check input and set internal physics/state/position
     jt::Vector2f newVelocity { 0.0f, 0.0f };
 
-    float const speed = 85.0f;
+    float const speed = GP::PlayerBaseVelocity();
     if (getGame()->input().keyboard()->pressed(jt::KeyCode::D)) {
         newVelocity += jt::Vector2f { speed, 0.0f };
     }
