@@ -80,36 +80,34 @@ std::string StateEncounter::getName() const { return "State Encounter"; }
 
 void StateEncounter::nextActor()
 {
-    // TODO
-
     if (m_enemyActionTimer >= 0) {
         return;
     }
 
-    std::cout << "nextActor: " << m_currentActorIndex << " ";
+    // std::cout << "nextActor: " << m_currentActorIndex << " ";
     m_currentActorIndex++;
-    std::cout << "new actor id: " << m_currentActorIndex << " ";
+    // std::cout << "new actor id: " << m_currentActorIndex << " ";
     if (m_currentActorIndex == 4) {
-        std::cout << "wrap\n";
+        // std::cout << "wrap\n";
         m_currentActorIndex = -1;
         return;
     }
 
     if (m_currentActorIndex < m_enemies->size()) {
-        std::cout << "valid enemy id " << m_currentActorIndex << " ";
+        // std::cout << "valid enemy id " << m_currentActorIndex << " ";
         auto enemy = m_enemies->at(m_currentActorIndex).lock();
         if (!enemy) {
             nextActor();
         } else {
-            std::cout << "doAction \n";
+            // std::cout << "doAction \n";
             m_enemyActionTimer = 0.5f;
             enemy->doAction(*this);
         }
     } else if (m_currentActorIndex == -1) {
-        std::cout << "player \n";
+        // std::cout << "player \n";
         return;
     } else {
-        std::cout << "\n";
+        // std::cout << "\n";
         nextActor();
     }
 }
