@@ -17,6 +17,7 @@ public:
 
     std::vector<jt::tilemap::InfoRect> getObjects() const;
     std::vector<jt::tilemap::InfoRect> getEncounters() const;
+    std::vector<std::shared_ptr<jt::Box2DObject>>& getColliders();
 
     jt::Vector2f getPlayerStartingPos() const;
 

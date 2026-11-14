@@ -78,6 +78,8 @@ std::vector<jt::tilemap::InfoRect> Level::getEncounters() const
     return m_encountersLayer->getObjects();
 }
 
+std::vector<std::shared_ptr<jt::Box2DObject>>& Level::getColliders() { return m_colliders; }
+
 jt::Vector2f Level::getPlayerStartingPos() const
 {
     for (auto const& obj : m_objectsLayer->getObjects()) {

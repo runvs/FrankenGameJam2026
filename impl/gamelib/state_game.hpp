@@ -39,12 +39,13 @@ private:
 
     void onCreate() override;
     void onEnter() override;
-    void onUpdate(float const elapsed) override;
+    void onUpdate(float elapsed) override;
     void onDraw() const override;
 
     void endGame();
     void createPlayer();
+    void cleanUpLoadedLevel();
 
-    void loadLevel();
+    void loadLevel(std::string const& levelName = "assets/test_level.json");
     void updateLevelEncounters(float elapsed);
 };

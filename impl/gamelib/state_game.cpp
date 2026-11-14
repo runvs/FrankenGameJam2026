@@ -52,10 +52,24 @@ void StateGame::createPlayer()
     m_player->setPosition(m_level->getPlayerStartingPos());
 }
 
-void StateGame::loadLevel()
+void StateGame::cleanUpLoadedLevel()
 {
-    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(),
-        "assets/test_level.json" };
+    if (!m_levelEncounters) {
+        return;
+    }
+    for (auto const& e : *m_levelEncounters) {
+        auto const encounter = e.lock();
+        encounter->kill();
+    }
+    m_level->getColliders().clear();
+}
+
+void StateGame::loadLevel(std::string const& levelName)
+{
+    // clean up old level
+    cleanUpLoadedLevel();
+
+    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(), levelName };
 
     m_level = std::make_shared<Level>(m_world);
 
@@ -101,6 +115,14 @@ void StateGame::onUpdate(float const elapsed)
         if (getGame()->input().keyboard()->pressed(jt::KeyCode::LShift)
             && getGame()->input().keyboard()->pressed(jt::KeyCode::Escape)) {
             endGame();
+        }
+        if (getGame()->input().keyboard()->justPressed(jt::KeyCode::F8)) {
+            loadLevel("assets/test_level.json");
+            m_player->setPosition(m_level->getPlayerStartingPos());
+        }
+        if (getGame()->input().keyboard()->justPressed(jt::KeyCode::F9)) {
+            loadLevel("assets/test_level2.json");
+            m_player->setPosition(m_level->getPlayerStartingPos());
         }
 
         // TODO scroll/camera mechanics
