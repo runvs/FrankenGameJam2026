@@ -52,9 +52,10 @@ private:
     void createTweenCreditsPosition();
     void createTweenExplanation();
 
-    void onUpdate(float const elapsed) override;
+    void onUpdate(float elapsed) override;
     void updateDrawables(float const& elapsed);
     void checkForTransitionToStateGame();
+
     void startTransitionToStateGame();
 
     void onDraw() const override;
