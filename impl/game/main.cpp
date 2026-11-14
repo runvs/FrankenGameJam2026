@@ -1,4 +1,6 @@
 ﻿#include "main.hpp"
+
+#include "state_game.hpp"
 #include <action_commands/action_command_manager.hpp>
 #include <action_commands/basic_action_commands.hpp>
 #include <audio/audio/audio_impl.hpp>
@@ -61,7 +63,8 @@ int main(int /*argc*/, char* /*argv*/[])
 
     jt::AudioImpl audio { };
 
-    jt::StateManager stateManager { std::make_shared<StateStartWithButton>() };
+    // jt::StateManager stateManager { std::make_shared<StateStartWithButton>() };
+    jt::StateManager stateManager { std::make_shared<StateGame>() };
     jt::LoggingStateManager loggingStateManager { stateManager, logger };
 
     jt::ActionCommandManager actionCommandManager(logger);

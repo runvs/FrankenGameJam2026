@@ -1,5 +1,6 @@
 ﻿#include "game_properties.hpp"
 #include <color/palette_builder.hpp>
+#include <box2d/box2d.h>
 
 namespace {
 
@@ -77,3 +78,9 @@ std::vector<int> GP::LevelZLayerAllLayers()
     return { GP::LevelZLayerBelowPlayer(), GP::LevelZLayerPlayer(), GP::LevelZLayerAbovePlayer(),
         GP::LevelZLayerAboveAll() };
 }
+
+std::uint64_t GP::CollisionBitLevel() { return B2_DEFAULT_CATEGORY_BITS; }
+
+std::uint64_t GP::CollisionBitPlayer() { return 1 << 1; }
+
+std::uint64_t GP::CollisionBitEnemy() { return 1 << 2; }

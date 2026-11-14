@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "level.hpp"
+#include "player.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
 #include <memory>
@@ -30,6 +31,7 @@ private:
 
     std::shared_ptr<Level> m_level { nullptr };
 
+    std::shared_ptr<Player> m_player { nullptr };
 
     void onCreate() override;
     void onEnter() override;

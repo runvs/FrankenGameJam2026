@@ -52,7 +52,11 @@ void StateGame::onCreate()
 
 void StateGame::onEnter() { }
 
-void StateGame::createPlayer() { }
+void StateGame::createPlayer()
+{
+    m_player = std::make_shared<Player>(m_world);
+    add(m_player);
+}
 
 void StateGame::onUpdate(float const elapsed)
 {
@@ -62,6 +66,8 @@ void StateGame::onUpdate(float const elapsed)
             && getGame()->input().keyboard()->pressed(jt::KeyCode::Escape)) {
             endGame();
         }
+        
+        // TODO change level mechanic
     }
 
     m_background->update(elapsed);

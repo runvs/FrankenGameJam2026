@@ -1,5 +1,4 @@
-#ifndef JAMTEMPLATE_INVENTORY_LEVEL_HPP
-#define JAMTEMPLATE_INVENTORY_LEVEL_HPP
+#pragma once
 
 #include <box2dwrapper/box2d_object.hpp>
 #include <box2dwrapper/box2d_world_interface.hpp>
@@ -34,5 +33,3 @@ private:
     void doUpdate(float elapsed) override;
     void doDraw() const override;
 };
-
-#endif // JAMTEMPLATE_INVENTORY_LEVEL_HPP

@@ -3,6 +3,7 @@
 #include <color/color.hpp>
 #include <color/palette.hpp>
 #include <vector.hpp>
+#include <cstdint>
 #include <string>
 
 class GP {
@@ -46,4 +47,8 @@ public:
     static int LevelZLayerAboveAll();
 
     static std::vector<int> LevelZLayerAllLayers();
+
+    static std::uint64_t CollisionBitLevel();
+    static std::uint64_t CollisionBitPlayer();
+    static std::uint64_t CollisionBitEnemy();
 };
