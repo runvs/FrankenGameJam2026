@@ -28,11 +28,27 @@ void BattleMenu::doCreate()
     m_menu1TextItem->setOffset(jt::Vector2f { 0.0f, -8.0f });
     m_menu1TextItem->setPosition({ 28.0f, 20.0f + 20.0f * 1.0f });
 
-    m_selection = std::make_shared<jt::Shape>();
-    m_selection->makeCircle(2.0f, textureManager());
-    m_selection->setPosition({ 22.0f, 24.0f });
-    m_selection->setColor(GP::BattleMenuSelectorColor());
-    m_selection->setOffset(jt::OffsetMode::CENTER);
+    m_menu2Text0 = jt::dh::createText(renderTarget(), "Melee", 16u);
+    m_menu2Text0->setTextAlign(jt::Text::TextAlign::LEFT);
+    m_menu2Text0->setOffset(jt::Vector2f { 0.0f, -8.0f });
+    m_menu2Text0->setPosition({ 130.0f, 20.0f + 20.0f * 0.0f });
+
+    m_menu2Text1 = jt::dh::createText(renderTarget(), "Pistol", 16u);
+    m_menu2Text1->setTextAlign(jt::Text::TextAlign::LEFT);
+    m_menu2Text1->setOffset(jt::Vector2f { 0.0f, -8.0f });
+    m_menu2Text1->setPosition({ 130.0f, 20.0f + 20.0f * 1.0f });
+
+    m_selector1 = std::make_shared<jt::Shape>();
+    m_selector1->makeCircle(2.0f, textureManager());
+    m_selector1->setPosition({ 22.0f, 23.0f });
+    m_selector1->setColor(GP::BattleMenuSelectorColor());
+    m_selector1->setOffset(jt::OffsetMode::CENTER);
+
+    m_selector2 = std::make_shared<jt::Shape>();
+    m_selector2->makeCircle(2.0f, textureManager());
+    m_selector2->setPosition({ 122.0f, 23.0f });
+    m_selector2->setColor(GP::BattleMenuSelectorColor());
+    m_selector2->setOffset(jt::OffsetMode::CENTER);
 }
 
 void BattleMenu::doUpdate(float const elapsed)
@@ -57,6 +73,24 @@ void BattleMenu::doUpdate(float const elapsed)
             m_state = BattleMenuState::Menu2;
         }
     } else if (m_state == BattleMenuState::Menu2) {
+
+        if (kb->justReleased(jt::KeyCode::Escape)) {
+            m_state = BattleMenuState::Menu1;
+        }
+        // TODO tweens
+        if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
+            m_selectorMenu2Index--;
+            if (m_selectorMenu2Index < 0) {
+
+                m_selectorMenu2Index = maxIndex2;
+            }
+        }
+        if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
+            m_selectorMenu2Index++;
+            if (m_selectorMenu2Index > maxIndex2) {
+                m_selectorMenu2Index = 0;
+            }
+        }
     }
 
     m_backgroundMenu1->update(elapsed);
@@ -65,22 +99,36 @@ void BattleMenu::doUpdate(float const elapsed)
     m_menu1TextAttack->update(elapsed);
     m_menu1TextItem->update(elapsed);
 
-    m_selection->setPosition(jt::Vector2f { 22.0f, 23.0f + 20.0f * m_selectorMenu1Index });
-    m_selection->update(elapsed);
+    m_menu2Text0->update(elapsed);
+    m_menu2Text1->update(elapsed);
+
+    m_selector1->setPosition(jt::Vector2f { 22.0f, 23.0f + 20.0f * m_selectorMenu1Index });
+    m_selector1->update(elapsed);
+
+    m_selector2->setPosition(jt::Vector2f { 122.0f, 23.0f + 20.0f * m_selectorMenu2Index });
+    m_selector2->update(elapsed);
 }
 
 void BattleMenu::doDraw() const
 {
     if (m_state == BattleMenuState::Menu1) {
         m_backgroundMenu1->draw(renderTarget());
+
         m_menu1TextAttack->draw(renderTarget());
         m_menu1TextItem->draw(renderTarget());
-        m_selection->draw(renderTarget());
+
+        m_selector1->draw(renderTarget());
     } else if (m_state == BattleMenuState::Menu2) {
         m_backgroundMenu1->draw(renderTarget());
         m_backgroundMenu2->draw(renderTarget());
+
         m_menu1TextAttack->draw(renderTarget());
         m_menu1TextItem->draw(renderTarget());
-        m_selection->draw(renderTarget());
+
+        m_menu2Text0->draw(renderTarget());
+        m_menu2Text1->draw(renderTarget());
+
+        m_selector1->draw(renderTarget());
+        m_selector2->draw(renderTarget());
     }
 }

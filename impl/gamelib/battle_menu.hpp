@@ -17,10 +17,16 @@ private:
 
     std::shared_ptr<jt::Shape> m_backgroundMenu1;
     std::shared_ptr<jt::Shape> m_backgroundMenu2;
-    std::shared_ptr<jt::Shape> m_selection;
+    std::shared_ptr<jt::Shape> m_selector1;
+    std::shared_ptr<jt::Shape> m_selector2;
 
     std::shared_ptr<jt::Text> m_menu1TextAttack;
     std::shared_ptr<jt::Text> m_menu1TextItem;
 
+    std::shared_ptr<jt::Text> m_menu2Text0;
+    std::shared_ptr<jt::Text> m_menu2Text1;
+
     int m_selectorMenu1Index { 0 };
+    int m_selectorMenu2Index { 0 };
+    int maxIndex2 = 1;
 };
