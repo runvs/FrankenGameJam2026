@@ -54,4 +54,6 @@ public:
     static std::uint64_t CollisionBitEnemy();
 
     static float PlayerBaseVelocity();
+    static float CameraMarginTileScaleValue();
+    static float CameraSpeed();
 };

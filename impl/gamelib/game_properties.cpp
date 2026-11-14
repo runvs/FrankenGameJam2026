@@ -88,3 +88,7 @@ std::uint64_t GP::CollisionBitPlayer() { return 1 << 1; }
 std::uint64_t GP::CollisionBitEnemy() { return 1 << 2; }
 
 float GP::PlayerBaseVelocity() { return 85.0f; }
+
+float GP::CameraSpeed() { return 100.0f; }
+
+float GP::CameraMarginTileScaleValue() { return 3.0f; }
