@@ -50,11 +50,13 @@ void Player::updateAnimation(float const elapsed)
     // TODO play animation based on movement
     m_animation->update(elapsed);
 
-    if (getGame()->input().keyboard()->pressed(jt::KeyCode::D)) {
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::D)
+        || getGame()->input().keyboard()->pressed(jt::KeyCode::Right)) {
         m_animation->setScale({ -1.0f, 1.0f });
     }
 
-    if (getGame()->input().keyboard()->pressed(jt::KeyCode::A)) {
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::A)
+        || getGame()->input().keyboard()->pressed(jt::KeyCode::Left)) {
         m_animation->setScale({ 1.0f, 1.0f });
     }
 }
@@ -65,17 +67,21 @@ void Player::handleMovement(float const elapsed)
     jt::Vector2f newVelocity { 0.0f, 0.0f };
 
     float const speed = GP::PlayerBaseVelocity();
-    if (getGame()->input().keyboard()->pressed(jt::KeyCode::D)) {
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::D)
+        || getGame()->input().keyboard()->pressed(jt::KeyCode::Right)) {
         newVelocity += jt::Vector2f { speed, 0.0f };
     }
-    if (getGame()->input().keyboard()->pressed(jt::KeyCode::A)) {
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::A)
+        || getGame()->input().keyboard()->pressed(jt::KeyCode::Left)) {
         newVelocity += jt::Vector2f { -speed, 0.0f };
     }
 
-    if (getGame()->input().keyboard()->pressed(jt::KeyCode::W)) {
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::W)
+        || getGame()->input().keyboard()->pressed(jt::KeyCode::Up)) {
         newVelocity += jt::Vector2f { 0.0f, -speed };
     }
-    if (getGame()->input().keyboard()->pressed(jt::KeyCode::S)) {
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::S)
+        || getGame()->input().keyboard()->pressed(jt::KeyCode::Down)) {
         newVelocity += jt::Vector2f { 0.0f, speed };
     }
 

@@ -23,7 +23,7 @@ void BattleMenu::doCreate()
     m_menu1TextAttack->setTextAlign(jt::Text::TextAlign::LEFT);
     m_menu1TextAttack->setOffset(jt::Vector2f { 0.0f, -8.0f });
     m_menu1TextAttack->setPosition({ 28.0f, 20.0f + 20.0f * 0.0f });
-    m_menu1TextAttack->setColor({ 255, 100, 100, 255 });
+    m_menu1TextAttack->setColor(GP::BattleMenuStateSelectedColor());
 
     m_menu1TextItem = jt::dh::createText(renderTarget(), "Item", 16u);
     m_menu1TextItem->setTextAlign(jt::Text::TextAlign::LEFT);
@@ -34,6 +34,7 @@ void BattleMenu::doCreate()
     m_menu2Text0->setTextAlign(jt::Text::TextAlign::LEFT);
     m_menu2Text0->setOffset(jt::Vector2f { 0.0f, -8.0f });
     m_menu2Text0->setPosition({ 130.0f, 20.0f + 20.0f * 0.0f });
+    m_menu2Text0->setColor(GP::BattleMenuStateSelectedColor());
 
     m_menu2Text1 = jt::dh::createText(renderTarget(), "Pistol", 16u);
     m_menu2Text1->setTextAlign(jt::Text::TextAlign::LEFT);
@@ -65,24 +66,47 @@ void BattleMenu::doUpdate(float const elapsed)
                 m_selectorMenu1Index = maxIndex1;
             }
             if (m_selectorMenu1Index == 0) {
-                jt::Color white = { 255, 255, 255, 255 };
-                jt::Color red = { 255, 100, 100, 255 };
-                float time = 0.5f;
-                auto tw1 = jt::TweenColor::create(m_menu1TextAttack, time, white, red);
+                auto tw1 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
                 m_addTween(tw1);
 
-                auto tw2 = jt::TweenColor::create(m_menu1TextItem, time, red, white);
+                auto tw2 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
                 m_addTween(tw2);
 
             } else if (m_selectorMenu1Index == 1) {
-                m_menu1TextAttack->setColor({ 255, 255, 255, 255 });
-                m_menu1TextItem->setColor({ 255, 100, 100, 255 });
+                auto tw1 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+                m_addTween(tw1);
+
+                auto tw2 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+                m_addTween(tw2);
             }
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
             m_selectorMenu1Index++;
             if (m_selectorMenu1Index > maxIndex1) {
                 m_selectorMenu1Index = 0;
+            }
+
+            if (m_selectorMenu1Index == 0) {
+                auto tw1 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+                m_addTween(tw1);
+
+                auto tw2 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+                m_addTween(tw2);
+
+            } else if (m_selectorMenu1Index == 1) {
+                auto tw1 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+                m_addTween(tw1);
+
+                auto tw2 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+                m_addTween(tw2);
             }
         }
         if (kb->justReleased(jt::KeyCode::Space)) {
@@ -100,11 +124,49 @@ void BattleMenu::doUpdate(float const elapsed)
 
                 m_selectorMenu2Index = maxIndex2;
             }
+
+            if (m_selectorMenu1Index == 0) {
+                auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+                m_addTween(tw1);
+
+                auto tw2 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+                m_addTween(tw2);
+
+            } else if (m_selectorMenu1Index == 1) {
+                auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+                m_addTween(tw1);
+
+                auto tw2 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+                m_addTween(tw2);
+            }
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
             m_selectorMenu2Index++;
             if (m_selectorMenu2Index > maxIndex2) {
                 m_selectorMenu2Index = 0;
+            }
+
+            if (m_selectorMenu1Index == 0) {
+                auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+                m_addTween(tw1);
+
+                auto tw2 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+                m_addTween(tw2);
+
+            } else if (m_selectorMenu1Index == 1) {
+                auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+                m_addTween(tw1);
+
+                auto tw2 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
+                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+                m_addTween(tw2);
             }
         }
     }
