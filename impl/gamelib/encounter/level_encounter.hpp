@@ -8,6 +8,9 @@ public:
     LevelEncounter(EncounterInfo const& info, jt::Vector2f const& pos);
 
     jt::Vector2f getPosition() const;
+    EncounterInfo getEncounterInfo() const;
+
+    // EncounterInfo m_info;
 
 private:
     void doCreate() override;

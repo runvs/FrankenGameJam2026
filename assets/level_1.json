@@ -146,8 +146,8 @@
                  "type":"",
                  "visible":true,
                  "width":24,
-                 "x":192,
-                 "y":96.3333333333333
+                 "x":72,
+                 "y":117.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -198,7 +198,7 @@
                         {
                          "name":"new_level_name",
                          "type":"string",
-                         "value":"test_level2.json"
+                         "value":"level_2.json"
                         }, 
                         {
                          "name":"type",

@@ -30,3 +30,5 @@ jt::Vector2f LevelEncounter::getPosition() const
     // TODO adapt if encounters can move on map
     return m_pos;
 }
+
+EncounterInfo LevelEncounter::getEncounterInfo() const { return m_info; }

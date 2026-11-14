@@ -47,6 +47,7 @@ private:
     void cleanUpLoadedLevel();
 
     void loadLevel(std::string const& levelName = "assets/level_1.json");
+    
     void updateLevelEncounters(float elapsed);
     void handleDebugInput();
 };

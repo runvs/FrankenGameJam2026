@@ -1,6 +1,7 @@
 ﻿#include "state_game.hpp"
 
 #include "camera_helpers.hpp"
+#include "state_encounter.hpp"
 #include <box2dwrapper/box2d_world_impl.hpp>
 #include <color/color.hpp>
 #include <game_interface.hpp>
@@ -106,6 +107,9 @@ void StateGame::updateLevelEncounters(float const elapsed)
         if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.75f) {
             std::cout << "trigger encounter\n";
             // TODO trigger encounter
+            m_running = false;
+            getGame()->stateManager().switchState(
+                std::make_shared<StateEncounter>(encounter->getEncounterInfo()));
         }
     }
 }
