@@ -52,7 +52,7 @@ void Player::updateAnimation(float const elapsed)
 
 void Player::handleMovement(float const elapsed)
 {
-    // TODO check input and set internal state/position
+    // TODO check input and set internal physics/state/position
 }
 
 void Player::doDraw() const { m_animation->draw(renderTarget()); }
