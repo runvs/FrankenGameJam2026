@@ -7,8 +7,8 @@ struct EnemyBaseInfo {
     std::string spritesheet;
     float hitPoints { 0.0f };
     float hitPointsMax { 0.0f };
-    float Attack { 0.0f };
-    float Defense { 0.0f };
+    float attack { 0.0f };
+    float defense { 0.0f };
     // TODO more values
 };
 
@@ -17,6 +17,8 @@ struct EnemyEncounterInfo {
     int level { 0 };
     int position { 0 };
 };
+
+EnemyBaseInfo getLeveled(EnemyEncounterInfo const& enemyEncounterInfo);
 
 struct EncounterInfo {
     std::vector<EnemyEncounterInfo> enemies;

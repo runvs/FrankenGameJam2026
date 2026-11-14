@@ -11,10 +11,12 @@ Enemy::Enemy(EnemyEncounterInfo const& enemy_encounter_info)
 {
     // TODO: implement scaling with level from encounter info
     //  set enemy stats based on encounter info
+
     m_enemy_encounter_info = enemy_encounter_info;
+    m_enemy_encounter_info.enemyBase = getLeveled(enemy_encounter_info);
 }
 
-void Enemy::getDamage(float damage)
+void Enemy::getDamage(float const damage)
 {
     // TODO anim
     m_enemy_encounter_info.enemyBase.hitPoints -= damage;
@@ -30,7 +32,7 @@ void Enemy::doAction(StateEncounter& state_encounter)
 {
     m_animation->flash(0.25f, jt::colors::Green);
 
-    state_encounter.damagePlayer(2.0f);
+    state_encounter.damagePlayer(getLeveled(m_enemy_encounter_info).attack);
 
     // std::cout << "!!!!!trigger next actor from enemy doAction\n";
     state_encounter.nextActor();
