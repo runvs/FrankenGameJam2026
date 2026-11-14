@@ -18,7 +18,8 @@ void Enemy::getDamage(float damage)
 {
     // TODO anim
     m_enemy_encounter_info.enemyBase.hitPoints -= damage;
-
+    m_animation->flash(0.25f, jt::colors::Red);
+     
     // TODO damage resistance
     if (m_enemy_encounter_info.enemyBase.hitPoints <= 0) {
         kill();

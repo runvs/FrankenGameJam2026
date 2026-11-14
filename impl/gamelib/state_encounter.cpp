@@ -44,7 +44,10 @@ void StateEncounter::onCreate()
     m_battleMenu->create();
 
     m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
-    m_battleMenu->m_triggerNextActor = [this]() { nextActor(); };
+    m_battleMenu->m_triggerNextActor = [this]() {
+        m_enemyActionTimer = 0.5f;
+        nextActor();
+    };
     m_battleMenu->m_stateEncounter = this;
 
     m_hud = std::make_shared<Hud>();
