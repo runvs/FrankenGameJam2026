@@ -9,7 +9,7 @@
             12, 9, 9, 9, 9, 1, 1, 1, 1, 1, 1, 1, 12,
             12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12,
             12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12,
-            12, 9, 9, 9, 9, 9, 9, 9, 1, 1, 1, 1, 12,
+            12, 9, 9, 9, 9, 9, 9, 9, 1, 1, 1, 171, 12,
             12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12,
             12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12,
             12, 9, 9, 9, 9, 9, 9, 9, 1, 1, 1, 1, 12,
@@ -148,6 +148,24 @@
                  "width":24,
                  "x":120,
                  "y":96
+                }, 
+                {
+                 "height":24,
+                 "id":136,
+                 "name":"exit_to_l2",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"new_level_name",
+                         "type":"string",
+                         "value":"test_level2.json"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":24,
+                 "x":264,
+                 "y":144
                 }],
          "opacity":1,
          "properties":[
@@ -162,7 +180,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":136,
+ "nextobjectid":137,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2-2-geb83ddb9",

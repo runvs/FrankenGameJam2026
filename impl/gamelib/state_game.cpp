@@ -108,22 +108,27 @@ void StateGame::updateLevelEncounters(float const elapsed)
     }
 }
 
+void StateGame::handleDebugInput()
+{
+    if (getGame()->input().keyboard()->pressed(jt::KeyCode::LShift)
+        && getGame()->input().keyboard()->pressed(jt::KeyCode::Escape)) {
+        endGame();
+    }
+    if (getGame()->input().keyboard()->justPressed(jt::KeyCode::F8)) {
+        loadLevel("assets/test_level.json");
+        m_player->setPosition(m_level->getPlayerStartingPos());
+    }
+    if (getGame()->input().keyboard()->justPressed(jt::KeyCode::F9)) {
+        loadLevel("assets/test_level2.json");
+        m_player->setPosition(m_level->getPlayerStartingPos());
+    }
+}
+
 void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
         m_world->step(elapsed, GP::PhysicSubSteps());
-        if (getGame()->input().keyboard()->pressed(jt::KeyCode::LShift)
-            && getGame()->input().keyboard()->pressed(jt::KeyCode::Escape)) {
-            endGame();
-        }
-        if (getGame()->input().keyboard()->justPressed(jt::KeyCode::F8)) {
-            loadLevel("assets/test_level.json");
-            m_player->setPosition(m_level->getPlayerStartingPos());
-        }
-        if (getGame()->input().keyboard()->justPressed(jt::KeyCode::F9)) {
-            loadLevel("assets/test_level2.json");
-            m_player->setPosition(m_level->getPlayerStartingPos());
-        }
+        handleDebugInput();
 
         // TODO scroll/camera mechanics
 
