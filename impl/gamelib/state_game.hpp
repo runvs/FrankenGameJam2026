@@ -1,6 +1,8 @@
 ﻿#pragma once
 
+#include "encounter/level_encounter.hpp"
 #include "level.hpp"
+#include "object_group.hpp"
 #include "player.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
@@ -33,6 +35,9 @@ private:
 
     std::shared_ptr<Player> m_player { nullptr };
 
+    std::shared_ptr<jt::ObjectGroup<LevelEncounter>> m_levelEncounters;
+
+
     void onCreate() override;
     void onEnter() override;
     void onUpdate(float const elapsed) override;
@@ -40,4 +45,6 @@ private:
 
     void endGame();
     void createPlayer();
+
+    void loadLevel();
 };

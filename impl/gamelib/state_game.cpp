@@ -28,14 +28,7 @@ void StateGame::onCreate()
     m_background->update(0.0f);
     m_background->setZ(GP::LevelZLayerBelowPlayer());
 
-    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(),
-        "assets/test_level.json" };
-
-    m_level = std::make_shared<Level>(m_world);
-
-    add(m_level);
-    m_level->loadTileLayers(loader);
-    m_level->loadLevelCollisions(loader);
+    loadLevel();
 
     createPlayer();
 
@@ -59,6 +52,33 @@ void StateGame::createPlayer()
     m_player->setPosition(m_level->getPlayerStartingPos());
 }
 
+void StateGame::loadLevel()
+{
+    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(),
+        "assets/test_level.json" };
+
+    m_level = std::make_shared<Level>(m_world);
+
+    add(m_level);
+    m_level->loadTileLayers(loader);
+    m_level->loadLevelCollisions(loader);
+
+    m_levelEncounters = std::make_shared<jt::ObjectGroup<LevelEncounter>>();
+
+    for (auto const& encounterInfoRect : m_level->getEncounters()) {
+        auto const encounterJson = std::filesystem::path { "assets" }
+            / encounterInfoRect.properties.strings.at("encounter_info");
+        std::ifstream f { encounterJson };
+        nlohmann::json const j = nlohmann::json::parse(f);
+        EncounterInfo encounterInfo = j;
+
+        auto levelEncounter
+            = std::make_shared<LevelEncounter>(encounterInfo, encounterInfoRect.position);
+        m_levelEncounters->push_back(levelEncounter);
+        add(levelEncounter);
+    }
+}
+
 void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
@@ -71,6 +91,8 @@ void StateGame::onUpdate(float const elapsed)
         // TODO scroll/camera mechanics
 
         // TODO change level mechanic
+
+        m_levelEncounters->update(elapsed);
     }
 
     m_background->update(elapsed);
@@ -81,6 +103,7 @@ void StateGame::onDraw() const
 {
     m_background->draw(renderTarget());
     drawObjects();
+
     m_vignette->draw();
     m_hud->draw();
 }
