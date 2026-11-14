@@ -56,60 +56,75 @@ void BattleMenu::doCreate()
     m_selector2->setOffset(jt::OffsetMode::CENTER);
 }
 
+void BattleMenu::doMenu1Tweens()
+{
+    if (m_selectorMenu1Index == 0) {
+        auto tw1 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        m_addTween(tw1);
+
+        auto tw2 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        m_addTween(tw2);
+
+    } else if (m_selectorMenu1Index == 1) {
+        auto tw1 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        m_addTween(tw1);
+
+        auto tw2 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        m_addTween(tw2);
+    }
+}
+
+void BattleMenu::doMenu2Tweens()
+{
+    if (m_selectorMenu2Index == 0) {
+        auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        m_addTween(tw1);
+
+        auto tw2 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        m_addTween(tw2);
+
+    } else if (m_selectorMenu2Index == 1) {
+        auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        m_addTween(tw1);
+
+        auto tw2 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
+            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        m_addTween(tw2);
+    }
+}
+
 void BattleMenu::doUpdate(float const elapsed)
 {
     auto const& kb = getGame()->input().keyboard();
     if (m_state == BattleMenuState::Menu1) {
+        bool anyPressed = false;
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu1Index--;
             if (m_selectorMenu1Index < 0) {
 
                 m_selectorMenu1Index = maxIndex1;
             }
-            if (m_selectorMenu1Index == 0) {
-                auto tw1 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
-                m_addTween(tw2);
-
-            } else if (m_selectorMenu1Index == 1) {
-                auto tw1 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
-                m_addTween(tw2);
-            }
+            anyPressed = true;
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
             m_selectorMenu1Index++;
             if (m_selectorMenu1Index > maxIndex1) {
                 m_selectorMenu1Index = 0;
             }
-
-            if (m_selectorMenu1Index == 0) {
-                auto tw1 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
-                m_addTween(tw2);
-
-            } else if (m_selectorMenu1Index == 1) {
-                auto tw1 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
-                m_addTween(tw2);
-            }
+            anyPressed = true;
         }
+
+        if (anyPressed) {
+            doMenu1Tweens();
+        }
+
         if (kb->justReleased(jt::KeyCode::Space)) {
             m_state = BattleMenuState::Menu2;
         }
@@ -124,6 +139,7 @@ void BattleMenu::doUpdate(float const elapsed)
         if (kb->justReleased(jt::KeyCode::Escape)) {
             m_state = BattleMenuState::Menu1;
         }
+        bool anyPressed = false;
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu2Index--;
             if (m_selectorMenu2Index < 0) {
@@ -131,49 +147,17 @@ void BattleMenu::doUpdate(float const elapsed)
                 m_selectorMenu2Index = maxIndex2;
             }
 
-            if (m_selectorMenu2Index == 0) {
-                auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
-                m_addTween(tw2);
-
-            } else if (m_selectorMenu2Index == 1) {
-                auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
-                m_addTween(tw2);
-            }
+            anyPressed = true;
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
             m_selectorMenu2Index++;
             if (m_selectorMenu2Index > maxIndex2) {
                 m_selectorMenu2Index = 0;
             }
-
-            if (m_selectorMenu2Index == 0) {
-                auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
-                m_addTween(tw2);
-
-            } else if (m_selectorMenu2Index == 1) {
-                auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
-                m_addTween(tw1);
-
-                auto tw2 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
-                    GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
-                m_addTween(tw2);
-            }
+            anyPressed = true;
+        }
+        if (anyPressed) {
+            doMenu2Tweens();
         }
     }
 
