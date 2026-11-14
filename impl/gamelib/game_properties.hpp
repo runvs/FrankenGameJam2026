@@ -52,4 +52,6 @@ public:
     static std::uint64_t CollisionBitLevel();
     static std::uint64_t CollisionBitPlayer();
     static std::uint64_t CollisionBitEnemy();
+
+    static float PlayerBaseVelocity();
 };
