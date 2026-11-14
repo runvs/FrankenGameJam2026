@@ -138,6 +138,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"door_id",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
                          "name":"type",
                          "type":"string",
                          "value":"player_start"
@@ -146,8 +151,8 @@
                  "type":"player_start",
                  "visible":true,
                  "width":24,
-                 "x":168,
-                 "y":360
+                 "x":144,
+                 "y":144
                 }, 
                 {
                  "height":24,
@@ -155,6 +160,11 @@
                  "name":"exit_to_l1",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"door_id",
+                         "type":"int",
+                         "value":1
+                        }, 
                         {
                          "name":"new_level_name",
                          "type":"string",
@@ -171,6 +181,29 @@
                  "width":24,
                  "x":144,
                  "y":384
+                }, 
+                {
+                 "height":24,
+                 "id":137,
+                 "name":"player_start",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"door_id",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"player_start"
+                        }],
+                 "rotation":0,
+                 "type":"player_start",
+                 "visible":true,
+                 "width":24,
+                 "x":144,
+                 "y":360
                 }],
          "opacity":1,
          "properties":[
@@ -185,7 +218,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":137,
+ "nextobjectid":138,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2-2-geb83ddb9",

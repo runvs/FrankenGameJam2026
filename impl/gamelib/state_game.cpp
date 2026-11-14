@@ -150,9 +150,10 @@ void StateGame::onUpdate(float const elapsed)
                 pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
             if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.25f) {
                 auto const new_level_name = o.properties.strings.at("new_level_name");
+                auto const door_id = o.properties.ints.at("door_id");
                 std::cout << "trigger level change: " << new_level_name << "\n";
                 loadLevel((std::filesystem::path { "assets" } / new_level_name).string());
-                m_player->setPosition(m_level->getPlayerStartingPos());
+                m_player->setPosition(m_level->getDoorPosition(door_id));
                 getGame()->gfx().camera().setCamOffset(
                     m_player->getPosition() - GP::GetScreenSize() * 0.5f);
             }

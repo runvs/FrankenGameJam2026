@@ -20,6 +20,7 @@ public:
     std::vector<std::shared_ptr<jt::Box2DObject>>& getColliders();
 
     jt::Vector2f getPlayerStartingPos() const;
+    jt::Vector2f getDoorPosition(int door_id) const;
 
 private:
     std::shared_ptr<jt::tilemap::TileLayer> m_tileLayerGround;
