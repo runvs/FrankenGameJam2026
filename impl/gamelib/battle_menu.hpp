@@ -38,4 +38,6 @@ private:
     int m_selectorMenu1Index { 0 };
     int m_selectorMenu2Index { 0 };
     int maxIndex2 = 1;
+
+    int m_chosen_enemy { 0 };
 };

@@ -143,20 +143,21 @@ void BattleMenu::doUpdate(float const elapsed)
         if (m_selectorMenu1Index == 0) {
             if (m_selectorMenu2Index == 0) {
 
-                auto const enemy_1 = m_stateEncounter->m_enemies->at(0).lock();
-                enemy_1->isChosen(false);
-                auto const enemy_2 = m_stateEncounter->m_enemies->at(1).lock();
-                enemy_2->isChosen(false);
-
-                int chosen_enemy = 0;
-                auto const enemy = m_stateEncounter->m_enemies->at(chosen_enemy).lock();
-                enemy->isChosen(true);
+                // unpaint all enemies
+                for (auto const& e : *m_stateEncounter->m_enemies) {
+                    auto const enemy = e.lock();
+                    enemy->isChosen(false);
+                }
 
                 if (kb->justReleased(jt::KeyCode::D) || kb->justReleased(jt::KeyCode::Right)) {
-                    enemy->isChosen(false);
-                    chosen_enemy++;
-                    auto const enemy_new = m_stateEncounter->m_enemies->at(chosen_enemy).lock();
-                    enemy_new->isChosen(true);
+                    m_chosen_enemy++;
+                    if (m_chosen_enemy >= m_stateEncounter->m_enemies->size()) {
+                        m_chosen_enemy = 0;
+                    }
+                }
+                if (m_chosen_enemy < m_stateEncounter->m_enemies->size()) {
+                    auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
+                    enemy->isChosen(true);
                 }
 
             } else if (m_selectorMenu2Index == 1) {
@@ -171,13 +172,12 @@ void BattleMenu::doUpdate(float const elapsed)
             if (m_selectorMenu1Index == 0) {
                 if (m_selectorMenu2Index == 0) {
                     // Melee
-                    // TODO: choose enemy
 
-                    // auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
-                    // enemy->getDamage(5.0f);
-                    //  std::cout << "!!!!!trigger next actor from battleMenu\n";
-                    //
-                    // m_triggerNextActor();
+                    auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
+                    enemy->getDamage(5.0f);
+                    // std::cout << "!!!!!trigger next actor from battleMenu\n";
+
+                    m_triggerNextActor();
 
                 } else if (m_selectorMenu2Index == 1) {
                     // Shotgun
