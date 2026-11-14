@@ -19,7 +19,7 @@ jt::Bar::Bar(
     if (m_horizontal) {
         auto const progressHeightFactor = 0.9f;
         m_shapeProgress->makeRect(
-            jt::Vector2f { m_width, m_height * progressHeightFactor }, textureManager);
+            jt::Vector2f { m_width, m_height * progressHeightFactor - 1 }, textureManager);
         m_shapeProgress->setPosition(jt::Vector2f { 0, m_height * m_progressYOffsetFraction });
     } else {
         m_shapeProgress->makeRect(jt::Vector2f { m_width - 2, m_height }, textureManager);
@@ -112,6 +112,8 @@ void jt::Bar::doUpdate(float elapsed)
 
     if (m_horizontal) {
         m_shapeProgress->setScale(jt::Vector2f { value * scaleFullShape.x, scaleFullShape.y });
+        m_shapeProgress->setPosition(
+            jt::Vector2f { m_shapeFull->getPosition().x, m_shapeFull->getPosition().y + 1 });
     } else {
         m_shapeProgress->setScale(jt::Vector2f { scaleFullShape.x, value * scaleFullShape.y });
         m_shapeProgress->setPosition(jt::Vector2f { m_shapeFull->getPosition().x + 1,

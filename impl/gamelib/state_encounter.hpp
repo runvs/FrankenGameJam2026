@@ -1,7 +1,9 @@
 #pragma once
 
 #include "battle_menu.hpp"
+#include "enemy.hpp"
 #include "level.hpp"
+#include "object_group.hpp"
 #include "player.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <encounter/encounter_info.hpp>
@@ -22,6 +24,8 @@ class StateEncounter : public jt::GameState {
 public:
     StateEncounter(EncounterInfo);
     std::string getName() const override;
+
+    std::shared_ptr<jt::ObjectGroup<Enemy>> m_enemies;
 
 private:
     EncounterInfo m_encounter_info;
@@ -44,4 +48,5 @@ private:
 
     void endGame();
     void createPlayer();
+    void createEnemies();
 };

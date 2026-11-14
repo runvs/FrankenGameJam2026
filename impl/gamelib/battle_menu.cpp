@@ -2,8 +2,10 @@
 
 #include "drawable_helpers.hpp"
 #include "game_interface.hpp"
+#include "state_encounter.hpp"
 #include "tweens/tween_color.hpp"
 #include <game_properties.hpp>
+#include <state_encounter.hpp>
 
 constexpr int maxIndex1 = 1;
 
@@ -114,6 +116,12 @@ void BattleMenu::doUpdate(float const elapsed)
         }
     } else if (m_state == BattleMenuState::Menu2) {
 
+        if (kb->justReleased(jt::KeyCode::Space)) {
+            if (m_selectorMenu2Index == 0) {
+                auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
+                enemy->getDamage(5.0f);
+            }
+        }
         if (kb->justReleased(jt::KeyCode::Escape)) {
             m_state = BattleMenuState::Menu1;
         }

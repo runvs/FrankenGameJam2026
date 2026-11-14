@@ -5,12 +5,16 @@
 #include "tweens/tween_interface.hpp"
 #include <game_object.hpp>
 
+class StateEncounter;
+
 enum class BattleMenuState { Menu1, Menu2 };
 
 class BattleMenu : public jt::GameObject {
 public:
     BattleMenuState m_state { BattleMenuState::Menu1 };
     std::function<void(std::shared_ptr<jt::TweenInterface>)> m_addTween;
+
+    StateEncounter* m_stateEncounter { nullptr };
 
 private:
     void doCreate() override;
