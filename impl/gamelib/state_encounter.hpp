@@ -1,7 +1,6 @@
 #pragma once
 
 #include "battle_menu.hpp"
-#include "enemy.hpp"
 #include "level.hpp"
 #include "object_group.hpp"
 #include "player.hpp"
@@ -20,15 +19,19 @@ class Vignette;
 
 class Hud;
 
+class Enemy;
+
 class StateGame;
 
 class StateEncounter : public jt::GameState {
 public:
     StateEncounter(EncounterInfo);
     std::string getName() const override;
-    StateGame* m_stateGame;
+    StateGame* m_stateGame { nullptr };
 
     std::shared_ptr<jt::ObjectGroup<Enemy>> m_enemies;
+
+    void nextActor();
 
 private:
     EncounterInfo m_encounter_info;
@@ -43,6 +46,8 @@ private:
     std::shared_ptr<jt::Animation> m_player { nullptr };
 
     std::shared_ptr<BattleMenu> m_battleMenu { nullptr };
+    int m_currentActorIndex { -1 }; // -1 = player, all others are indices in m__enemies;
+    float m_enemyActionTimer { -1.0f };
 
     void onCreate() override;
     void onEnter() override;

@@ -4,6 +4,7 @@
 #include "game_interface.hpp"
 #include "state_encounter.hpp"
 #include "tweens/tween_color.hpp"
+#include <enemy.hpp>
 #include <game_properties.hpp>
 #include <state_encounter.hpp>
 
@@ -132,7 +133,7 @@ void BattleMenu::doUpdate(float const elapsed)
                 // TODO check available options based on player inventory
             } else if (m_selectorMenu1Index == 1) {
                 m_menu2Text0->setText("Medkit");
-                
+
                 m_menu2Text1->setText("Molotov");
                 // TODO check available options based on player inventory
             }
@@ -144,18 +145,21 @@ void BattleMenu::doUpdate(float const elapsed)
                 if (m_selectorMenu2Index == 0) {
                     auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
                     enemy->getDamage(5.0f);
+                    m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {
 
                 // TODO limit number of available items so they cannot be reused over and over again
                 if (m_selectorMenu2Index == 0) {
                     // TODO heal
+                    m_triggerNextActor();
                 } else if (m_selectorMenu2Index == 1) {
                     // Molotov
                     for (auto const& e : *m_stateEncounter->m_enemies) {
                         auto const enemy = e.lock();
                         enemy->getDamage(3.0f);
                     }
+                    m_triggerNextActor();
                 }
             }
         }

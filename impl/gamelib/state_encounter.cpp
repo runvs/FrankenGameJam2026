@@ -2,6 +2,7 @@
 #include <box2dwrapper/box2d_world_impl.hpp>
 #include <color/color.hpp>
 #include <encounter/encounter_info.hpp>
+#include <enemy.hpp>
 #include <game_interface.hpp>
 #include <game_properties.hpp>
 #include <hud/hud.hpp>
@@ -37,8 +38,11 @@ void StateEncounter::onCreate()
     m_vignette->setZ(GP::LevelZLayerAboveAll());
 
     m_battleMenu = std::make_shared<BattleMenu>();
-    add(m_battleMenu);
+    m_battleMenu->setGameInstance(getGame());
+    m_battleMenu->create();
+
     m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
+    m_battleMenu->m_triggerNextActor = [this]() { nextActor(); };
     m_battleMenu->m_stateEncounter = this;
 
     m_hud = std::make_shared<Hud>();
@@ -74,14 +78,61 @@ void StateEncounter::createPlayer()
 
 std::string StateEncounter::getName() const { return "State Encounter"; }
 
+void StateEncounter::nextActor()
+{
+    // TODO
+
+    if (m_enemyActionTimer >= 0) {
+        return;
+    }
+
+    std::cout << "nextActor: " << m_currentActorIndex << " ";
+    m_currentActorIndex++;
+    std::cout << "new actor id: " << m_currentActorIndex << " ";
+    if (m_currentActorIndex == 4) {
+        std::cout << "wrap\n";
+        m_currentActorIndex = -1;
+        return;
+    }
+
+    if (m_currentActorIndex < m_enemies->size()) {
+        std::cout << "valid enemy id " << m_currentActorIndex << " ";
+        auto enemy = m_enemies->at(m_currentActorIndex).lock();
+        if (!enemy) {
+            nextActor();
+        } else {
+            std::cout << "doAction \n";
+            m_enemyActionTimer = 0.5f;
+            enemy->doAction(*this);
+        }
+    } else if (m_currentActorIndex == -1) {
+        std::cout << "player \n";
+        return;
+    } else {
+        std::cout << "\n";
+        nextActor();
+    }
+}
+
 void StateEncounter::onUpdate(float const elapsed)
 {
     if (m_running) {
-        
+
+        if (m_enemyActionTimer >= 0 && m_enemyActionTimer - elapsed <= 0) {
+            m_enemyActionTimer -= elapsed;
+            nextActor();
+        } else {
+            m_enemyActionTimer -= elapsed;
+        }
+
         m_background->update(elapsed);
         m_player->update(elapsed);
         m_vignette->update(elapsed);
         m_enemies->update(elapsed);
+
+        if (m_currentActorIndex == -1) {
+            m_battleMenu->update(elapsed);
+        }
 
         if (m_enemies->size() == 0) {
             m_running = false;
@@ -101,8 +152,9 @@ void StateEncounter::onDraw() const
     }
 
     m_vignette->draw();
-
-    m_battleMenu->draw();
+    if (m_currentActorIndex == -1) {
+        m_battleMenu->draw();
+    }
     m_hud->draw();
 }
 

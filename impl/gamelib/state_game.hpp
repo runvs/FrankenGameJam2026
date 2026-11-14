@@ -23,6 +23,8 @@ class StateGame : public jt::GameState {
 public:
     std::string getName() const override;
 
+    PlayerInfo m_playerInfo;
+
 private:
     std::shared_ptr<jt::Shape> m_background;
     std::shared_ptr<jt::Vignette> m_vignette;
@@ -51,6 +53,4 @@ private:
 
     void updateLevelEncounters(float elapsed);
     void handleDebugInput();
-
-    PlayerInfo m_playerInfo;
 };

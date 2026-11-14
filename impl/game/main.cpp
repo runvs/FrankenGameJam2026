@@ -64,13 +64,12 @@ int main(int /*argc*/, char* /*argv*/[])
 
     jt::AudioImpl audio { };
 
-    // jt::StateManager stateManager { std::make_shared<StateStartWithButton>()
-    // };
+    jt::StateManager stateManager { std::make_shared<StateGame>() };
     // TODO: Thomas load encouter state here for debugging
     std::ifstream f { "assets/test_encounter.json" };
     nlohmann::json const j = nlohmann::json::parse(f);
     EncounterInfo encounterInfo = j;
-    jt::StateManager stateManager { std::make_shared<StateEncounter>(encounterInfo) };
+    // jt::StateManager stateManager { std::make_shared<StateEncounter>(encounterInfo) };
     jt::LoggingStateManager loggingStateManager { stateManager, logger };
 
     jt::ActionCommandManager actionCommandManager(logger);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bar.hpp"
+#include "state_encounter.hpp"
 #include <animation.hpp>
 #include <box2dwrapper/box2d_object.hpp>
 #include <encounter/encounter_info.hpp>
@@ -16,6 +17,8 @@ public:
 
     void getDamage(float damage);
     float doAttack();
+
+    void doAction(StateEncounter& state_encounter);
 
 private:
     // enemy stats

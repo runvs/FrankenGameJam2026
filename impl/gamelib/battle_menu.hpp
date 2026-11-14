@@ -13,6 +13,7 @@ class BattleMenu : public jt::GameObject {
 public:
     BattleMenuState m_state { BattleMenuState::Menu1 };
     std::function<void(std::shared_ptr<jt::TweenInterface>)> m_addTween;
+    std::function<void(void)> m_triggerNextActor;
 
     StateEncounter* m_stateEncounter { nullptr };
 
