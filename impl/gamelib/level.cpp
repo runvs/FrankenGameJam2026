@@ -25,10 +25,15 @@ void Level::doDraw() const
 
 void Level::loadLevelCollisions(jt::tilemap::TilesonLoader& loader)
 {
-    auto tileCollisions = loader.loadCollisionsFromLayer("ground");
+    auto tileCollisions_ground = loader.loadCollisionsFromLayer("ground");
+    auto tileCollisions_ground_decals = loader.loadCollisionsFromLayer("ground_decals");
 
-    tileCollisions.refineColliders(24);
-    for (auto const& r : tileCollisions.getRects()) {
+    for (auto const& r : tileCollisions_ground_decals.getRects()) {
+        tileCollisions_ground.add(r);
+    }
+
+    tileCollisions_ground.refineColliders(24);
+    for (auto const& r : tileCollisions_ground.getRects()) {
         auto bodyDef = b2DefaultBodyDef();
         bodyDef.type = b2_staticBody;
         bodyDef.position = b2Vec2 { r.left + r.width / 2.0f, r.top + r.height / 2.0f };

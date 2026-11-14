@@ -7,6 +7,8 @@ struct EnemyBaseInfo {
     std::string spritesheet;
     float hitPoints { 0.0f };
     float hitPointsMax { 0.0f };
+    float Attack { 0.0f };
+    float Defense { 0.0f };
     // TODO more values
 };
 

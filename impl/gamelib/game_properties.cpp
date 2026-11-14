@@ -91,4 +91,14 @@ float GP::PlayerBaseVelocity() { return 85.0f; }
 
 float GP::CameraSpeed() { return 100.0f; }
 
+jt::Color GP::BattleMenuBackgroundColor() { return jt::Color { 45, 47, 44 }; }
+
+jt::Color GP::BattleMenuSelectorColor() { return jt::Color { 175, 178, 166 }; }
+
+jt::Color GP::BattleMenuStateBaseColor() { return jt::Color { 255, 255, 255, 255 }; }
+
+jt::Color GP::BattleMenuStateSelectedColor() { return jt::Color { 255, 100, 100, 255 }; }
+
+float GP::BattleMenuTweenTime() { return 0.2f; }
+
 float GP::CameraMarginTileScaleValue() { return 3.0f; }
