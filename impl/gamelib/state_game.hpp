@@ -4,6 +4,7 @@
 #include "level.hpp"
 #include "object_group.hpp"
 #include "player.hpp"
+#include "player_info.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
 #include <memory>
@@ -47,7 +48,9 @@ private:
     void cleanUpLoadedLevel();
 
     void loadLevel(std::string const& levelName = "assets/level_1.json");
-    
+
     void updateLevelEncounters(float elapsed);
     void handleDebugInput();
+
+    PlayerInfo m_playerInfo;
 };

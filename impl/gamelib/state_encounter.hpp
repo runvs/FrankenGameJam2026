@@ -20,10 +20,13 @@ class Vignette;
 
 class Hud;
 
+class StateGame;
+
 class StateEncounter : public jt::GameState {
 public:
     StateEncounter(EncounterInfo);
     std::string getName() const override;
+    StateGame* m_stateGame;
 
     std::shared_ptr<jt::ObjectGroup<Enemy>> m_enemies;
 
