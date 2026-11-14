@@ -22,10 +22,7 @@ public:
 
 private:
     // enemy stats
-    float m_hit_points { 50.0f };
-    float m_max_hit_points { 100.0f };
-    float m_attack { 10.0f };
-    float m_defense { 10.0f };
+    EnemyEncounterInfo m_enemy_encounter_info;
 
     // TODO: enemy states
 

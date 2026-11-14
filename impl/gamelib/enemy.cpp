@@ -9,23 +9,20 @@ Enemy::Enemy(EnemyEncounterInfo enemy_encounter_info)
 {
     // TODO: implement scaling with level from encounter info
     //  set enemy stats based on encounter info
-    m_hit_points = enemy_encounter_info.enemyBase.hitPoints;
-    m_max_hit_points = enemy_encounter_info.enemyBase.hitPointsMax;
-    m_attack = enemy_encounter_info.enemyBase.Attack;
-    m_defense = enemy_encounter_info.enemyBase.Defense;
-
-    // load sprite / animation
-    m_animation = std::make_shared<jt::Animation>();
-    m_animation->loadFromAseprite(
-        (std::filesystem::path { "assets" } / enemy_encounter_info.enemyBase.spritesheet).string(),
-        textureManager());
-    m_animation->setPosition(enemy_pos_to_vector(enemy_encounter_info.position));
-    m_animation->setScale(jt::Vector2f(2.0, 2.0));
+    m_enemy_encounter_info = enemy_encounter_info;
 }
 
-void Enemy::doCreate() { m_animation->play("idle"); }
+void Enemy::doCreate()
+{
+    // load sprite / animation
+    m_animation = std::make_shared<jt::Animation>();
+    m_animation->loadFromAseprite(m_enemy_encounter_info.enemyBase.spritesheet, textureManager());
+    m_animation->setPosition(enemy_pos_to_vector(m_enemy_encounter_info.position));
+    m_animation->setScale(jt::Vector2f(2.0, 2.0));
+    m_animation->play("idle");
+}
 
-void Enemy::doUpdate(float elapsed) { }
+void Enemy::doUpdate(float elapsed) { m_animation->update(elapsed); }
 
 void Enemy::doDraw() const { m_animation->draw(renderTarget()); }
 

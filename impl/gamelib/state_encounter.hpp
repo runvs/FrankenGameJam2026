@@ -1,7 +1,9 @@
 #pragma once
 
 #include "battle_menu.hpp"
+#include "enemy.hpp"
 #include "level.hpp"
+#include "object_group.hpp"
 #include "player.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <encounter/encounter_info.hpp>
@@ -34,6 +36,8 @@ private:
     bool m_hasEnded { false };
 
     std::shared_ptr<jt::Animation> m_player { nullptr };
+
+    std::shared_ptr<jt::ObjectGroup<Enemy>> m_enemies;
 
     std::shared_ptr<BattleMenu> m_battleMenu { nullptr };
 

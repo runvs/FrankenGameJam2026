@@ -30,6 +30,8 @@ void StateEncounter::onCreate()
 
     createPlayer();
 
+    createEnemies();
+
     m_vignette = std::make_shared<jt::Vignette>(GP::GetScreenSize());
     add(m_vignette);
     m_vignette->setZ(GP::LevelZLayerAboveAll());
@@ -49,7 +51,12 @@ void StateEncounter::onEnter() { };
 
 void StateEncounter::createEnemies()
 {
-    for (auto const enemy_encounter_info : m_encounter_info.enemies) { }
+    m_enemies = std::make_shared<jt::ObjectGroup<Enemy>>();
+    for (auto const enemy_encounter_info : m_encounter_info.enemies) {
+        auto enemy = std::make_shared<Enemy>(enemy_encounter_info);
+        add(enemy);
+        m_enemies->push_back(enemy);
+    }
 }
 
 void draw_enemy(EnemyEncounterInfo enemy_encounter_info) { }
@@ -71,12 +78,18 @@ void StateEncounter::onUpdate(float const elapsed)
     m_background->update(elapsed);
     m_player->update(elapsed);
     m_vignette->update(elapsed);
+    m_enemies->update(elapsed);
 }
 
 void StateEncounter::onDraw() const
 {
     m_background->draw(renderTarget());
     m_player->draw(renderTarget());
+
+    for (auto const& e : *m_enemies) {
+        auto const enemy = e.lock();
+        enemy->draw();
+    }
 
     m_vignette->draw();
 
