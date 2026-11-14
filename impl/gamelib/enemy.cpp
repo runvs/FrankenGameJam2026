@@ -19,10 +19,19 @@ void Enemy::getDamage(float damage)
     // TODO anim
     m_enemy_encounter_info.enemyBase.hitPoints -= damage;
     m_animation->flash(0.25f, jt::colors::Red);
-     
+
     // TODO damage resistance
     if (m_enemy_encounter_info.enemyBase.hitPoints <= 0) {
         kill();
+    }
+}
+
+void Enemy::isChosen(bool const setChosen) const
+{
+    if (setChosen) {
+        m_animation->setColor(jt::colors::Red);
+    } else {
+        m_animation->setColor(jt::colors::White);
     }
 }
 

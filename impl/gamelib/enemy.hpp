@@ -20,6 +20,8 @@ public:
 
     void doAction(StateEncounter& state_encounter);
 
+    void isChosen(bool setChosen) const;
+
 private:
     // enemy stats
     EnemyEncounterInfo m_enemy_encounter_info;

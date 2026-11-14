@@ -140,25 +140,59 @@ void BattleMenu::doUpdate(float const elapsed)
         }
     } else if (m_state == BattleMenuState::Menu2) {
 
+        if (m_selectorMenu1Index == 0) {
+            if (m_selectorMenu2Index == 0) {
+
+                auto const enemy_1 = m_stateEncounter->m_enemies->at(0).lock();
+                enemy_1->isChosen(false);
+                auto const enemy_2 = m_stateEncounter->m_enemies->at(1).lock();
+                enemy_2->isChosen(false);
+
+                int chosen_enemy = 0;
+                auto const enemy = m_stateEncounter->m_enemies->at(chosen_enemy).lock();
+                enemy->isChosen(true);
+
+                if (kb->justReleased(jt::KeyCode::D) || kb->justReleased(jt::KeyCode::Right)) {
+                    enemy->isChosen(false);
+                    chosen_enemy++;
+                    auto const enemy_new = m_stateEncounter->m_enemies->at(chosen_enemy).lock();
+                    enemy_new->isChosen(true);
+                }
+
+            } else if (m_selectorMenu2Index == 1) {
+                for (auto const& e : *m_stateEncounter->m_enemies) {
+                    auto const enemy = e.lock();
+                    enemy->isChosen(true);
+                }
+            }
+        }
+
         if (kb->justReleased(jt::KeyCode::Space)) {
             if (m_selectorMenu1Index == 0) {
                 if (m_selectorMenu2Index == 0) {
                     // Melee
-                    auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
-                    enemy->getDamage(5.0f);
-                    // std::cout << "!!!!!trigger next actor from battleMenu\n";
-                    m_triggerNextActor();
+                    // TODO: choose enemy
+
+                    // auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
+                    // enemy->getDamage(5.0f);
+                    //  std::cout << "!!!!!trigger next actor from battleMenu\n";
+                    //
+                    // m_triggerNextActor();
+
                 } else if (m_selectorMenu2Index == 1) {
                     // Shotgun
                     for (auto const& e : *m_stateEncounter->m_enemies) {
                         auto const enemy = e.lock();
                         enemy->getDamage(1.0f);
+                        enemy->isChosen(false);
                     }
+                    m_state = BattleMenuState::Menu1;
                     m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {
                 // TODO limit number of available items so they cannot be reused over and over again
                 if (m_selectorMenu2Index == 0) {
+                    // Healing
                     m_stateEncounter->damagePlayer(-4.0f);
                     m_triggerNextActor();
                 } else if (m_selectorMenu2Index == 1) {
@@ -173,6 +207,10 @@ void BattleMenu::doUpdate(float const elapsed)
         }
         if (kb->justReleased(jt::KeyCode::Escape)) {
             m_state = BattleMenuState::Menu1;
+            for (auto const& e : *m_stateEncounter->m_enemies) {
+                auto const enemy = e.lock();
+                enemy->isChosen(false);
+            }
         }
         bool anyPressed = false;
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
