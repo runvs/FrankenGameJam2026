@@ -11,7 +11,10 @@
 #include <state_menu.hpp>
 
 // constructor
-StateEncounter::StateEncounter(EncounterInfo encounter_info) { m_encounter_info = encounter_info; }
+StateEncounter::StateEncounter(EncounterInfo encounter_info)
+{
+    m_encounter_info = encounter_info;
+}
 
 // destructor
 // StateEncounter::~StateEncounter() { }
@@ -25,7 +28,8 @@ void StateEncounter::onCreate()
     }
 
     m_background = std::make_shared<jt::Sprite>(
-        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite).string(),
+        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite)
+            .string(),
         textureManager());
 
     createPlayer();
@@ -43,13 +47,24 @@ void StateEncounter::onCreate()
 
 void StateEncounter::onEnter() { };
 
+void StateEncounter::createEnemies()
+{
+    for (auto const enemy_encounter_info : m_encounter_info.enemies) {
+
+        draw_enemy(enemy_encounter_info);
+    }
+}
+
+void draw_enemy(EnemyEncounterInfo enemy_encounter_info) { }
+
 void StateEncounter::createPlayer()
 {
     m_player = std::make_shared<jt::Animation>();
     m_player->loadFromAseprite("assets/chars.aseprite", textureManager());
     m_player->play("idle");
     // TODO adjust player position
-    m_player->setPosition(jt::Vector2f(16.0f, 16.0f));
+    m_player->setPosition(jt::Vector2f(70.0f, 160.0f));
+    m_player->setScale(jt::Vector2f(-2.0f, 2.0f));
 }
 
 std::string StateEncounter::getName() const { return "State Encounter"; }

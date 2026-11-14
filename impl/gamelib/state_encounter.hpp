@@ -43,4 +43,5 @@ private:
 
     void endGame();
     void createPlayer();
+    void createEnemies();
 };
