@@ -1,5 +1,6 @@
 #pragma once
 
+#include "battle_menu.hpp"
 #include "level.hpp"
 #include "player.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
@@ -32,13 +33,13 @@ private:
     bool m_running { true };
     bool m_hasEnded { false };
 
-    std::shared_ptr<Level> m_level { nullptr };
-
     std::shared_ptr<jt::Animation> m_player { nullptr };
+
+    std::shared_ptr<BattleMenu> m_battleMenu { nullptr };
 
     void onCreate() override;
     void onEnter() override;
-    void onUpdate(float const elapsed) override;
+    void onUpdate(float elapsed) override;
     void onDraw() const override;
 
     void endGame();
