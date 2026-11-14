@@ -108,7 +108,6 @@ void BattleMenu::doUpdate(float const elapsed)
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu1Index--;
             if (m_selectorMenu1Index < 0) {
-
                 m_selectorMenu1Index = maxIndex1;
             }
             anyPressed = true;
@@ -127,11 +126,20 @@ void BattleMenu::doUpdate(float const elapsed)
 
         if (kb->justReleased(jt::KeyCode::Space)) {
             m_state = BattleMenuState::Menu2;
+            if (m_selectorMenu1Index == 0) {
+                m_menu2Text0->setText("Melee");
+                m_menu2Text1->setText("Pistol");
+                // TODO check available options based on player inventory
+            } else if (m_selectorMenu1Index == 1) {
+                m_menu2Text0->setText("Medkit");
+                m_menu2Text1->setText("Molotov");
+                // TODO check available options based on player inventory
+            }
         }
     } else if (m_state == BattleMenuState::Menu2) {
 
         if (kb->justReleased(jt::KeyCode::Space)) {
-            if (m_selectorMenu2Index == 0) {
+            if (m_selectorMenu1Index == 0 && m_selectorMenu2Index == 0) {
                 auto const enemy = m_stateEncounter->m_enemies->at(0).lock();
                 enemy->getDamage(5.0f);
             }
