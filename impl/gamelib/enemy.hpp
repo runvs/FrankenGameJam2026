@@ -10,15 +10,7 @@
 
 class Enemy : public jt::GameObject {
 public:
-    explicit Enemy(EnemyEncounterInfo enemy_encounter_info);
-
-    ~Enemy() override = default;
-
-    // std::shared_ptr<jt::Animation> getAnimation();
-
-    // jt::Vector2f getPosOnScreen() const;
-    // void setPosition(jt::Vector2f const& pos);
-    // jt::Vector2f getPosition() const;
+    explicit Enemy(EnemyEncounterInfo const& enemy_encounter_info);
 
 private:
     // enemy stats
@@ -31,8 +23,6 @@ private:
     void doCreate() override;
     void doUpdate(float elapsed) override;
     void doDraw() const override;
-
-    void updateAnimation(float elapsed);
 };
 
 jt::Vector2f enemy_pos_to_vector(int pos_number);

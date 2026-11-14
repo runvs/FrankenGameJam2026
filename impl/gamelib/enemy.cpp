@@ -2,10 +2,9 @@
 #include <encounter/encounter_info.hpp>
 #include <game_interface.hpp>
 #include <game_properties.hpp>
-#include <math_helper.hpp>
 #include <vector.hpp>
 
-Enemy::Enemy(EnemyEncounterInfo enemy_encounter_info)
+Enemy::Enemy(EnemyEncounterInfo const& enemy_encounter_info)
 {
     // TODO: implement scaling with level from encounter info
     //  set enemy stats based on encounter info
@@ -22,13 +21,11 @@ void Enemy::doCreate()
     m_animation->play("idle");
 }
 
-void Enemy::doUpdate(float elapsed) { m_animation->update(elapsed); }
+void Enemy::doUpdate(float const elapsed) { m_animation->update(elapsed); }
 
 void Enemy::doDraw() const { m_animation->draw(renderTarget()); }
 
-void Enemy::updateAnimation(float elapsed) { m_animation->update(elapsed); }
-
-jt::Vector2f enemy_pos_to_vector(int pos_number)
+jt::Vector2f enemy_pos_to_vector(int const pos_number)
 {
     switch (pos_number) {
     case 0:
