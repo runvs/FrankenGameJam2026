@@ -2,6 +2,7 @@
 
 #include "drawable_helpers.hpp"
 #include "game_interface.hpp"
+#include "tweens/tween_color.hpp"
 #include <game_properties.hpp>
 
 constexpr int maxIndex1 = 1;
@@ -22,6 +23,7 @@ void BattleMenu::doCreate()
     m_menu1TextAttack->setTextAlign(jt::Text::TextAlign::LEFT);
     m_menu1TextAttack->setOffset(jt::Vector2f { 0.0f, -8.0f });
     m_menu1TextAttack->setPosition({ 28.0f, 20.0f + 20.0f * 0.0f });
+    m_menu1TextAttack->setColor({ 255, 100, 100, 255 });
 
     m_menu1TextItem = jt::dh::createText(renderTarget(), "Item", 16u);
     m_menu1TextItem->setTextAlign(jt::Text::TextAlign::LEFT);
@@ -61,6 +63,20 @@ void BattleMenu::doUpdate(float const elapsed)
             if (m_selectorMenu1Index < 0) {
 
                 m_selectorMenu1Index = maxIndex1;
+            }
+            if (m_selectorMenu1Index == 0) {
+                jt::Color white = { 255, 255, 255, 255 };
+                jt::Color red = { 255, 100, 100, 255 };
+                float time = 0.5f;
+                auto tw1 = jt::TweenColor::create(m_menu1TextAttack, time, white, red);
+                m_addTween(tw1);
+
+                auto tw2 = jt::TweenColor::create(m_menu1TextItem, time, red, white);
+                m_addTween(tw2);
+
+            } else if (m_selectorMenu1Index == 1) {
+                m_menu1TextAttack->setColor({ 255, 255, 255, 255 });
+                m_menu1TextItem->setColor({ 255, 100, 100, 255 });
             }
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {

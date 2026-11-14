@@ -2,6 +2,7 @@
 
 #include "shape.hpp"
 #include "text.hpp"
+#include "tweens/tween_interface.hpp"
 #include <game_object.hpp>
 
 enum class BattleMenuState { Menu1, Menu2 };
@@ -9,6 +10,7 @@ enum class BattleMenuState { Menu1, Menu2 };
 class BattleMenu : public jt::GameObject {
 public:
     BattleMenuState m_state { BattleMenuState::Menu1 };
+    std::function<void(std::shared_ptr<jt::TweenInterface>)> m_addTween;
 
 private:
     void doCreate() override;
