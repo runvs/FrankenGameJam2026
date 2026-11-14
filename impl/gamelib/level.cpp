@@ -60,17 +60,20 @@ void Level::loadTileLayers(jt::tilemap::TilesonLoader& loader)
         loader.loadTilesFromLayer("overhead", textureManager(), "assets/"));
     m_tileLayerOverhead->setScreenSizeHint(GP::GetScreenSize());
     m_tileLayerOverhead->setZ(GP::LevelZLayerAbovePlayer());
+
+    m_objectsLayer
+        = std::make_shared<jt::tilemap::ObjectLayer>(loader.loadObjectsFromLayer("objects"));
 }
 
 std::vector<jt::tilemap::InfoRect> Level::getObjects() { return m_objectsLayer->getObjects(); }
 
 jt::Vector2f Level::getPlayerStartingPos() const
 {
-
     for (auto const& obj : m_objectsLayer->getObjects()) {
         auto const type = obj.properties.strings.at("type");
         if (type == "player_start") {
-            return obj.position;
+
+            return obj.position + GP::LevelTileSize() * 0.5;
         }
     }
     return jt::Vector2f { };

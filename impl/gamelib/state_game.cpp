@@ -56,6 +56,7 @@ void StateGame::createPlayer()
 {
     m_player = std::make_shared<Player>(m_world);
     add(m_player);
+    m_player->setPosition(m_level->getPlayerStartingPos());
 }
 
 void StateGame::onUpdate(float const elapsed)
@@ -66,7 +67,9 @@ void StateGame::onUpdate(float const elapsed)
             && getGame()->input().keyboard()->pressed(jt::KeyCode::Escape)) {
             endGame();
         }
-        
+
+        // TODO scroll/camera mechanics
+
         // TODO change level mechanic
     }
 

@@ -41,6 +41,7 @@ public:
     static int PhysicSubSteps();
     static jt::Vector2f PlayerSize();
 
+    static jt::Vector2f LevelTileSize();
     static int LevelZLayerBelowPlayer();
     static int LevelZLayerPlayer();
     static int LevelZLayerAbovePlayer();

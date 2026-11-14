@@ -65,6 +65,8 @@ int GP::PhysicSubSteps() { return 4; }
 
 jt::Vector2f GP::PlayerSize() { return jt::Vector2f { 16.0f, 16.0f }; }
 
+jt::Vector2f GP::LevelTileSize() { return jt::Vector2f { 24.0f, 24.0f }; }
+
 int GP::LevelZLayerBelowPlayer() { return 0; }
 
 int GP::LevelZLayerPlayer() { return 1; }
