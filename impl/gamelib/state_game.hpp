@@ -61,6 +61,7 @@ private:
     void updateLevelEncounters(float elapsed);
     void handleDebugInput();
     void updateExit(jt::tilemap::InfoRect const& o);
+    void update_voice_lines(jt::tilemap::InfoRect const& o);
 
     std::shared_ptr<jt::Sprite> m_medkitSprite;
     jt::Vector2f m_medkitPosition { 220.0f, 220.0f };
@@ -69,4 +70,14 @@ private:
     std::shared_ptr<jt::Sprite> m_molotovSprite;
     jt::Vector2f m_molotovPosition { 260.0f, 220.0f };
     std::shared_ptr<jt::Text> m_molotovText;
+
+    bool m_voice_01 { false };
+    bool m_voice_02 { false };
+    bool m_voice_03 { false };
+    bool m_voice_04 { false };
+    bool m_voice_05 { false };
+    bool m_voice_06 { false };
+    bool m_voice_07 { false };
+    bool m_voice_08 { false };
+    bool m_voice_09 { false };
 };

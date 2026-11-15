@@ -26,9 +26,9 @@ jt::Palette createPalette()
 
 } // namespace
 
-std::string GP::GameName() { return "MyAwesomeGame"; }
+std::string GP::GameName() { return "2101"; }
 
-std::string GP::AuthorName() { return "TODO"; }
+std::string GP::AuthorName() { return "kguenth, CoffeeMugTwo, Laguna_999"; }
 
 std::string GP::JamName() { return "TODO"; }
 
@@ -36,7 +36,7 @@ std::string GP::JamDate() { return "TODO"; }
 
 std::string GP::ExplanationText()
 {
-    return "Win the game\n[W,A,S,D] to move \n[Space] to jump\n[M/U] to mute/unmute audio";
+    return "[W,A,S,D] to move \n[Space] to start\n[M/U] to mute/unmute audio";
 }
 
 jt::Vector2f GP::GetWindowSize() { return jt::Vector2f { 1280, 960 }; }

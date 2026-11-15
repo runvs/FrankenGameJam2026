@@ -242,6 +242,49 @@ void StateGame::updateExit(jt::tilemap::InfoRect const& o)
     }
 }
 
+void StateGame::update_voice_lines(jt::tilemap::InfoRect const& o)
+{
+    auto const lookup = [this](std::string const& id) -> bool& {
+        if (id == "voice-01") {
+            return m_voice_01;
+        }
+        if (id == "voice-02") {
+            return m_voice_02;
+        }
+        if (id == "voice-03") {
+            return m_voice_03;
+        }
+        if (id == "voice-04") {
+            return m_voice_04;
+        }
+        if (id == "voice-05") {
+            return m_voice_05;
+        }
+        if (id == "voice-06") {
+            return m_voice_06;
+        }
+        if (id == "voice-07") {
+            return m_voice_07;
+        }
+        if (id == "voice-08") {
+            return m_voice_08;
+        }
+        if (id == "voice-09") {
+            return m_voice_09;
+        }
+        return m_voice_01;
+    };
+
+    auto const voice_id = o.properties.strings.at("voice_id");
+    bool& check = lookup(voice_id);
+    if (!check) {
+        check = true;
+        std::cout << "start voice '" << voice_id << "' \n";
+        auto snd = getGame()->audio().addTemporarySound("event:/" + voice_id);
+        snd->play();
+    }
+}
+
 void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
@@ -258,6 +301,8 @@ void StateGame::onUpdate(float const elapsed)
             }
             if (o.properties.strings.at("type") == "exit") {
                 updateExit(o);
+            } else if (o.properties.strings.at("type") == "voice") {
+                update_voice_lines(o);
             }
         }
 
