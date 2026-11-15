@@ -2,22 +2,23 @@
 
 #include "drawable_helpers.hpp"
 #include "game_interface.hpp"
-#include "state_encounter.hpp"
 #include "tweens/tween_color.hpp"
 #include <enemy.hpp>
 #include <game_properties.hpp>
 #include <state_encounter.hpp>
+#include <state_game.hpp>
+#include <format>
 
 constexpr int maxIndex1 = 1;
 
 void BattleMenu::doCreate()
 {
-    m_backgroundMenu1
-        = std::make_shared<jt::Sprite>("assets/battle_menu_background.png", textureManager());
+    m_backgroundMenu1 = std::make_shared<jt::Sprite>(
+        "assets/battle_menu_background.png", textureManager());
     m_backgroundMenu1->setPosition({ 16.0f, 12.0f });
 
-    m_backgroundMenu2
-        = std::make_shared<jt::Sprite>("assets/battle_menu_background.png", textureManager());
+    m_backgroundMenu2 = std::make_shared<jt::Sprite>(
+        "assets/battle_menu_background.png", textureManager());
     m_backgroundMenu2->setPosition({ 112.0f, 12.0f });
 
     m_menu1TextAttack = jt::dh::createText(renderTarget(), "Attack", 16u);
@@ -58,21 +59,25 @@ void BattleMenu::doCreate()
 void BattleMenu::doMenu1Tweens()
 {
     if (m_selectorMenu1Index == 0) {
-        auto tw1 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
-            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        auto tw1 = jt::TweenColor::create(m_menu1TextAttack,
+            GP::BattleMenuTweenTime(), GP::BattleMenuStateBaseColor(),
+            GP::BattleMenuStateSelectedColor());
         m_addTween(tw1);
 
-        auto tw2 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
-            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        auto tw2 = jt::TweenColor::create(m_menu1TextItem,
+            GP::BattleMenuTweenTime(), GP::BattleMenuStateSelectedColor(),
+            GP::BattleMenuStateBaseColor());
         m_addTween(tw2);
 
     } else if (m_selectorMenu1Index == 1) {
-        auto tw1 = jt::TweenColor::create(m_menu1TextItem, GP::BattleMenuTweenTime(),
-            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        auto tw1 = jt::TweenColor::create(m_menu1TextItem,
+            GP::BattleMenuTweenTime(), GP::BattleMenuStateBaseColor(),
+            GP::BattleMenuStateSelectedColor());
         m_addTween(tw1);
 
-        auto tw2 = jt::TweenColor::create(m_menu1TextAttack, GP::BattleMenuTweenTime(),
-            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        auto tw2 = jt::TweenColor::create(m_menu1TextAttack,
+            GP::BattleMenuTweenTime(), GP::BattleMenuStateSelectedColor(),
+            GP::BattleMenuStateBaseColor());
         m_addTween(tw2);
     }
 }
@@ -80,21 +85,25 @@ void BattleMenu::doMenu1Tweens()
 void BattleMenu::doMenu2Tweens()
 {
     if (m_selectorMenu2Index == 0) {
-        auto tw1 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
-            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        auto tw1 = jt::TweenColor::create(m_menu2Text0,
+            GP::BattleMenuTweenTime(), GP::BattleMenuStateBaseColor(),
+            GP::BattleMenuStateSelectedColor());
         m_addTween(tw1);
 
-        auto tw2 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
-            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        auto tw2 = jt::TweenColor::create(m_menu2Text1,
+            GP::BattleMenuTweenTime(), GP::BattleMenuStateSelectedColor(),
+            GP::BattleMenuStateBaseColor());
         m_addTween(tw2);
 
     } else if (m_selectorMenu2Index == 1) {
-        auto tw1 = jt::TweenColor::create(m_menu2Text1, GP::BattleMenuTweenTime(),
-            GP::BattleMenuStateBaseColor(), GP::BattleMenuStateSelectedColor());
+        auto tw1 = jt::TweenColor::create(m_menu2Text1,
+            GP::BattleMenuTweenTime(), GP::BattleMenuStateBaseColor(),
+            GP::BattleMenuStateSelectedColor());
         m_addTween(tw1);
 
-        auto tw2 = jt::TweenColor::create(m_menu2Text0, GP::BattleMenuTweenTime(),
-            GP::BattleMenuStateSelectedColor(), GP::BattleMenuStateBaseColor());
+        auto tw2 = jt::TweenColor::create(m_menu2Text0,
+            GP::BattleMenuTweenTime(), GP::BattleMenuStateSelectedColor(),
+            GP::BattleMenuStateBaseColor());
         m_addTween(tw2);
     }
 }
@@ -114,14 +123,16 @@ void BattleMenu::doUpdate(float const elapsed)
 
         bool anyPressed = false;
 
-        if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
+        if (kb->justReleased(jt::KeyCode::W)
+            || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu1Index--;
             if (m_selectorMenu1Index < 0) {
                 m_selectorMenu1Index = maxIndex1;
             }
             anyPressed = true;
         }
-        if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
+        if (kb->justReleased(jt::KeyCode::S)
+            || kb->justReleased(jt::KeyCode::Down)) {
             m_selectorMenu1Index++;
             if (m_selectorMenu1Index > maxIndex1) {
                 m_selectorMenu1Index = 0;
@@ -140,8 +151,21 @@ void BattleMenu::doUpdate(float const elapsed)
                 m_menu2Text1->setText("Shotgun");
                 // TODO check available options based on player inventory
             } else if (m_selectorMenu1Index == 1) {
-                m_menu2Text0->setText("Medkit");
-                m_menu2Text1->setText("Molotov");
+
+                m_menu2Text0->setText(std::format("Medkit [{}]",
+                    m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits));
+                // change color to gray n = 0
+                if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits
+                    == 0) {
+                    m_menu2Text0->setColor(jt::colors::Gray);
+                }
+
+                m_menu2Text1->setText(std::format("Molotov [{}]",
+                    m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov));
+                if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov
+                    == 0) {
+                    m_menu2Text1->setColor(jt::colors::Gray);
+                }
                 // TODO check available options based on player inventory
             }
         }
@@ -158,24 +182,31 @@ void BattleMenu::doUpdate(float const elapsed)
                     enemy->isChosen(false);
                 }
 
-                if (kb->justReleased(jt::KeyCode::D) || kb->justReleased(jt::KeyCode::Right)) {
+                if (kb->justReleased(jt::KeyCode::D)
+                    || kb->justReleased(jt::KeyCode::Right)) {
                     m_chosen_enemy++;
                     if (m_chosen_enemy >= m_stateEncounter->m_enemies->size()) {
                         m_chosen_enemy = 0;
                     }
                 }
                 if (m_chosen_enemy < m_stateEncounter->m_enemies->size()) {
-                    auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
+                    auto const enemy
+                        = m_stateEncounter->m_enemies->at(m_chosen_enemy)
+                              .lock();
                     enemy->isChosen(true);
                 }
-                if (kb->justReleased(jt::KeyCode::A) || kb->justReleased(jt::KeyCode::Left)) {
+                if (kb->justReleased(jt::KeyCode::A)
+                    || kb->justReleased(jt::KeyCode::Left)) {
                     m_chosen_enemy--;
                     if (m_chosen_enemy < 0) {
-                        m_chosen_enemy = m_stateEncounter->m_enemies->size() - 1;
+                        m_chosen_enemy
+                            = m_stateEncounter->m_enemies->size() - 1;
                     }
                 }
                 if (m_chosen_enemy < m_stateEncounter->m_enemies->size()) {
-                    auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
+                    auto const enemy
+                        = m_stateEncounter->m_enemies->at(m_chosen_enemy)
+                              .lock();
                     enemy->isChosen(true);
                 }
 
@@ -207,7 +238,9 @@ void BattleMenu::doUpdate(float const elapsed)
                 if (m_selectorMenu2Index == 0) {
 
                     // Melee
-                    auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
+                    auto const enemy
+                        = m_stateEncounter->m_enemies->at(m_chosen_enemy)
+                              .lock();
                     enemy->getDamage(Damage { 5.0f, DamageType::Normal });
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
 
@@ -225,22 +258,37 @@ void BattleMenu::doUpdate(float const elapsed)
                     m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {
-                // TODO limit number of available items so they cannot be reused over and over
-                // again
+                // TODO limit number of available items so they cannot be reused
+                // over and over again
                 if (m_selectorMenu2Index == 0) {
                     // Healing
-                    m_stateEncounter->damagePlayer(Damage { -4.0f, DamageType::Heal });
-
-                    m_state = BattleMenuState::Menu1;
-                    m_triggerNextActor();
+                    if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits
+                        > 0) {
+                        m_stateEncounter->damagePlayer(
+                            Damage { -4.0f, DamageType::Heal });
+                        m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits
+                            -= 1;
+                        m_state = BattleMenuState::Menu1;
+                        m_triggerNextActor();
+                    } else {
+                        // m_menu2Text0.flicker(0.25f, jt::colors::Red);
+                        //  flash text red
+                    }
                 } else if (m_selectorMenu2Index == 1) {
                     // Molotov
-                    for (auto const& e : *m_stateEncounter->m_enemies) {
-                        auto const enemy = e.lock();
-                        enemy->getDamage(Damage { 3.0f, DamageType::Fire });
+                    if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov
+                        > 0) {
+                        for (auto const& e : *m_stateEncounter->m_enemies) {
+                            auto const enemy = e.lock();
+                            enemy->getDamage(Damage { 3.0f, DamageType::Fire });
+                        }
+                        m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov
+                            -= 1;
+                        m_state = BattleMenuState::Menu1;
+                        m_triggerNextActor();
+                    } else {
+                        // flash text red
                     }
-                    m_state = BattleMenuState::Menu1;
-                    m_triggerNextActor();
                 }
             }
         }
@@ -253,7 +301,8 @@ void BattleMenu::doUpdate(float const elapsed)
             }
         }
         bool anyPressed = false;
-        if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
+        if (kb->justReleased(jt::KeyCode::W)
+            || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu2Index--;
             if (m_selectorMenu2Index < 0) {
 
@@ -262,7 +311,8 @@ void BattleMenu::doUpdate(float const elapsed)
 
             anyPressed = true;
         }
-        if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
+        if (kb->justReleased(jt::KeyCode::S)
+            || kb->justReleased(jt::KeyCode::Down)) {
             m_selectorMenu2Index++;
             if (m_selectorMenu2Index > maxIndex2) {
                 m_selectorMenu2Index = 0;
@@ -283,10 +333,12 @@ void BattleMenu::doUpdate(float const elapsed)
     m_menu2Text0->update(elapsed);
     m_menu2Text1->update(elapsed);
 
-    m_selector1->setPosition(jt::Vector2f { 22.0f, 23.0f + 20.0f * m_selectorMenu1Index });
+    m_selector1->setPosition(
+        jt::Vector2f { 22.0f, 23.0f + 20.0f * m_selectorMenu1Index });
     m_selector1->update(elapsed);
 
-    m_selector2->setPosition(jt::Vector2f { 120.0f, 23.0f + 20.0f * m_selectorMenu2Index });
+    m_selector2->setPosition(
+        jt::Vector2f { 120.0f, 23.0f + 20.0f * m_selectorMenu2Index });
     m_selector2->update(elapsed);
 }
 
