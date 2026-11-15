@@ -14,13 +14,11 @@ void BattleMenu::doCreate()
 {
     m_backgroundMenu1
         = std::make_shared<jt::Sprite>("assets/battle_menu_background.png", textureManager());
-    m_backgroundMenu1->setPosition({ 16.0f, 16.0f });
-    m_backgroundMenu1->setColor(GP::BattleMenuBackgroundColor());
+    m_backgroundMenu1->setPosition({ 16.0f, 12.0f });
 
     m_backgroundMenu2
         = std::make_shared<jt::Sprite>("assets/battle_menu_background.png", textureManager());
-    m_backgroundMenu2->setPosition({ 112.0f, 16.0f });
-    m_backgroundMenu2->setColor(GP::BattleMenuBackgroundColor());
+    m_backgroundMenu2->setPosition({ 112.0f, 12.0f });
 
     m_menu1TextAttack = jt::dh::createText(renderTarget(), "Attack", 16u);
     m_menu1TextAttack->setTextAlign(jt::Text::TextAlign::LEFT);
@@ -36,13 +34,13 @@ void BattleMenu::doCreate()
     m_menu2Text0 = jt::dh::createText(renderTarget(), "Melee", 16u);
     m_menu2Text0->setTextAlign(jt::Text::TextAlign::LEFT);
     m_menu2Text0->setOffset(jt::Vector2f { 0.0f, -8.0f });
-    m_menu2Text0->setPosition({ 130.0f, 20.0f + 20.0f * 0.0f });
+    m_menu2Text0->setPosition({ 124.0f, 20.0f + 20.0f * 0.0f });
     m_menu2Text0->setColor(GP::BattleMenuStateSelectedColor());
 
     m_menu2Text1 = jt::dh::createText(renderTarget(), "Pistol", 16u);
     m_menu2Text1->setTextAlign(jt::Text::TextAlign::LEFT);
     m_menu2Text1->setOffset(jt::Vector2f { 0.0f, -8.0f });
-    m_menu2Text1->setPosition({ 130.0f, 20.0f + 20.0f * 1.0f });
+    m_menu2Text1->setPosition({ 124.0f, 20.0f + 20.0f * 1.0f });
 
     m_selector1 = std::make_shared<jt::Shape>();
     m_selector1->makeCircle(2.0f, textureManager());
@@ -52,7 +50,7 @@ void BattleMenu::doCreate()
 
     m_selector2 = std::make_shared<jt::Shape>();
     m_selector2->makeCircle(2.0f, textureManager());
-    m_selector2->setPosition({ 122.0f, 23.0f });
+    m_selector2->setPosition({ 120.0f, 23.0f });
     m_selector2->setColor(GP::BattleMenuSelectorColor());
     m_selector2->setOffset(jt::OffsetMode::CENTER);
 }
@@ -246,7 +244,7 @@ void BattleMenu::doUpdate(float const elapsed)
     m_selector1->setPosition(jt::Vector2f { 22.0f, 23.0f + 20.0f * m_selectorMenu1Index });
     m_selector1->update(elapsed);
 
-    m_selector2->setPosition(jt::Vector2f { 122.0f, 23.0f + 20.0f * m_selectorMenu2Index });
+    m_selector2->setPosition(jt::Vector2f { 120.0f, 23.0f + 20.0f * m_selectorMenu2Index });
     m_selector2->update(elapsed);
 }
 
