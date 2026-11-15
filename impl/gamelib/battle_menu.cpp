@@ -103,7 +103,17 @@ void BattleMenu::doUpdate(float const elapsed)
 {
     auto const& kb = getGame()->input().keyboard();
     if (m_state == BattleMenuState::Menu1) {
+
+        // unpaint all enemies and hero
+        m_stateEncounter->m_player->setColor(jt::colors::White);
+
+        for (auto const& e : *m_stateEncounter->m_enemies) {
+            auto const enemy = e.lock();
+            enemy->isChosen(false);
+        }
+
         bool anyPressed = false;
+
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
             m_selectorMenu1Index--;
             if (m_selectorMenu1Index < 0) {
@@ -131,7 +141,6 @@ void BattleMenu::doUpdate(float const elapsed)
                 // TODO check available options based on player inventory
             } else if (m_selectorMenu1Index == 1) {
                 m_menu2Text0->setText("Medkit");
-
                 m_menu2Text1->setText("Molotov");
                 // TODO check available options based on player inventory
             }
@@ -141,7 +150,9 @@ void BattleMenu::doUpdate(float const elapsed)
         if (m_selectorMenu1Index == 0) {
             if (m_selectorMenu2Index == 0) {
 
-                // unpaint all enemies
+                // unpaint all enemies and hero
+                m_stateEncounter->m_player->setColor(jt::colors::White);
+
                 for (auto const& e : *m_stateEncounter->m_enemies) {
                     auto const enemy = e.lock();
                     enemy->isChosen(false);
@@ -157,8 +168,33 @@ void BattleMenu::doUpdate(float const elapsed)
                     auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
                     enemy->isChosen(true);
                 }
+                if (kb->justReleased(jt::KeyCode::A) || kb->justReleased(jt::KeyCode::Left)) {
+                    m_chosen_enemy--;
+                    if (m_chosen_enemy < 0) {
+                        m_chosen_enemy = m_stateEncounter->m_enemies->size() - 1;
+                    }
+                }
+                if (m_chosen_enemy < m_stateEncounter->m_enemies->size()) {
+                    auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
+                    enemy->isChosen(true);
+                }
 
             } else if (m_selectorMenu2Index == 1) {
+                m_stateEncounter->m_player->setColor(jt::colors::White);
+                for (auto const& e : *m_stateEncounter->m_enemies) {
+                    auto const enemy = e.lock();
+                    enemy->isChosen(true);
+                }
+            }
+        } else if (m_selectorMenu1Index == 1) {
+            if (m_selectorMenu2Index == 0) {
+                m_stateEncounter->m_player->setColor(jt::colors::Green);
+                for (auto const& e : *m_stateEncounter->m_enemies) {
+                    auto const enemy = e.lock();
+                    enemy->isChosen(false);
+                }
+            } else if (m_selectorMenu2Index == 1) {
+                m_stateEncounter->m_player->setColor(jt::colors::White);
                 for (auto const& e : *m_stateEncounter->m_enemies) {
                     auto const enemy = e.lock();
                     enemy->isChosen(true);
@@ -175,6 +211,7 @@ void BattleMenu::doUpdate(float const elapsed)
                     enemy->getDamage(Damage { 5.0f, DamageType::Normal });
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
 
+                    m_state = BattleMenuState::Menu1;
                     m_triggerNextActor();
 
                 } else if (m_selectorMenu2Index == 1) {
@@ -188,10 +225,13 @@ void BattleMenu::doUpdate(float const elapsed)
                     m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {
-                // TODO limit number of available items so they cannot be reused over and over again
+                // TODO limit number of available items so they cannot be reused over and over
+                // again
                 if (m_selectorMenu2Index == 0) {
                     // Healing
                     m_stateEncounter->damagePlayer(Damage { -4.0f, DamageType::Heal });
+
+                    m_state = BattleMenuState::Menu1;
                     m_triggerNextActor();
                 } else if (m_selectorMenu2Index == 1) {
                     // Molotov
@@ -199,12 +239,14 @@ void BattleMenu::doUpdate(float const elapsed)
                         auto const enemy = e.lock();
                         enemy->getDamage(Damage { 3.0f, DamageType::Fire });
                     }
+                    m_state = BattleMenuState::Menu1;
                     m_triggerNextActor();
                 }
             }
         }
         if (kb->justReleased(jt::KeyCode::Escape)) {
             m_state = BattleMenuState::Menu1;
+            m_stateEncounter->m_player->setColor(jt::colors::White);
             for (auto const& e : *m_stateEncounter->m_enemies) {
                 auto const enemy = e.lock();
                 enemy->isChosen(false);
