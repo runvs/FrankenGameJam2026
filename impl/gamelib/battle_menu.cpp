@@ -297,6 +297,9 @@ void BattleMenu::doUpdate(float const elapsed)
                         m_state = BattleMenuState::Menu1;
                         m_triggerNextActor();
                     } else {
+                        auto snd = getGame()->audio().addTemporarySound(
+                            "event:/menu-error");
+                        snd->play();
                         // m_menu2Text0.flicker(0.25f, jt::colors::Red);
                         //  flash text red
                     }
@@ -313,6 +316,9 @@ void BattleMenu::doUpdate(float const elapsed)
                         m_state = BattleMenuState::Menu1;
                         m_triggerNextActor();
                     } else {
+                        auto snd = getGame()->audio().addTemporarySound(
+                            "event:/menu-error");
+                        snd->play();
                         // flash text red
                     }
                 }

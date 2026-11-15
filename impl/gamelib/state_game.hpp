@@ -8,6 +8,7 @@
 #include "screeneffects/stars.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
+#include <text.hpp>
 #include <memory>
 #include <vector>
 
@@ -56,4 +57,12 @@ private:
 
     void updateLevelEncounters(float elapsed);
     void handleDebugInput();
+
+    std::shared_ptr<jt::Sprite> m_medkitSprite;
+    jt::Vector2f m_medkitPosition { 220.0f, 220.0f };
+    std::shared_ptr<jt::Text> m_medkitText;
+
+    std::shared_ptr<jt::Sprite> m_molotovSprite;
+    jt::Vector2f m_molotovPosition { 260.0f, 220.0f };
+    std::shared_ptr<jt::Text> m_molotovText;
 };
