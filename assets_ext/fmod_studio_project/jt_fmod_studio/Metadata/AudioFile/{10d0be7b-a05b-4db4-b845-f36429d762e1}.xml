@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{10d0be7b-a05b-4db4-b845-f36429d762e1}">
+		<property name="assetPath">
+			<value>voicover/vocoder/voice_02_vocoder.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>23.771428571428572</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cae7f441-fb69-4865-8745-bd7dd48b1565}</destination>
+		</relationship>
+	</object>
+</objects>

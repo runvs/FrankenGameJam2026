@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{4d0ea468-9700-4c71-99de-64a5557463b6}">
+		<property name="assetPath">
+			<value>voicover/normal/voice_09.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.6310204081632653</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cae7f441-fb69-4865-8745-bd7dd48b1565}</destination>
+		</relationship>
+	</object>
+</objects>
