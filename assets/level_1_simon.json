@@ -140,7 +140,7 @@
                         {
                          "name":"encounter_info",
                          "type":"string",
-                         "value":"test_encounter.json"
+                         "value":"single_encounter.json"
                         }],
                  "rotation":0,
                  "type":"",

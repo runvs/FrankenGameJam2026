@@ -1,0 +1,11 @@
+{
+  "enemies": [
+    {
+      "enemyBase": "assets/enemies/test_enemy.json",
+      "level": 1,
+      "position": 0
+    }
+  ],
+  "level_sprite": "enemy_robot_red_eye.aseprite",
+  "background_sprite": "encounterBackground.png"
+}
