@@ -45,7 +45,7 @@ float GP::GetZoom() { return 4.0f; }
 
 jt::Vector2f GP::GetScreenSize() { return GetWindowSize() * (1.0f / GetZoom()); }
 
-jt::Color GP::PaletteBackground() { return GP::getPalette().getColor(4); }
+jt::Color GP::PaletteBackground() { return jt::Color { 20, 22, 35 }; }
 
 jt::Color GP::PaletteFontFront() { return GP::getPalette().getColor(0); }
 

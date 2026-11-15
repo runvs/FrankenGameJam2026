@@ -31,6 +31,11 @@ void StateGame::onCreate()
     m_background->update(0.0f);
     m_background->setZ(GP::LevelZLayerBelowPlayer());
 
+    m_stars = std::make_shared<jt::Stars>(60, jt::Color { 255, 255, 200 }, GP::GetScreenSize());
+    add(m_stars);
+    m_stars->setZ(GP::LevelZLayerBelowPlayer());
+    m_stars->setCamMovementFactor(0.5f);
+
     loadLevel();
 
     createPlayer();
@@ -178,6 +183,7 @@ void StateGame::onUpdate(float const elapsed)
 void StateGame::onDraw() const
 {
     m_background->draw(renderTarget());
+    m_stars->draw();
     drawObjects();
 
     m_vignette->draw();
