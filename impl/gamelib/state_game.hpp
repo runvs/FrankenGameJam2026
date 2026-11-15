@@ -5,6 +5,7 @@
 #include "object_group.hpp"
 #include "player.hpp"
 #include "player_info.hpp"
+#include "screeneffects/stars.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
 #include <memory>
@@ -27,6 +28,7 @@ public:
 
 private:
     std::shared_ptr<jt::Shape> m_background;
+    std::shared_ptr<jt::Stars> m_stars { nullptr };
     std::shared_ptr<jt::Vignette> m_vignette;
     std::shared_ptr<Hud> m_hud;
     std::shared_ptr<jt::Box2DWorldInterface> m_world { nullptr };

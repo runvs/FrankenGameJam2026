@@ -26,6 +26,12 @@ void from_json(nlohmann::json const& j, EnemyBaseInfo& v)
     j.at("hitPointsMax").get_to(v.hitPointsMax);
     j.at("attack").get_to(v.attack);
     j.at("defense").get_to(v.defense);
+    if (j.count("canAttack") != 0) {
+        j.at("canAttack").get_to(v.canAttack);
+    }
+    if (j.count("canHeal") != 0) {
+        j.at("canHeal").get_to(v.canHeal);
+    }
 }
 
 void from_json(nlohmann::json const& j, EnemyEncounterInfo& v)

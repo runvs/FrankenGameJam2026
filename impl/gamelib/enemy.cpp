@@ -1,5 +1,6 @@
 #include "enemy.hpp"
 #include "drawable_helpers.hpp"
+#include "random/random.hpp"
 #include "state_game.hpp"
 #include <encounter/encounter_info.hpp>
 #include <game_interface.hpp>
@@ -19,12 +20,19 @@ Enemy::Enemy(EnemyEncounterInfo const& enemy_encounter_info)
 void Enemy::getDamage(Damage const damage)
 {
     // TODO anim
-    m_enemy_encounter_info.enemyBase.hitPoints -= damage.value;
     if (damage.type == DamageType::Fire) {
         m_fireDamage += damage.value;
     }
-    m_animation->flash(0.25f, jt::colors::Red);
 
+    if (damage.value > 0) {
+        m_enemy_encounter_info.enemyBase.hitPoints -= damage.value;
+        m_animation->flash(0.25f, jt::colors::Red);
+    } else {
+        if (damage.type == DamageType::Heal) {
+            m_animation->flash(0.25f, jt::colors::Green);
+            m_enemy_encounter_info.enemyBase.hitPoints -= damage.value;
+        }
+    }
     // TODO damage resistance
     if (m_enemy_encounter_info.enemyBase.hitPoints <= 0) {
         kill();
@@ -40,20 +48,46 @@ void Enemy::isChosen(bool const setChosen) const
     }
 }
 
-void Enemy::doAction(StateEncounter& state_encounter)
+bool Enemy::handleFireDamage()
 {
     if (m_fireDamage > 0) {
         getDamage(Damage { m_fireDamage, DamageType::Normal });
         m_fireDamage -= 1.0f;
         if (!isAlive()) {
-            return;
+            return true;
         }
+    }
+    return false;
+}
+
+void Enemy::doAction(StateEncounter& state_encounter)
+{
+    if (handleFireDamage()) {
+        return;
     }
     m_animation->flash(0.25f, jt::colors::Green);
 
-    state_encounter.damagePlayer(
-        Damage { getLeveled(m_enemy_encounter_info).attack, DamageType::Normal });
-
+    if (m_enemy_encounter_info.enemyBase.canAttack) {
+        state_encounter.damagePlayer(
+            Damage { getLeveled(m_enemy_encounter_info).attack, DamageType::Normal });
+    } else {
+        if (m_enemy_encounter_info.enemyBase.canHeal) {
+            if (state_encounter.m_enemies->size() != 0) {
+                for (auto enemy : *state_encounter.m_enemies) {
+                    auto e = enemy.lock();
+                    if (!e) {
+                        continue;
+                    }
+                    auto& info = e->m_enemy_encounter_info.enemyBase;
+                    if (info.hitPoints >= info.hitPointsMax) {
+                        continue;
+                    }
+                    e->getDamage(Damage { -3.0f, DamageType::Heal });
+                    break;
+                }
+            }
+        }
+    }
     // std::cout << "!!!!!trigger next actor from enemy doAction\n";
     state_encounter.nextActor();
 }

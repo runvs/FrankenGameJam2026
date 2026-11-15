@@ -23,6 +23,7 @@ public:
     void doAction(StateEncounter& state_encounter);
 
     void isChosen(bool setChosen) const;
+    bool handleFireDamage();
 
 private:
     // enemy stats
