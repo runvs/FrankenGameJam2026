@@ -7,10 +7,10 @@ public:
     explicit PlayerInfo();
 
     void getDamage(Damage damage);
-    float m_hitPointsMax { 100.0f };
-    float m_hitPoints { 100.0f };
-    float m_attack { 10.0f };
-    float m_defense { 10.0f };
+    float m_hitPointsMax;
+    float m_hitPoints;
+    float m_attack;
+    float m_defense;
 
     std::string getHealthText();
 
