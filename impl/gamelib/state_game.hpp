@@ -56,7 +56,7 @@ private:
     void createPlayer();
     void cleanUpLoadedLevel();
 
-    void loadLevel(std::string const& levelName = "assets/level_1.json");
+    void loadLevel(std::string const& levelName = "assets/level_1_simon.json");
 
     void updateLevelEncounters(float elapsed);
     void handleDebugInput();
