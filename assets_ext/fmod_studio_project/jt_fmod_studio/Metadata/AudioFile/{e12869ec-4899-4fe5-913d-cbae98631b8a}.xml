@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{2882ae54-1eb3-49e1-8ef1-506aada0cbe0}">
+	<object class="AudioFile" id="{e12869ec-4899-4fe5-913d-cbae98631b8a}">
 		<property name="assetPath">
-			<value>fgj25-theme.mp3</value>
+			<value>fgj26-theme.mp3</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>
@@ -11,10 +11,10 @@
 			<value>44.0999985</value>
 		</property>
 		<property name="channelCount">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>113.16244897959184</value>
+			<value>44.199183673469385</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{cae7f441-fb69-4865-8745-bd7dd48b1565}</destination>
