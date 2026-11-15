@@ -113,4 +113,10 @@ float GP::PlayerInitialDefense() { return 10.0f; }
 
 float GP::BattleSpaceWasPressedTimer() { return 1.3f; }
 
+float GP::ArmorDef1() { return 0.1f; }
+
+float GP::ArmorDef2() { return 0.15f; }
+
+float GP::ArmorDef3() { return 0.2f; }
+
 float GP::CameraMarginTileScaleValue() { return 3.0f; }

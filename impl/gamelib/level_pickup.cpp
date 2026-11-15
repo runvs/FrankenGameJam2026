@@ -17,6 +17,12 @@ void LevelPickup::doCreate()
         m_sprite = std::make_shared<jt::Sprite>("assets/medkit.png", textureManager());
     } else if (m_type == PickupType::Molotov) {
         m_sprite = std::make_shared<jt::Sprite>("assets/molotov.png", textureManager());
+    } else if (m_type == PickupType::Armor1) {
+        m_sprite = std::make_shared<jt::Sprite>("assets/armor1.png", textureManager());
+    } else if (m_type == PickupType::Armor2) {
+        m_sprite = std::make_shared<jt::Sprite>("assets/armor2.png", textureManager());
+    } else if (m_type == PickupType::Armor3) {
+        m_sprite = std::make_shared<jt::Sprite>("assets/armor3.png", textureManager());
     }
     m_sprite->setPosition(m_pos);
     m_sprite->setZ(GP::LevelZLayerPlayer());

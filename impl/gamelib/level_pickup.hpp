@@ -4,11 +4,7 @@
 
 #include <cstdint>
 
-enum class PickupType : std::uint8_t {
-    Medkit,
-    Molotov
-    // TODO armor1, 2, 3
-};
+enum class PickupType : std::uint8_t { Medkit, Molotov, Armor1, Armor2, Armor3 };
 
 class LevelPickup : public jt::GameObject {
 public:

@@ -132,9 +132,27 @@ void StateGame::loadLevel(std::string const& levelName)
     m_levelPickups = std::make_shared<jt::ObjectGroup<LevelPickup>>();
 
     for (auto const& pickupInfoRect : m_level->getPickups()) {
-        PickupType const type = pickupInfoRect.properties.strings.at("type") == "medkit"
-            ? PickupType::Medkit
-            : PickupType::Molotov;
+
+        auto const lookup = [](std::string const& type) {
+            if (type == "medkit") {
+                return PickupType::Medkit;
+            }
+            if (type == "molotov") {
+                return PickupType::Molotov;
+            }
+            if (type == "armor1") {
+                return PickupType::Armor1;
+            }
+            if (type == "armor2") {
+                return PickupType::Armor2;
+            }
+            if (type == "armor3") {
+                return PickupType::Armor3;
+            }
+            return PickupType::Medkit;
+        };
+
+        PickupType const type = lookup(pickupInfoRect.properties.strings.at("type"));
         auto pickup = std::make_shared<LevelPickup>(type, pickupInfoRect.position);
         add(pickup);
         m_levelPickups->push_back(pickup);
@@ -158,6 +176,12 @@ void StateGame::updateLevelPickups(float const elapsed)
                 m_playerInfo.m_nMedKits++;
             } else if (pickup->getPickupType() == PickupType::Molotov) {
                 m_playerInfo.m_nMolotov++;
+            } else if (pickup->getPickupType() == PickupType::Armor1) {
+                m_playerInfo.m_defense += GP::ArmorDef1();
+            } else if (pickup->getPickupType() == PickupType::Armor2) {
+                m_playerInfo.m_defense += GP::ArmorDef2();
+            } else if (pickup->getPickupType() == PickupType::Armor3) {
+                m_playerInfo.m_defense += GP::ArmorDef3();
             }
         }
     }

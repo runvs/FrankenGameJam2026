@@ -71,4 +71,8 @@ public:
     static float PlayerInitialDefense();
 
     static float BattleSpaceWasPressedTimer();
+
+    static float ArmorDef1();
+    static float ArmorDef2();
+    static float ArmorDef3();
 };
