@@ -28,7 +28,7 @@ jt::Palette createPalette()
 
 std::string GP::GameName() { return "2101"; }
 
-std::string GP::AuthorName() { return "kguenth, CoffeeMugTwo, Laguna"; }
+std::string GP::AuthorName() { return "adkiem, kguenth, CoffeeMugTwo, Laguna"; }
 
 std::string GP::JamName() { return "FGJ"; }
 
