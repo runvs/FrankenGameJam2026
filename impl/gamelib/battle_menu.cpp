@@ -232,7 +232,7 @@ void BattleMenu::doUpdate(float const elapsed)
                 if (m_selectorMenu2Index == 0) {
 
                     // Melee
-                    auto snd = getGame()->audio().addTemporarySound("event:/step-metall");
+                    auto snd = getGame()->audio().addTemporarySound("event:/attack-melee");
                     snd->play();
                     auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
                     enemy->getDamage(Damage { 5.0f, DamageType::Normal });
