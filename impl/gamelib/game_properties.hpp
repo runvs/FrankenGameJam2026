@@ -69,4 +69,6 @@ public:
     static float PlayerInitialHitPoints();
     static float PlayerInitialAttack();
     static float PlayerInitialDefense();
+
+    static float BattleSpaceWasPressedTimer();
 };
