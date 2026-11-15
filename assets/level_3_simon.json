@@ -250,7 +250,7 @@
                         {
                          "name":"door_id",
                          "type":"int",
-                         "value":0
+                         "value":3
                         }, 
                         {
                          "name":"type",
