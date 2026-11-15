@@ -117,6 +117,8 @@ void BattleMenu::doUpdate(float const elapsed)
         bool anyPressed = false;
 
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
+            auto snd = getGame()->audio().addTemporarySound("event:/menu-select");
+            snd->play();
             m_selectorMenu1Index--;
             if (m_selectorMenu1Index < 0) {
                 m_selectorMenu1Index = maxIndex1;
@@ -124,6 +126,8 @@ void BattleMenu::doUpdate(float const elapsed)
             anyPressed = true;
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
+            auto snd = getGame()->audio().addTemporarySound("event:/menu-select");
+            snd->play();
             m_selectorMenu1Index++;
             if (m_selectorMenu1Index > maxIndex1) {
                 m_selectorMenu1Index = 0;
@@ -136,6 +140,8 @@ void BattleMenu::doUpdate(float const elapsed)
         }
 
         if (kb->justReleased(jt::KeyCode::Space)) {
+            auto snd = getGame()->audio().addTemporarySound("event:/menu-space-bar");
+            snd->play();
             m_state = BattleMenuState::Menu2;
             if (m_selectorMenu1Index == 0) {
                 m_menu2Text0->setText("Melee");
@@ -161,6 +167,8 @@ void BattleMenu::doUpdate(float const elapsed)
                 }
 
                 if (kb->justReleased(jt::KeyCode::D) || kb->justReleased(jt::KeyCode::Right)) {
+                    auto snd = getGame()->audio().addTemporarySound("event:/menu-select");
+                    snd->play();
                     m_chosen_enemy++;
                     if (m_chosen_enemy >= m_stateEncounter->m_enemies->size()) {
                         m_chosen_enemy = 0;
@@ -171,6 +179,8 @@ void BattleMenu::doUpdate(float const elapsed)
                     enemy->isChosen(true);
                 }
                 if (kb->justReleased(jt::KeyCode::A) || kb->justReleased(jt::KeyCode::Left)) {
+                    auto snd = getGame()->audio().addTemporarySound("event:/menu-select");
+                    snd->play();
                     m_chosen_enemy--;
                     if (m_chosen_enemy < 0) {
                         m_chosen_enemy = m_stateEncounter->m_enemies->size() - 1;
@@ -209,6 +219,8 @@ void BattleMenu::doUpdate(float const elapsed)
                 if (m_selectorMenu2Index == 0) {
 
                     // Melee
+                    auto snd = getGame()->audio().addTemporarySound("event:/step-metall");
+                    snd->play();
                     auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
                     enemy->getDamage(Damage { 5.0f, DamageType::Normal });
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
@@ -251,6 +263,8 @@ void BattleMenu::doUpdate(float const elapsed)
             }
         }
         if (kb->justReleased(jt::KeyCode::Escape)) {
+            auto snd = getGame()->audio().addTemporarySound("event:/menu-error");
+            snd->play();
             m_state = BattleMenuState::Menu1;
             m_stateEncounter->m_player->setColor(jt::colors::White);
             for (auto const& e : *m_stateEncounter->m_enemies) {
@@ -260,6 +274,8 @@ void BattleMenu::doUpdate(float const elapsed)
         }
         bool anyPressed = false;
         if (kb->justReleased(jt::KeyCode::W) || kb->justReleased(jt::KeyCode::Up)) {
+            auto snd = getGame()->audio().addTemporarySound("event:/menu-select");
+            snd->play();
             m_selectorMenu2Index--;
             if (m_selectorMenu2Index < 0) {
 
@@ -269,6 +285,8 @@ void BattleMenu::doUpdate(float const elapsed)
             anyPressed = true;
         }
         if (kb->justReleased(jt::KeyCode::S) || kb->justReleased(jt::KeyCode::Down)) {
+            auto snd = getGame()->audio().addTemporarySound("event:/menu-select");
+            snd->play();
             m_selectorMenu2Index++;
             if (m_selectorMenu2Index > maxIndex2) {
                 m_selectorMenu2Index = 0;
