@@ -127,6 +127,7 @@ void StateGame::loadLevel(std::string const& levelName)
 
         std::ifstream f { encounterJson };
         nlohmann::json const j = nlohmann::json::parse(f);
+
         EncounterInfo encounterInfo = j;
 
         auto levelEncounter
@@ -209,7 +210,7 @@ void StateGame::updateLevelEncounters(float const elapsed)
             // TODO trigger encounter
             m_running = false;
             encounter->kill();
-            
+
             getGame()->stateManager().storeCurrentState("beforeEncounter");
             auto encounter_state = std::make_shared<StateEncounter>(encounter->getEncounterInfo());
             encounter_state->m_stateGame = this;

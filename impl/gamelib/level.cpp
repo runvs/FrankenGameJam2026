@@ -99,7 +99,6 @@ jt::Vector2f Level::getPlayerStartingPos() const
         auto const type = obj.properties.strings.at("type");
         auto const door_id = obj.properties.ints.at("door_id");
         if (type == "player_start" && door_id == 0) {
-
             return obj.position + GP::LevelTileSize() * 0.5;
         }
     }
@@ -110,9 +109,11 @@ jt::Vector2f Level::getDoorPosition(int const expected_door_id) const
 {
     for (auto const& obj : m_objectsLayer->getObjects()) {
         auto const type = obj.properties.strings.at("type");
-        auto const door_id = obj.properties.ints.at("door_id");
-        if (type == "player_start" && door_id == expected_door_id) {
-            return obj.position + GP::LevelTileSize() * 0.5;
+        if (type != "voice") {
+            auto const door_id = obj.properties.ints.at("door_id");
+            if (type == "player_start" && door_id == expected_door_id) {
+                return obj.position + GP::LevelTileSize() * 0.5;
+            }
         }
     }
 
