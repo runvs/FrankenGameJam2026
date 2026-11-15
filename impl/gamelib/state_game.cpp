@@ -66,6 +66,7 @@ void StateGame::cleanUpLoadedLevel()
         encounter->kill();
     }
     m_level->getColliders().clear();
+    m_level->kill();
 }
 
 void StateGame::loadLevel(std::string const& levelName)
@@ -73,8 +74,7 @@ void StateGame::loadLevel(std::string const& levelName)
     // clean up old level
     cleanUpLoadedLevel();
 
-    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(),
-        levelName };
+    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(), levelName };
 
     m_level = std::make_shared<Level>(m_world);
 
@@ -91,8 +91,8 @@ void StateGame::loadLevel(std::string const& levelName)
         nlohmann::json const j = nlohmann::json::parse(f);
         EncounterInfo encounterInfo = j;
 
-        auto levelEncounter = std::make_shared<LevelEncounter>(
-            encounterInfo, encounterInfoRect.position);
+        auto levelEncounter
+            = std::make_shared<LevelEncounter>(encounterInfo, encounterInfoRect.position);
         m_levelEncounters->push_back(levelEncounter);
         add(levelEncounter);
     }
@@ -112,8 +112,7 @@ void StateGame::updateLevelEncounters(float const elapsed)
             m_running = false;
             encounter->kill();
             getGame()->stateManager().storeCurrentState("beforeEncounter");
-            auto encounter_state = std::make_shared<StateEncounter>(
-                encounter->getEncounterInfo());
+            auto encounter_state = std::make_shared<StateEncounter>(encounter->getEncounterInfo());
             encounter_state->m_stateGame = this;
             getGame()->stateManager().switchState(encounter_state);
         }
@@ -142,11 +141,9 @@ void StateGame::onUpdate(float const elapsed)
         m_world->step(elapsed, GP::PhysicSubSteps());
         handleDebugInput();
 
-        float const margin
-            = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
-        jt::CameraHelpers::followWithMargin(getGame()->gfx().camera(),
-            m_player->getPosition(), GP::GetScreenSize(), elapsed, margin,
-            GP::CameraSpeed());
+        float const margin = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
+        jt::CameraHelpers::followWithMargin(getGame()->gfx().camera(), m_player->getPosition(),
+            GP::GetScreenSize(), elapsed, margin, GP::CameraSpeed());
 
         // TODO change level mechanic
         for (auto const& o : m_level->getObjects()) {
@@ -160,14 +157,11 @@ void StateGame::onUpdate(float const elapsed)
             auto const pos = o.position;
             auto const distance = jt::MathHelper::distanceBetween(
                 pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
-            if (distance
-                <= jt::MathHelper::length(GP::LevelTileSize()) * 0.25f) {
-                auto const new_level_name
-                    = o.properties.strings.at("new_level_name");
+            if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.25f) {
+                auto const new_level_name = o.properties.strings.at("new_level_name");
                 auto const door_id = o.properties.ints.at("door_id");
                 std::cout << "trigger level change: " << new_level_name << "\n";
-                loadLevel((std::filesystem::path { "assets" } / new_level_name)
-                        .string());
+                loadLevel((std::filesystem::path { "assets" } / new_level_name).string());
                 m_player->setPosition(m_level->getDoorPosition(door_id));
                 getGame()->gfx().camera().setCamOffset(
                     m_player->getPosition() - GP::GetScreenSize() * 0.5f);
