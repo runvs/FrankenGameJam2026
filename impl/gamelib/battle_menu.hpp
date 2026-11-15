@@ -1,6 +1,7 @@
 #pragma once
 
 #include "shape.hpp"
+#include "sprite.hpp"
 #include "text.hpp"
 #include "tweens/tween_interface.hpp"
 #include <game_object.hpp>
@@ -24,8 +25,8 @@ private:
     void doUpdate(float elapsed) override;
     void doDraw() const override;
 
-    std::shared_ptr<jt::Shape> m_backgroundMenu1;
-    std::shared_ptr<jt::Shape> m_backgroundMenu2;
+    std::shared_ptr<jt::Sprite> m_backgroundMenu1;
+    std::shared_ptr<jt::Sprite> m_backgroundMenu2;
     std::shared_ptr<jt::Shape> m_selector1;
     std::shared_ptr<jt::Shape> m_selector2;
 

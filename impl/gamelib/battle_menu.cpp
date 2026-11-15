@@ -12,13 +12,13 @@ constexpr int maxIndex1 = 1;
 
 void BattleMenu::doCreate()
 {
-    m_backgroundMenu1 = std::make_shared<jt::Shape>();
-    m_backgroundMenu1->makeRect(jt::Vector2f { 80.0f, 90.0f }, textureManager());
+    m_backgroundMenu1
+        = std::make_shared<jt::Sprite>("assets/battle_menu_background.png", textureManager());
     m_backgroundMenu1->setPosition({ 16.0f, 16.0f });
     m_backgroundMenu1->setColor(GP::BattleMenuBackgroundColor());
 
-    m_backgroundMenu2 = std::make_shared<jt::Shape>();
-    m_backgroundMenu2->makeRect(jt::Vector2f { 80.0f, 90.0f }, textureManager());
+    m_backgroundMenu2
+        = std::make_shared<jt::Sprite>("assets/battle_menu_background.png", textureManager());
     m_backgroundMenu2->setPosition({ 112.0f, 16.0f });
     m_backgroundMenu2->setColor(GP::BattleMenuBackgroundColor());
 
