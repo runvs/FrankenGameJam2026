@@ -123,6 +123,7 @@ void StateGame::loadLevel(std::string const& levelName)
     for (auto const& encounterInfoRect : m_level->getEncounters()) {
         auto const encounterJson = std::filesystem::path { "assets" }
             / encounterInfoRect.properties.strings.at("encounter_info");
+
         std::ifstream f { encounterJson };
         nlohmann::json const j = nlohmann::json::parse(f);
         EncounterInfo encounterInfo = j;
@@ -175,6 +176,8 @@ void StateGame::updateLevelPickups(float const elapsed)
         if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.75f) {
             std::cout << "trigger pickup\n";
             pickup->kill();
+            auto snd = getGame()->audio().addTemporarySound("event:/pickup-item");
+            snd->play();
 
             if (pickup->getPickupType() == PickupType::Medkit) {
                 m_playerInfo.m_nMedKits++;
@@ -254,6 +257,7 @@ void StateGame::update_voice_lines(jt::tilemap::InfoRect const& o)
     }
 
     auto const& voiceId = o.properties.strings.at("voice_id");
+
     auto const [_, isNew] = m_playedVoiceLines.insert(voiceId);
     if (!isNew) {
         return;
