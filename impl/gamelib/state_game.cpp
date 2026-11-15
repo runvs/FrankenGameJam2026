@@ -74,7 +74,11 @@ void StateGame::onCreate()
     setAutoDraw(false);
 }
 
-void StateGame::onEnter() { m_running = true; }
+void StateGame::onEnter()
+{
+    m_running = true;
+    getGame()->gfx().camera().setCamOffset(m_player->getPosition() - GP::GetScreenSize() * 0.5f);
+}
 
 void StateGame::createPlayer()
 {
