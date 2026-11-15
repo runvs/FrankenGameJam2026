@@ -1,0 +1,16 @@
+{
+  "enemies": [
+    {
+      "enemyBase": "assets/enemies/cube.json",
+      "level": 7,
+      "position": 0
+    },
+    {
+      "enemyBase": "assets/enemies/test_enemy.json",
+      "level": 3,
+      "position": 0
+    }
+  ],
+  "level_sprite": "enemy_cube.aseprite",
+  "background_sprite": "encounterBackground.png"
+}
