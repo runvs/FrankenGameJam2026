@@ -75,4 +75,5 @@ public:
     static float ArmorDef1();
     static float ArmorDef2();
     static float ArmorDef3();
+    static float MolotovDamage();
 };

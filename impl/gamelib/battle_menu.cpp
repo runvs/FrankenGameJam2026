@@ -160,7 +160,7 @@ void BattleMenu::doUpdate(float const elapsed)
             m_state = BattleMenuState::Menu2;
             if (m_selectorMenu1Index == 0) {
                 m_menu2Text0->setText("Melee");
-                
+
                 m_menu2Text1->setText("Shotgun");
                 // TODO check available options based on player inventory
             } else if (m_selectorMenu1Index == 1) {
@@ -301,7 +301,7 @@ void BattleMenu::doUpdate(float const elapsed)
                     if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov > 0) {
                         for (auto const& e : *m_stateEncounter->m_enemies) {
                             auto const enemy = e.lock();
-                            enemy->getDamage(Damage { 3.0f, DamageType::Fire });
+                            enemy->getDamage(Damage { GP::MolotovDamage(), DamageType::Fire });
                         }
                         m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov -= 1;
                         m_state = BattleMenuState::Menu1;

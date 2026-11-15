@@ -3,6 +3,7 @@
 #include "camera_helpers.hpp"
 #include "drawable_helpers.hpp"
 #include "state_encounter.hpp"
+#include "state_manager/state_manager_transition_horizontal_bars.hpp"
 #include <box2dwrapper/box2d_world_impl.hpp>
 #include <color/color.hpp>
 #include <game_interface.hpp>
@@ -204,12 +205,20 @@ void StateGame::updateLevelEncounters(float const elapsed)
             pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
         if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.75f) {
             std::cout << "trigger encounter\n";
+
             // TODO trigger encounter
             m_running = false;
             encounter->kill();
+            
             getGame()->stateManager().storeCurrentState("beforeEncounter");
             auto encounter_state = std::make_shared<StateEncounter>(encounter->getEncounterInfo());
             encounter_state->m_stateGame = this;
+            getGame()->stateManager().setTransition(
+                std::make_shared<jt::StateManagerTransitionHorizontalBars>(
+                    jt::Vector2f {
+                        getGame()->gfx().window().getSize().x / getGame()->gfx().camera().getZoom(),
+                        16 },
+                    20, 0.5f, textureManager()));
             getGame()->stateManager().switchState(encounter_state);
             auto snd = getGame()->audio().addTemporarySound("event:/enter-fight");
             snd->play();
