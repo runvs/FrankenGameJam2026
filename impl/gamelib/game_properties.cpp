@@ -109,7 +109,7 @@ float GP::PlayerInitialHitPoints() { return 100.0f; }
 
 float GP::PlayerInitialAttack() { return 10.0f; }
 
-float GP::PlayerInitialDefense() { return 10.0f; }
+float GP::PlayerInitialDefense() { return 0.0f; }
 
 float GP::BattleSpaceWasPressedTimer() { return 1.3f; }
 
