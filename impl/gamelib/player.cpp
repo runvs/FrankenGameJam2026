@@ -84,8 +84,15 @@ void Player::handleMovement(float const elapsed)
         || getGame()->input().keyboard()->pressed(jt::KeyCode::Down)) {
         newVelocity += jt::Vector2f { 0.0f, speed };
     }
+    m_soundStepTimer -= elapsed;
+    if (jt::MathHelper::lengthSquared(newVelocity) > 0.5f) {
+        if (m_soundStepTimer <= 0.0f) {
+            m_soundStepTimer = 0.3f;
+            auto snd = getGame()->audio().addTemporarySound("event:/step");
+            snd->play();
+        }
+    }
 
-    // physObject.setVelocity(newVelocity);
     m_physicsObject->setVelocity(newVelocity);
 }
 

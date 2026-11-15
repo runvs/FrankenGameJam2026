@@ -26,6 +26,8 @@ private:
 
     bool m_isMoving { false };
 
+    float m_soundStepTimer{0.3f};
+
     void doCreate() override;
     void doUpdate(float elapsed) override;
     void doDraw() const override;

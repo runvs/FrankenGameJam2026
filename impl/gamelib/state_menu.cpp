@@ -31,7 +31,9 @@ void StateMenu::onCreate()
         auto bgm = getGame()->audio().getPermanentSound("bgm");
         if (bgm == nullptr) {
             std::cout << "load bgm\n";
+
             bgm = getGame()->audio().addPermanentSound("bgm", "event:/main-theme");
+            bgm->setVolume(0.3f);
             bgm->play();
         }
     } catch (std::exception const& e) {
@@ -226,6 +228,9 @@ void StateMenu::startTransitionToStateGame()
         m_started = true;
         getGame()->stateManager().storeCurrentState("menu");
         getGame()->stateManager().switchState(std::make_shared<StateGame>());
+
+        auto snd = getGame()->audio().addTemporarySound("event:/menu-space-bar");
+        snd->play();
     }
 }
 
