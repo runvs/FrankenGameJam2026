@@ -7,6 +7,7 @@
 #include <game_object.hpp>
 
 class StateEncounter;
+class StateGame;
 
 enum class BattleMenuState { Menu1, Menu2 };
 
