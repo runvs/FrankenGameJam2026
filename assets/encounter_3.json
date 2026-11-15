@@ -1,0 +1,16 @@
+{
+  "enemies": [
+    {
+      "enemyBase": "assets/enemies/tick.json",
+      "level": 4,
+      "position": 0
+    },
+    {
+      "enemyBase": "assets/enemies/healer.json",
+      "level": 2,
+      "position": 1
+    }
+  ],
+  "level_sprite": "enemy_tick.aseprite",
+  "background_sprite": "encounterBackground.png"
+}

@@ -1,0 +1,21 @@
+{
+  "enemies": [
+    {
+      "enemyBase": "assets/enemies/boss.json",
+      "level": 10,
+      "position": 0
+    },
+    {
+      "enemyBase": "assets/enemies/healer.json",
+      "level": 3,
+      "position": 1
+    },
+    {
+      "enemyBase": "assets/enemies/healer.json",
+      "level": 1,
+      "position": 1
+    }
+  ],
+  "level_sprite": "enemy_boss.aseprite",
+  "background_sprite": "encounterBackground.png"
+}
