@@ -71,6 +71,9 @@ void Level::loadTileLayers(jt::tilemap::TilesonLoader& loader)
 
     m_encountersLayer
         = std::make_shared<jt::tilemap::ObjectLayer>(loader.loadObjectsFromLayer("encounters"));
+
+    m_pickupsLayer
+        = std::make_shared<jt::tilemap::ObjectLayer>(loader.loadObjectsFromLayer("pickups"));
 }
 
 std::vector<jt::tilemap::InfoRect> Level::getObjects() const
@@ -81,6 +84,11 @@ std::vector<jt::tilemap::InfoRect> Level::getObjects() const
 std::vector<jt::tilemap::InfoRect> Level::getEncounters() const
 {
     return m_encountersLayer->getObjects();
+}
+
+std::vector<jt::tilemap::InfoRect> Level::getPickups() const
+{
+    return m_pickupsLayer->getObjects();
 }
 
 std::vector<std::shared_ptr<jt::Box2DObject>>& Level::getColliders() { return m_colliders; }

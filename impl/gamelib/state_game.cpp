@@ -32,8 +32,7 @@ void StateGame::onCreate()
     m_background->update(0.0f);
     m_background->setZ(GP::LevelZLayerBelowPlayer());
 
-    m_stars = std::make_shared<jt::Stars>(
-        60, jt::Color { 255, 255, 200 }, GP::GetScreenSize());
+    m_stars = std::make_shared<jt::Stars>(60, jt::Color { 255, 255, 200 }, GP::GetScreenSize());
     add(m_stars);
     m_stars->setZ(GP::LevelZLayerBelowPlayer());
     m_stars->setCamMovementFactor(0.5f);
@@ -51,26 +50,23 @@ void StateGame::onCreate()
     add(m_hud);
 
     // add visualization of medkits and molotov cocktails
-    m_medkitSprite
-        = std::make_shared<jt::Sprite>("assets/medkit.png", textureManager());
+    m_medkitSprite = std::make_shared<jt::Sprite>("assets/medkit.png", textureManager());
     m_medkitSprite->setIgnoreCamMovement(true);
     m_medkitSprite->setZ(GP::LevelZLayerAboveAll());
     m_medkitSprite->setPosition(m_medkitPosition);
 
-    m_medkitText = jt::dh::createText(
-        renderTarget(), std::to_string(m_playerInfo.m_nMedKits), 18u);
+    m_medkitText = jt::dh::createText(renderTarget(), std::to_string(m_playerInfo.m_nMedKits), 18u);
     m_medkitText->setPosition(m_medkitPosition + jt::Vector2f(20.0f, 0));
     m_medkitText->setIgnoreCamMovement(true);
     m_medkitText->setZ(GP::LevelZLayerAboveAll());
 
-    m_molotovSprite
-        = std::make_shared<jt::Sprite>("assets/molotov.png", textureManager());
+    m_molotovSprite = std::make_shared<jt::Sprite>("assets/molotov.png", textureManager());
     m_molotovSprite->setIgnoreCamMovement(true);
     m_molotovSprite->setZ(GP::LevelZLayerAboveAll());
     m_molotovSprite->setPosition(m_molotovPosition);
 
-    m_molotovText = jt::dh::createText(
-        renderTarget(), std::to_string(m_playerInfo.m_nMolotov), 18u);
+    m_molotovText
+        = jt::dh::createText(renderTarget(), std::to_string(m_playerInfo.m_nMolotov), 18u);
     m_molotovText->setPosition(m_molotovPosition + jt::Vector2f(20.0f, 0));
     m_molotovText->setIgnoreCamMovement(true);
     m_molotovText->setZ(GP::LevelZLayerAboveAll());
@@ -96,6 +92,11 @@ void StateGame::cleanUpLoadedLevel()
         auto const encounter = e.lock();
         encounter->kill();
     }
+    for (auto const& p : *m_levelPickups) {
+        auto const pickup = p.lock();
+        pickup->kill();
+    }
+    
     m_level->getColliders().clear();
     m_level->kill();
 }
@@ -105,8 +106,7 @@ void StateGame::loadLevel(std::string const& levelName)
     // clean up old level
     cleanUpLoadedLevel();
 
-    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(),
-        levelName };
+    jt::tilemap::TilesonLoader loader { getGame()->cache().getTilemapCache(), levelName };
 
     m_level = std::make_shared<Level>(m_world);
 
@@ -123,10 +123,21 @@ void StateGame::loadLevel(std::string const& levelName)
         nlohmann::json const j = nlohmann::json::parse(f);
         EncounterInfo encounterInfo = j;
 
-        auto levelEncounter = std::make_shared<LevelEncounter>(
-            encounterInfo, encounterInfoRect.position);
+        auto levelEncounter
+            = std::make_shared<LevelEncounter>(encounterInfo, encounterInfoRect.position);
         m_levelEncounters->push_back(levelEncounter);
         add(levelEncounter);
+    }
+
+    m_levelPickups = std::make_shared<jt::ObjectGroup<LevelPickup>>();
+
+    for (auto const& pickupInfoRect : m_level->getPickups()) {
+        PickupType const type = pickupInfoRect.properties.strings.at("type") == "medkit"
+            ? PickupType::Medkit
+            : PickupType::Molotov;
+        auto pickup = std::make_shared<LevelPickup>(type, pickupInfoRect.position);
+        add(pickup);
+        m_levelPickups->push_back(pickup);
     }
 }
 
@@ -144,8 +155,7 @@ void StateGame::updateLevelEncounters(float const elapsed)
             m_running = false;
             encounter->kill();
             getGame()->stateManager().storeCurrentState("beforeEncounter");
-            auto encounter_state = std::make_shared<StateEncounter>(
-                encounter->getEncounterInfo());
+            auto encounter_state = std::make_shared<StateEncounter>(encounter->getEncounterInfo());
             encounter_state->m_stateGame = this;
             getGame()->stateManager().switchState(encounter_state);
             auto snd = getGame()->audio().addTemporarySound("event:/enter-fight");
@@ -170,41 +180,38 @@ void StateGame::handleDebugInput()
     }
 }
 
+void StateGame::updateExit(jt::tilemap::InfoRect const& o)
+{
+    auto const pos = o.position;
+    auto const distance = jt::MathHelper::distanceBetween(
+        pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
+    if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.25f) {
+        auto const new_level_name = o.properties.strings.at("new_level_name");
+        auto const door_id = o.properties.ints.at("door_id");
+        std::cout << "trigger level change: " << new_level_name << "\n";
+        loadLevel((std::filesystem::path { "assets" } / new_level_name).string());
+        m_player->setPosition(m_level->getDoorPosition(door_id));
+        getGame()->gfx().camera().setCamOffset(
+            m_player->getPosition() - GP::GetScreenSize() * 0.5f);
+    }
+}
+
 void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
         m_world->step(elapsed, GP::PhysicSubSteps());
         handleDebugInput();
 
-        float const margin
-            = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
-        jt::CameraHelpers::followWithMargin(getGame()->gfx().camera(),
-            m_player->getPosition(), GP::GetScreenSize(), elapsed, margin,
-            GP::CameraSpeed());
+        float const margin = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
+        jt::CameraHelpers::followWithMargin(getGame()->gfx().camera(), m_player->getPosition(),
+            GP::GetScreenSize(), elapsed, margin, GP::CameraSpeed());
 
-        // TODO change level mechanic
         for (auto const& o : m_level->getObjects()) {
             if (!o.properties.strings.contains("type")) {
                 continue;
             }
-            if (o.properties.strings.at("type") != "exit") {
-                continue;
-            }
-
-            auto const pos = o.position;
-            auto const distance = jt::MathHelper::distanceBetween(
-                pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
-            if (distance
-                <= jt::MathHelper::length(GP::LevelTileSize()) * 0.25f) {
-                auto const new_level_name
-                    = o.properties.strings.at("new_level_name");
-                auto const door_id = o.properties.ints.at("door_id");
-                std::cout << "trigger level change: " << new_level_name << "\n";
-                loadLevel((std::filesystem::path { "assets" } / new_level_name)
-                        .string());
-                m_player->setPosition(m_level->getDoorPosition(door_id));
-                getGame()->gfx().camera().setCamOffset(
-                    m_player->getPosition() - GP::GetScreenSize() * 0.5f);
+            if (o.properties.strings.at("type") == "exit") {
+                updateExit(o);
             }
         }
 

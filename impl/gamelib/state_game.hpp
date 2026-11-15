@@ -2,6 +2,7 @@
 
 #include "encounter/level_encounter.hpp"
 #include "level.hpp"
+#include "level_pickup.hpp"
 #include "object_group.hpp"
 #include "player.hpp"
 #include "player_info.hpp"
@@ -43,6 +44,7 @@ private:
     std::shared_ptr<Player> m_player { nullptr };
 
     std::shared_ptr<jt::ObjectGroup<LevelEncounter>> m_levelEncounters;
+    std::shared_ptr<jt::ObjectGroup<LevelPickup>> m_levelPickups;
 
     void onCreate() override;
     void onEnter() override;
@@ -57,6 +59,7 @@ private:
 
     void updateLevelEncounters(float elapsed);
     void handleDebugInput();
+    void updateExit(jt::tilemap::InfoRect const& o);
 
     std::shared_ptr<jt::Sprite> m_medkitSprite;
     jt::Vector2f m_medkitPosition { 220.0f, 220.0f };
