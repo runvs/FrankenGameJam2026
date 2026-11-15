@@ -9,6 +9,9 @@ struct EnemyBaseInfo {
     float hitPointsMax { 0.0f };
     float attack { 0.0f };
     float defense { 0.0f };
+
+    bool canAttack { true };
+    bool canHeal { false };
     // TODO more values
 };
 
