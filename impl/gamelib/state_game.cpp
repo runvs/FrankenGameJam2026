@@ -33,7 +33,7 @@ void StateGame::onCreate()
     m_background->update(0.0f);
     m_background->setZ(GP::LevelZLayerBelowPlayer());
 
-    m_stars = std::make_shared<jt::Stars>(60, jt::Color { 255, 255, 200 }, GP::GetScreenSize());
+    m_stars = std::make_shared<jt::Stars>(60, jt::Color { 255, 255, 230 }, GP::GetScreenSize());
     add(m_stars);
     m_stars->setZ(GP::LevelZLayerBelowPlayer());
     m_stars->setCamMovementFactor(0.5f);
