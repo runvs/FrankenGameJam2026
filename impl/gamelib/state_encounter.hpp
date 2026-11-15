@@ -51,10 +51,10 @@ private:
     bool m_hasEnded { false };
 
     std::shared_ptr<jt::Bar> m_playerHealthbar { nullptr };
-    jt::Vector2f m_playerHealthbarPosition { 70.0f, 140.0f };
+    jt::Vector2f m_playerHealthbarPosition { 23.0f, 150.0f };
 
     std::shared_ptr<jt::Text> m_playerHealthtext { nullptr };
-    jt::Vector2f m_playerHealthtextPosition { 70.0f, 140.0f };
+    jt::Vector2f m_playerHealthtextPosition { 49.0f, 147.0f };
 
     std::shared_ptr<BattleMenu> m_battleMenu { nullptr };
     int m_currentActorIndex { -1 }; // -1 = player, all others are indices in m__enemies;

@@ -3,6 +3,8 @@
 #include "drawable_helpers.hpp"
 #include "game_interface.hpp"
 #include "state_encounter.hpp"
+#include "state_game.hpp"
+#include "state_menu.hpp"
 #include "tweens/tween_color.hpp"
 #include <enemy.hpp>
 #include <game_properties.hpp>
@@ -210,10 +212,14 @@ void BattleMenu::doUpdate(float const elapsed)
                     auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
                     enemy->getDamage(Damage { 5.0f, DamageType::Normal });
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
-
+                    if (!enemy->isAlive()) {
+                        m_chosen_enemy++;
+                        if (m_chosen_enemy >= m_stateEncounter->m_enemies->size()) {
+                            m_chosen_enemy = 0;
+                        }
+                    }
                     m_state = BattleMenuState::Menu1;
                     m_triggerNextActor();
-
                 } else if (m_selectorMenu2Index == 1) {
                     // Shotgun
                     for (auto const& e : *m_stateEncounter->m_enemies) {
