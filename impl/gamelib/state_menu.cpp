@@ -79,7 +79,7 @@ void StateMenu::createTextExplanation()
 void StateMenu::createTextCredits()
 {
     m_textCredits = jt::dh::createText(renderTarget(),
-        "Created by " + GP::AuthorName() + " for " + GP::JamName() + "\n" + GP::JamDate()
+        "Created by " + GP::AuthorName() + "\nfor " + GP::JamName() + "\n" + GP::JamDate()
             + "\nF9 for License Information",
         14u, GP::PaletteFontCredits());
     m_textCredits->setTextAlign(jt::Text::TextAlign::LEFT);
