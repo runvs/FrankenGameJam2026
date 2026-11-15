@@ -33,7 +33,6 @@ void StateMenu::onCreate()
             std::cout << "load bgm\n";
 
             bgm = getGame()->audio().addPermanentSound("bgm", "event:/main-theme");
-            bgm->setVolume(0.3f);
             bgm->play();
         }
     } catch (std::exception const& e) {
