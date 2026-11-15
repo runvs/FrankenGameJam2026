@@ -74,7 +74,11 @@ void StateGame::onCreate()
     setAutoDraw(false);
 }
 
-void StateGame::onEnter() { m_running = true; }
+void StateGame::onEnter()
+{
+    m_running = true;
+    getGame()->gfx().camera().setCamOffset(m_player->getPosition() - GP::GetScreenSize() * 0.5f);
+}
 
 void StateGame::createPlayer()
 {
@@ -242,6 +246,24 @@ void StateGame::updateExit(jt::tilemap::InfoRect const& o)
     }
 }
 
+void StateGame::update_voice_lines(jt::tilemap::InfoRect const& o)
+{
+    jt::Rectf const triggerRect { o.position.x, o.position.y, o.size.x, o.size.y };
+    if (!jt::MathHelper::checkIsIn(triggerRect, m_player->getPosition())) {
+        return;
+    }
+
+    auto const& voiceId = o.properties.strings.at("voice_id");
+    auto const [_, isNew] = m_playedVoiceLines.insert(voiceId);
+    if (!isNew) {
+        return;
+    }
+
+    std::cout << "start voice '" << voiceId << "' \n";
+    auto snd = getGame()->audio().addTemporarySound("event:/" + voiceId);
+    snd->play();
+}
+
 void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
@@ -258,6 +280,8 @@ void StateGame::onUpdate(float const elapsed)
             }
             if (o.properties.strings.at("type") == "exit") {
                 updateExit(o);
+            } else if (o.properties.strings.at("type") == "voice") {
+                update_voice_lines(o);
             }
         }
 

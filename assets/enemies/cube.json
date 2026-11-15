@@ -4,6 +4,6 @@
   "hitPointsMax": 10.0,
   "attack": 2.0,
   "defense": 0.0,
-  "canAttack": false,
-  "canHeal": true
+  "canAttack": true,
+  "canHeal": false
 }

@@ -485,7 +485,7 @@
                         {
                          "name":"door_id",
                          "type":"int",
-                         "value":0
+                         "value":1
                         }, 
                         {
                          "name":"type",
@@ -531,12 +531,12 @@
                         {
                          "name":"door_id",
                          "type":"int",
-                         "value":1
+                         "value":2
                         }, 
                         {
                          "name":"new_level_name",
                          "type":"string",
-                         "value":"level_2.json"
+                         "value":"level_3_simon.json"
                         }, 
                         {
                          "name":"type",
