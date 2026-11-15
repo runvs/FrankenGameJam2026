@@ -114,6 +114,19 @@ void BattleMenu::doMenu2Tweens()
 void BattleMenu::doUpdate(float const elapsed)
 {
     auto const& kb = getGame()->input().keyboard();
+
+    // count down time for space timer
+    if (m_SpaceWasPressedTimer > 0) {
+        m_SpaceWasPressedTimer -= elapsed;
+    } else {
+        m_SpaceWasPressedTimer = 0;
+    }
+
+    // while
+    // (!m_stateEncounter->m_enemies->at(m_chosen_enemy).lock()->isAlive()) {
+    //    m_chosen_enemy++;
+    //};
+
     if (m_state == BattleMenuState::Menu1) {
 
         // unpaint all enemies and hero
@@ -251,43 +264,54 @@ void BattleMenu::doUpdate(float const elapsed)
             }
         }
 
-        if (kb->justReleased(jt::KeyCode::Space)) {
+        if (kb->justReleased(jt::KeyCode::Space)
+            && m_SpaceWasPressedTimer <= 0) {
+
             if (m_selectorMenu1Index == 0) {
                 if (m_selectorMenu2Index == 0) {
 
                     // Melee
                     auto snd = getGame()->audio().addTemporarySound(
-                        "event:/step-metall");
+                        "event:/attack-melee");
                     snd->play();
                     auto const enemy
                         = m_stateEncounter->m_enemies->at(m_chosen_enemy)
                               .lock();
                     enemy->getDamage(Damage { 5.0f, DamageType::Normal });
+
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
                     if (!enemy->isAlive()) {
-                        m_chosen_enemy++;
-                        if (m_chosen_enemy
-                            >= m_stateEncounter->m_enemies->size()) {
-                            m_chosen_enemy = 0;
-                        }
+                        m_chosen_enemy = 0;
                     }
                     m_state = BattleMenuState::Menu1;
+                    m_SpaceWasPressedTimer = GP::BattleSpaceWasPressedTimer();
                     m_triggerNextActor();
+
                 } else if (m_selectorMenu2Index == 1) {
                     // Shotgun
+
+                    auto snd = getGame()->audio().addTemporarySound(
+                        "event:/attack-shotgun");
+                    snd->play();
+
                     for (auto const& e : *m_stateEncounter->m_enemies) {
                         auto const enemy = e.lock();
                         enemy->getDamage(Damage { 1.0f, DamageType::Normal });
                         enemy->isChosen(false);
                     }
                     m_state = BattleMenuState::Menu1;
+                    m_SpaceWasPressedTimer = GP::BattleSpaceWasPressedTimer();
                     m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {
                 // TODO limit number of available items so they cannot be reused
                 // over and over again
                 if (m_selectorMenu2Index == 0) {
+
                     // Healing
+                    auto snd = getGame()->audio().addTemporarySound(
+                        "event:/item-heal");
+                    snd->play();
                     if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits
                         > 0) {
                         m_stateEncounter->damagePlayer(
@@ -295,16 +319,20 @@ void BattleMenu::doUpdate(float const elapsed)
                         m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits
                             -= 1;
                         m_state = BattleMenuState::Menu1;
+                        m_SpaceWasPressedTimer
+                            = GP::BattleSpaceWasPressedTimer();
                         m_triggerNextActor();
                     } else {
                         auto snd = getGame()->audio().addTemporarySound(
                             "event:/menu-error");
                         snd->play();
-                        // m_menu2Text0.flicker(0.25f, jt::colors::Red);
-                        //  flash text red
                     }
                 } else if (m_selectorMenu2Index == 1) {
                     // Molotov
+                    auto snd = getGame()->audio().addTemporarySound(
+                        "event:/item-molotov");
+                    snd->play();
+
                     if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov
                         > 0) {
                         for (auto const& e : *m_stateEncounter->m_enemies) {
@@ -314,12 +342,13 @@ void BattleMenu::doUpdate(float const elapsed)
                         m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov
                             -= 1;
                         m_state = BattleMenuState::Menu1;
+                        m_SpaceWasPressedTimer
+                            = GP::BattleSpaceWasPressedTimer();
                         m_triggerNextActor();
                     } else {
                         auto snd = getGame()->audio().addTemporarySound(
                             "event:/menu-error");
                         snd->play();
-                        // flash text red
                     }
                 }
             }

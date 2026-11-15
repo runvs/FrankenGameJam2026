@@ -42,4 +42,6 @@ private:
     int maxIndex2 = 1;
 
     int m_chosen_enemy { 0 };
+
+    float m_SpaceWasPressedTimer { 0 };
 };

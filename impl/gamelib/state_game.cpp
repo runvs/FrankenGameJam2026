@@ -148,6 +148,8 @@ void StateGame::updateLevelEncounters(float const elapsed)
                 encounter->getEncounterInfo());
             encounter_state->m_stateGame = this;
             getGame()->stateManager().switchState(encounter_state);
+            auto snd = getGame()->audio().addTemporarySound("event:/enter-fight");
+            snd->play();
         }
     }
 }
