@@ -119,4 +119,4 @@ float GP::ArmorDef2() { return 0.15f; }
 
 float GP::ArmorDef3() { return 0.2f; }
 
-float GP::CameraMarginTileScaleValue() { return 1.8f; }
+float GP::CameraMarginTileScaleValue() { return 4.5f; }
