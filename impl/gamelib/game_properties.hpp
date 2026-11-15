@@ -64,4 +64,9 @@ public:
     static jt::Color BattleMenuStateSelectedColor();
     static float BattleMenuTweenTime();
     static float BattleTimeBetweenActors();
+
+    static float PlayerInitialHitPointsMax();
+    static float PlayerInitialHitPoints();
+    static float PlayerInitialAttack();
+    static float PlayerInitialDefense();
 };

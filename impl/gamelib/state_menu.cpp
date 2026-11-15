@@ -7,7 +7,6 @@
 #include <input/input_manager.hpp>
 #include <lerp.hpp>
 #include <log/license_info.hpp>
-#include <algorithm>
 #include <screeneffects/vignette.hpp>
 #include <state_game.hpp>
 #include <state_manager/state_manager_transition_fade_to_black.hpp>
@@ -15,6 +14,7 @@
 #include <tweens/tween_alpha.hpp>
 #include <tweens/tween_color.hpp>
 #include <tweens/tween_position.hpp>
+#include <algorithm>
 
 void StateMenu::onCreate()
 {
@@ -26,6 +26,19 @@ void StateMenu::onCreate()
 
     getGame()->stateManager().setTransition(std::make_shared<jt::StateManagerTransitionFadeToBlack>(
         GP::GetScreenSize(), textureManager()));
+
+    try {
+        auto bgm = getGame()->audio().getPermanentSound("bgm");
+        if (bgm == nullptr) {
+            std::cout << "load bgm\n";
+
+            bgm = getGame()->audio().addPermanentSound("bgm", "event:/main-theme");
+            bgm->setVolume(0.3f);
+            bgm->play();
+        }
+    } catch (std::exception const& e) {
+        getGame()->logger().error(e.what(), { "menu", "bgm" });
+    }
 }
 
 void StateMenu::onEnter()
@@ -203,7 +216,7 @@ void StateMenu::checkForTransitionToStateGame()
 {
     auto const keysToTriggerTransition = { jt::KeyCode::Space, jt::KeyCode::Enter };
 
-    if (std::any_of(std::begin(keysToTriggerTransition),std::end(keysToTriggerTransition) ,
+    if (std::any_of(std::begin(keysToTriggerTransition), std::end(keysToTriggerTransition),
             [this](auto const k) { return getGame()->input().keyboard()->justPressed(k); })) {
         startTransitionToStateGame();
     }
@@ -215,6 +228,9 @@ void StateMenu::startTransitionToStateGame()
         m_started = true;
         getGame()->stateManager().storeCurrentState("menu");
         getGame()->stateManager().switchState(std::make_shared<StateGame>());
+
+        auto snd = getGame()->audio().addTemporarySound("event:/menu-space-bar");
+        snd->play();
     }
 }
 
