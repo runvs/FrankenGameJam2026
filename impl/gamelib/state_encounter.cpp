@@ -2,6 +2,7 @@
 
 #include "drawable_helpers.hpp"
 #include "state_game.hpp"
+#include "state_manager/state_manager_transition_fade_to_black.hpp"
 #include <box2dwrapper/box2d_world_impl.hpp>
 #include <color/color.hpp>
 #include <encounter/encounter_info.hpp>
@@ -154,6 +155,10 @@ void StateEncounter::damagePlayer(Damage const damage)
     // Are you dead yet? - Avril Lavigne 19XX bis 2020
     if (m_stateGame->m_playerInfo.m_hitPoints <= 0) {
         m_stateGame->m_running = false;
+
+        getGame()->stateManager().setTransition(
+            std::make_shared<jt::StateManagerTransitionFadeToBlack>(
+                getGame()->gfx().window().getSize(), textureManager(), 0.5f));
         getGame()->stateManager().switchState(std::make_shared<StateMenu>());
     }
 }
@@ -181,6 +186,9 @@ void StateEncounter::onUpdate(float const elapsed)
 
         if (m_enemies->size() == 0 || getGame()->input().keyboard()->justPressed(jt::KeyCode::F7)) {
             m_running = false;
+            getGame()->stateManager().setTransition(
+                std::make_shared<jt::StateManagerTransitionFadeToBlack>(
+                    getGame()->gfx().window().getSize(), textureManager(), 0.5f));
             getGame()->stateManager().switchToStoredState("beforeEncounter");
         }
         // update healhbar

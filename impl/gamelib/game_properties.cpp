@@ -28,11 +28,11 @@ jt::Palette createPalette()
 
 std::string GP::GameName() { return "2101"; }
 
-std::string GP::AuthorName() { return "kguenth, CoffeeMugTwo, Laguna_999"; }
+std::string GP::AuthorName() { return "kguenth, CoffeeMugTwo, Laguna"; }
 
-std::string GP::JamName() { return "TODO"; }
+std::string GP::JamName() { return "FGJ"; }
 
-std::string GP::JamDate() { return "TODO"; }
+std::string GP::JamDate() { return "2026-11"; }
 
 std::string GP::ExplanationText()
 {
@@ -118,5 +118,7 @@ float GP::ArmorDef1() { return 0.1f; }
 float GP::ArmorDef2() { return 0.15f; }
 
 float GP::ArmorDef3() { return 0.2f; }
+
+float GP::MolotovDamage() { return 5.0f; }
 
 float GP::CameraMarginTileScaleValue() { return 3.0f; }
