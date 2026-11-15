@@ -123,6 +123,7 @@ void StateGame::loadLevel(std::string const& levelName)
     for (auto const& encounterInfoRect : m_level->getEncounters()) {
         auto const encounterJson = std::filesystem::path { "assets" }
             / encounterInfoRect.properties.strings.at("encounter_info");
+
         std::ifstream f { encounterJson };
         nlohmann::json const j = nlohmann::json::parse(f);
         EncounterInfo encounterInfo = j;
@@ -254,6 +255,7 @@ void StateGame::update_voice_lines(jt::tilemap::InfoRect const& o)
     }
 
     auto const& voiceId = o.properties.strings.at("voice_id");
+
     auto const [_, isNew] = m_playedVoiceLines.insert(voiceId);
     if (!isNew) {
         return;

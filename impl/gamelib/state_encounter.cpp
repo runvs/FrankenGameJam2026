@@ -179,7 +179,7 @@ void StateEncounter::onUpdate(float const elapsed)
             m_battleMenu->update(elapsed);
         }
 
-        if (m_enemies->size() == 0) {
+        if (m_enemies->size() == 0 || getGame()->input().keyboard()->justPressed(jt::KeyCode::F7)) {
             m_running = false;
             getGame()->stateManager().switchToStoredState("beforeEncounter");
         }
