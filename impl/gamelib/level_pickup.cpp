@@ -26,6 +26,7 @@ void LevelPickup::doCreate()
     }
     m_sprite->setPosition(m_pos);
     m_sprite->setZ(GP::LevelZLayerPlayer());
+    m_sprite->setOffset(GP::LevelTileSize() * 0.125f);
 }
 
 void LevelPickup::doUpdate(float const elapsed) { m_sprite->update(elapsed); }
