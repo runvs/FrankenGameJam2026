@@ -79,7 +79,7 @@
          "name":"ground_decals",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":30,
          "x":0,
          "y":0
@@ -140,7 +140,7 @@
                         {
                          "name":"encounter_info",
                          "type":"string",
-                         "value":"test_encounter.json"
+                         "value":"encouter_with_healer.json"
                         }],
                  "rotation":0,
                  "type":"",
@@ -251,7 +251,7 @@
  "nextobjectid":138,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.12.2",
+ "tiledversion":"1.12.2-2-geb83ddb9",
  "tileheight":24,
  "tilesets":[
         {

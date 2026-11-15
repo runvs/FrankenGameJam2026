@@ -38,6 +38,8 @@ public:
     void damagePlayer(Damage damage);
     void drawPlayerHealth();
 
+    std::shared_ptr<jt::Animation> m_player { nullptr };
+
 private:
     EncounterInfo m_encounter_info;
     std::shared_ptr<jt::Sprite> m_background;
@@ -48,8 +50,6 @@ private:
     bool m_running { true };
     bool m_hasEnded { false };
 
-    std::shared_ptr<jt::Animation> m_player { nullptr };
-
     std::shared_ptr<jt::Bar> m_playerHealthbar { nullptr };
     jt::Vector2f m_playerHealthbarPosition { 23.0f, 150.0f };
 
@@ -57,9 +57,7 @@ private:
     jt::Vector2f m_playerHealthtextPosition { 49.0f, 147.0f };
 
     std::shared_ptr<BattleMenu> m_battleMenu { nullptr };
-    int m_currentActorIndex {
-        -1
-    }; // -1 = player, all others are indices in m__enemies;
+    int m_currentActorIndex { -1 }; // -1 = player, all others are indices in m__enemies;
     float m_enemyActionTimer { -1.0f };
 
     void onCreate() override;
