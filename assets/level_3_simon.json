@@ -250,7 +250,7 @@
                         {
                          "name":"door_id",
                          "type":"int",
-                         "value":3
+                         "value":2
                         }, 
                         {
                          "name":"type",
@@ -326,7 +326,7 @@
  "nextobjectid":177,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.12.2-2-geb83ddb9",
+ "tiledversion":"1.12.2",
  "tileheight":24,
  "tilesets":[
         {
