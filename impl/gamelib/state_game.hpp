@@ -48,6 +48,7 @@ private:
 
     void onCreate() override;
     void onEnter() override;
+    void updateLevelPickups(float const elapsed);
     void onUpdate(float elapsed) override;
     void onDraw() const override;
 

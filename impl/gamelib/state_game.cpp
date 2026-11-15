@@ -96,7 +96,7 @@ void StateGame::cleanUpLoadedLevel()
         auto const pickup = p.lock();
         pickup->kill();
     }
-    
+
     m_level->getColliders().clear();
     m_level->kill();
 }
@@ -138,6 +138,28 @@ void StateGame::loadLevel(std::string const& levelName)
         auto pickup = std::make_shared<LevelPickup>(type, pickupInfoRect.position);
         add(pickup);
         m_levelPickups->push_back(pickup);
+    }
+}
+
+void StateGame::updateLevelPickups(float const elapsed)
+{
+    m_levelPickups->update(elapsed);
+
+    for (auto const& p : *m_levelPickups) {
+        auto pickup = p.lock();
+        auto const pos = pickup->getPosition();
+        auto const distance = jt::MathHelper::distanceBetween(
+            pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
+        if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.75f) {
+            std::cout << "trigger pickup\n";
+            pickup->kill();
+
+            if (pickup->getPickupType() == PickupType::Medkit) {
+                m_playerInfo.m_nMedKits++;
+            } else if (pickup->getPickupType() == PickupType::Molotov) {
+                m_playerInfo.m_nMolotov++;
+            }
+        }
     }
 }
 
@@ -200,7 +222,7 @@ void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
         m_world->step(elapsed, GP::PhysicSubSteps());
-        handleDebugInput();
+        // handleDebugInput();
 
         float const margin = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
         jt::CameraHelpers::followWithMargin(getGame()->gfx().camera(), m_player->getPosition(),
@@ -216,13 +238,16 @@ void StateGame::onUpdate(float const elapsed)
         }
 
         updateLevelEncounters(elapsed);
+        updateLevelPickups(elapsed);
     }
 
     m_background->update(elapsed);
     m_vignette->update(elapsed);
     m_medkitSprite->update(elapsed);
     m_molotovSprite->update(elapsed);
+    m_medkitText->setText(std::to_string(m_playerInfo.m_nMedKits));
     m_medkitText->update(elapsed);
+    m_molotovText->setText(std::to_string(m_playerInfo.m_nMolotov));
     m_molotovText->update(elapsed);
 }
 
