@@ -232,7 +232,7 @@
                         {
                          "name":"voice_id",
                          "type":"string",
-                         "value":"voice-07"
+                         "value":"voice_07"
                         }],
                  "rotation":0,
                  "type":"",
@@ -278,7 +278,7 @@
                         {
                          "name":"voice_id",
                          "type":"string",
-                         "value":"voice-09"
+                         "value":"voice_09"
                         }],
                  "rotation":0,
                  "type":"",
@@ -301,7 +301,7 @@
                         {
                          "name":"voice_id",
                          "type":"string",
-                         "value":"voice-08"
+                         "value":"voice_08"
                         }],
                  "rotation":0,
                  "type":"",

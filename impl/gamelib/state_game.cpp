@@ -205,10 +205,11 @@ void StateGame::updateLevelEncounters(float const elapsed)
             pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
         if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.75f) {
             std::cout << "trigger encounter\n";
-            
+
             // TODO trigger encounter
             m_running = false;
             encounter->kill();
+            
             getGame()->stateManager().storeCurrentState("beforeEncounter");
             auto encounter_state = std::make_shared<StateEncounter>(encounter->getEncounterInfo());
             encounter_state->m_stateGame = this;
