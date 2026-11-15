@@ -160,6 +160,7 @@ void BattleMenu::doUpdate(float const elapsed)
             m_state = BattleMenuState::Menu2;
             if (m_selectorMenu1Index == 0) {
                 m_menu2Text0->setText("Melee");
+                
                 m_menu2Text1->setText("Shotgun");
                 // TODO check available options based on player inventory
             } else if (m_selectorMenu1Index == 1) {
