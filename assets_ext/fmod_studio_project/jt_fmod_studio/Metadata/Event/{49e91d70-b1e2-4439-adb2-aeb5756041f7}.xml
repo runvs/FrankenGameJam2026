@@ -85,6 +85,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{c63ef4df-690e-4a69-ac01-e3e3db3225df}">
+		<property name="volume">
+			<value>5.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{c9b6ec56-c8fb-4303-9c45-e75089339444}</destination>
 		</relationship>
@@ -110,6 +113,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{9712ab84-c466-4e63-86f0-66988922a5d6}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<property name="name">
 			<value>burst</value>
 		</property>
@@ -139,7 +145,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{b290201d-451f-4cd1-9962-8c89f466597a}">
 		<property name="volume">
-			<value>-18</value>
+			<value>-7.5</value>
 		</property>
 		<property name="name">
 			<value>fire</value>
