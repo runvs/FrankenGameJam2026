@@ -70,6 +70,7 @@
 	<object class="GroupTrack" id="{85da985c-5f8c-4a68-938d-c486e1c2eb2d}">
 		<relationship name="modules">
 			<destination>{32773ce1-10d0-4d77-b772-96604fa66d38}</destination>
+			<destination>{d1a87a84-cdfe-4eca-9cc7-b47772d3f799}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{966a269d-d75b-45cb-8d6c-df558fa0be95}</destination>
@@ -79,6 +80,7 @@
 		<relationship name="modules">
 			<destination>{94dd764a-c8ca-4b52-9367-bde041899c48}</destination>
 			<destination>{32773ce1-10d0-4d77-b772-96604fa66d38}</destination>
+			<destination>{d1a87a84-cdfe-4eca-9cc7-b47772d3f799}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{33a624d7-0d23-4607-9c48-3cca9107a832}">
@@ -129,6 +131,14 @@
 		</property>
 		<relationship name="audioFile">
 			<destination>{60685fff-b522-48e3-bdd0-21d86b398b07}</destination>
+		</relationship>
+	</object>
+	<object class="SnapshotModule" id="{d1a87a84-cdfe-4eca-9cc7-b47772d3f799}">
+		<property name="length">
+			<value>22</value>
+		</property>
+		<relationship name="event">
+			<destination>{ea1669ab-5287-4768-a1e6-1fd31878e07d}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{966a269d-d75b-45cb-8d6c-df558fa0be95}">
