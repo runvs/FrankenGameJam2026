@@ -1,6 +1,8 @@
 #pragma once
 
 #include "bar.hpp"
+#include "damage.hpp"
+#include "game_properties.hpp"
 #include "state_encounter.hpp"
 #include <animation.hpp>
 #include <box2dwrapper/box2d_object.hpp>
@@ -15,7 +17,7 @@ class Enemy : public jt::GameObject {
 public:
     explicit Enemy(EnemyEncounterInfo const& enemy_encounter_info);
 
-    void getDamage(float damage);
+    void getDamage(Damage damage);
     float doAttack();
 
     void doAction(StateEncounter& state_encounter);
@@ -26,11 +28,15 @@ private:
     // enemy stats
     EnemyEncounterInfo m_enemy_encounter_info;
 
+    float m_fireDamage { -1.0f };
+
     // TODO: enemy states
 
     std::shared_ptr<jt::Animation> m_animation;
     std::shared_ptr<jt::Bar> m_healthbar;
     std::shared_ptr<jt::Text> m_healthtext;
+
+    std::shared_ptr<jt::Animation> m_fireAnimation;
 
     void doCreate() override;
     void doUpdate(float elapsed) override;

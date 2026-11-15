@@ -171,10 +171,10 @@ void BattleMenu::doUpdate(float const elapsed)
         if (kb->justReleased(jt::KeyCode::Space)) {
             if (m_selectorMenu1Index == 0) {
                 if (m_selectorMenu2Index == 0) {
-                    // Melee
 
+                    // Melee
                     auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
-                    enemy->getDamage(5.0f);
+                    enemy->getDamage(Damage { 5.0f, DamageType::Normal });
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
 
                     m_triggerNextActor();
@@ -183,7 +183,7 @@ void BattleMenu::doUpdate(float const elapsed)
                     // Shotgun
                     for (auto const& e : *m_stateEncounter->m_enemies) {
                         auto const enemy = e.lock();
-                        enemy->getDamage(1.0f);
+                        enemy->getDamage(Damage { 1.0f, DamageType::Normal });
                         enemy->isChosen(false);
                     }
                     m_state = BattleMenuState::Menu1;
@@ -193,13 +193,13 @@ void BattleMenu::doUpdate(float const elapsed)
                 // TODO limit number of available items so they cannot be reused over and over again
                 if (m_selectorMenu2Index == 0) {
                     // Healing
-                    m_stateEncounter->damagePlayer(-4.0f);
+                    m_stateEncounter->damagePlayer(Damage { -4.0f, DamageType::Heal });
                     m_triggerNextActor();
                 } else if (m_selectorMenu2Index == 1) {
                     // Molotov
                     for (auto const& e : *m_stateEncounter->m_enemies) {
                         auto const enemy = e.lock();
-                        enemy->getDamage(3.0f);
+                        enemy->getDamage(Damage { 3.0f, DamageType::Fire });
                     }
                     m_triggerNextActor();
                 }

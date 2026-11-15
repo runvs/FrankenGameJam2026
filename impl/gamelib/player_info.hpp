@@ -1,10 +1,11 @@
 #pragma once
+#include "damage.hpp"
 
 class PlayerInfo {
 public:
     explicit PlayerInfo();
 
-    void getDamage(float damage);
+    void getDamage(Damage damage);
     float m_hitPointsMax { 100.0f };
     float m_hitPoints { 100.0f };
     float m_attack { 10.0f };

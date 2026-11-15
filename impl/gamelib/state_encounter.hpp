@@ -1,6 +1,7 @@
 #pragma once
 
 #include "battle_menu.hpp"
+#include "damage.hpp"
 #include "level.hpp"
 #include "object_group.hpp"
 #include "player.hpp"
@@ -34,7 +35,7 @@ public:
     std::shared_ptr<jt::ObjectGroup<Enemy>> m_enemies;
 
     void nextActor();
-    void damagePlayer(float damage);
+    void damagePlayer(Damage damage);
     void drawPlayerHealth();
 
 private:

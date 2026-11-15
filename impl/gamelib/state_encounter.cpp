@@ -128,13 +128,13 @@ void StateEncounter::nextActor()
     }
 }
 
-void StateEncounter::damagePlayer(float const damage)
+void StateEncounter::damagePlayer(Damage const damage)
 {
     m_stateGame->m_playerInfo.getDamage(damage);
-    if (damage > 0) {
+    if (damage.value > 0) {
         m_player->flash(0.25f, jt::colors::Red);
         getGame()->gfx().camera().shake(0.3f, 8);
-    } else {
+    } else if (damage.type == DamageType::Heal) {
         m_player->flash(0.25f, jt::colors::Green);
     }
 }

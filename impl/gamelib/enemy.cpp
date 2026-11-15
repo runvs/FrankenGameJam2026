@@ -16,10 +16,13 @@ Enemy::Enemy(EnemyEncounterInfo const& enemy_encounter_info)
     m_enemy_encounter_info.enemyBase = getLeveled(enemy_encounter_info);
 }
 
-void Enemy::getDamage(float const damage)
+void Enemy::getDamage(Damage const damage)
 {
     // TODO anim
-    m_enemy_encounter_info.enemyBase.hitPoints -= damage;
+    m_enemy_encounter_info.enemyBase.hitPoints -= damage.value;
+    if (damage.type == DamageType::Fire) {
+        m_fireDamage += damage.value;
+    }
     m_animation->flash(0.25f, jt::colors::Red);
 
     // TODO damage resistance
@@ -39,9 +42,17 @@ void Enemy::isChosen(bool const setChosen) const
 
 void Enemy::doAction(StateEncounter& state_encounter)
 {
+    if (m_fireDamage > 0) {
+        getDamage(Damage { m_fireDamage, DamageType::Normal });
+        m_fireDamage -= 1.0f;
+        if (!isAlive()) {
+            return;
+        }
+    }
     m_animation->flash(0.25f, jt::colors::Green);
 
-    state_encounter.damagePlayer(getLeveled(m_enemy_encounter_info).attack);
+    state_encounter.damagePlayer(
+        Damage { getLeveled(m_enemy_encounter_info).attack, DamageType::Normal });
 
     // std::cout << "!!!!!trigger next actor from enemy doAction\n";
     state_encounter.nextActor();
@@ -69,6 +80,10 @@ void Enemy::doCreate()
     m_healthtext = jt::dh::createText(renderTarget(), get_health_text(), 10u);
     m_healthtext->setPosition(
         enemy_pos_to_vector(m_enemy_encounter_info.position) + m_healthtext_offset);
+
+    m_fireAnimation = std::make_shared<jt::Animation>();
+    m_fireAnimation->loadFromAseprite("assets/fire.aseprite", textureManager());
+    m_fireAnimation->play("idle");
 }
 
 void Enemy::doUpdate(float const elapsed)
@@ -88,11 +103,20 @@ void Enemy::doUpdate(float const elapsed)
         enemy_pos_to_vector(m_enemy_encounter_info.position) + m_healthtext_offset);
     m_healthtext->setTextAlign(jt::Text::TextAlign::CENTER);
     m_healthtext->update(elapsed);
+
+    jt::Vector2f const fireAnimationOffset { GP::LevelTileSize().x * 0.3f,
+        GP::LevelTileSize().y * 0.5f };
+    m_fireAnimation->setPosition(
+        enemy_pos_to_vector(m_enemy_encounter_info.position) + fireAnimationOffset);
+    m_fireAnimation->update(elapsed);
 }
 
 void Enemy::doDraw() const
 {
     m_animation->draw(renderTarget());
+    if (m_fireDamage > 0) {
+        m_fireAnimation->draw(renderTarget());
+    }
     m_healthbar->draw(renderTarget());
     m_healthtext->draw(renderTarget());
 }
