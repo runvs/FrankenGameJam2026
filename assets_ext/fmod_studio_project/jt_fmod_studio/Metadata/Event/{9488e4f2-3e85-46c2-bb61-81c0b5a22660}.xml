@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{9488e4f2-3e85-46c2-bb61-81c0b5a22660}">
 		<property name="name">
-			<value>spinne-trifft-spikes</value>
+			<value>wapon-laser</value>
 		</property>
 		<property name="outputFormat">
 			<value>0</value>
