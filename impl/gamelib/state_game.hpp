@@ -2,12 +2,14 @@
 
 #include "encounter/level_encounter.hpp"
 #include "level.hpp"
+#include "level_pickup.hpp"
 #include "object_group.hpp"
 #include "player.hpp"
 #include "player_info.hpp"
 #include "screeneffects/stars.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
+#include <text.hpp>
 #include <memory>
 #include <vector>
 
@@ -42,9 +44,11 @@ private:
     std::shared_ptr<Player> m_player { nullptr };
 
     std::shared_ptr<jt::ObjectGroup<LevelEncounter>> m_levelEncounters;
+    std::shared_ptr<jt::ObjectGroup<LevelPickup>> m_levelPickups;
 
     void onCreate() override;
     void onEnter() override;
+    void updateLevelPickups(float const elapsed);
     void onUpdate(float elapsed) override;
     void onDraw() const override;
 
@@ -52,8 +56,17 @@ private:
     void createPlayer();
     void cleanUpLoadedLevel();
 
-    void loadLevel(std::string const& levelName = "assets/level_1.json");
+    void loadLevel(std::string const& levelName = "assets/level_1_simon.json");
 
     void updateLevelEncounters(float elapsed);
     void handleDebugInput();
+    void updateExit(jt::tilemap::InfoRect const& o);
+
+    std::shared_ptr<jt::Sprite> m_medkitSprite;
+    jt::Vector2f m_medkitPosition { 220.0f, 220.0f };
+    std::shared_ptr<jt::Text> m_medkitText;
+
+    std::shared_ptr<jt::Sprite> m_molotovSprite;
+    jt::Vector2f m_molotovPosition { 260.0f, 220.0f };
+    std::shared_ptr<jt::Text> m_molotovText;
 };

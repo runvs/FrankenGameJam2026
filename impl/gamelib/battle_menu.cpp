@@ -21,7 +21,7 @@ void BattleMenu::doCreate()
     m_backgroundMenu1->setPosition({ 16.0f, 12.0f });
 
     m_backgroundMenu2
-        = std::make_shared<jt::Sprite>("assets/battle_menu_background.png", textureManager());
+        = std::make_shared<jt::Sprite>("assets/battle_menu_background2.png", textureManager());
     m_backgroundMenu2->setPosition({ 112.0f, 12.0f });
 
     m_menu1TextAttack = jt::dh::createText(renderTarget(), "Attack", 16u);
@@ -106,6 +106,19 @@ void BattleMenu::doMenu2Tweens()
 void BattleMenu::doUpdate(float const elapsed)
 {
     auto const& kb = getGame()->input().keyboard();
+
+    // count down time for space timer
+    if (m_SpaceWasPressedTimer > 0) {
+        m_SpaceWasPressedTimer -= elapsed;
+    } else {
+        m_SpaceWasPressedTimer = 0;
+    }
+
+    // while
+    // (!m_stateEncounter->m_enemies->at(m_chosen_enemy).lock()->isAlive()) {
+    //    m_chosen_enemy++;
+    //};
+
     if (m_state == BattleMenuState::Menu1) {
 
         // unpaint all enemies and hero
@@ -227,7 +240,8 @@ void BattleMenu::doUpdate(float const elapsed)
             }
         }
 
-        if (kb->justReleased(jt::KeyCode::Space)) {
+        if (kb->justReleased(jt::KeyCode::Space) && m_SpaceWasPressedTimer <= 0) {
+
             if (m_selectorMenu1Index == 0) {
                 if (m_selectorMenu2Index == 0) {
 
@@ -236,15 +250,15 @@ void BattleMenu::doUpdate(float const elapsed)
                     snd->play();
                     auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
                     enemy->getDamage(Damage { 5.0f, DamageType::Normal });
+
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
                     if (!enemy->isAlive()) {
-                        m_chosen_enemy++;
-                        if (m_chosen_enemy >= m_stateEncounter->m_enemies->size()) {
-                            m_chosen_enemy = 0;
-                        }
+                        m_chosen_enemy = 0;
                     }
                     m_state = BattleMenuState::Menu1;
+                    m_SpaceWasPressedTimer = GP::BattleSpaceWasPressedTimer();
                     m_triggerNextActor();
+
                 } else if (m_selectorMenu2Index == 1) {
                     // Shotgun
 
@@ -257,12 +271,14 @@ void BattleMenu::doUpdate(float const elapsed)
                         enemy->isChosen(false);
                     }
                     m_state = BattleMenuState::Menu1;
+                    m_SpaceWasPressedTimer = GP::BattleSpaceWasPressedTimer();
                     m_triggerNextActor();
                 }
             } else if (m_selectorMenu1Index == 1) {
                 // TODO limit number of available items so they cannot be reused
                 // over and over again
                 if (m_selectorMenu2Index == 0) {
+
                     // Healing
                     auto snd = getGame()->audio().addTemporarySound("event:/item-heal");
                     snd->play();
@@ -270,10 +286,11 @@ void BattleMenu::doUpdate(float const elapsed)
                         m_stateEncounter->damagePlayer(Damage { -4.0f, DamageType::Heal });
                         m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits -= 1;
                         m_state = BattleMenuState::Menu1;
+                        m_SpaceWasPressedTimer = GP::BattleSpaceWasPressedTimer();
                         m_triggerNextActor();
                     } else {
-                        // m_menu2Text0.flicker(0.25f, jt::colors::Red);
-                        //  flash text red
+                        auto snd = getGame()->audio().addTemporarySound("event:/menu-error");
+                        snd->play();
                     }
                 } else if (m_selectorMenu2Index == 1) {
                     // Molotov
@@ -287,9 +304,11 @@ void BattleMenu::doUpdate(float const elapsed)
                         }
                         m_stateEncounter->m_stateGame->m_playerInfo.m_nMolotov -= 1;
                         m_state = BattleMenuState::Menu1;
+                        m_SpaceWasPressedTimer = GP::BattleSpaceWasPressedTimer();
                         m_triggerNextActor();
                     } else {
-                        // flash text red
+                        auto snd = getGame()->audio().addTemporarySound("event:/menu-error");
+                        snd->play();
                     }
                 }
             }

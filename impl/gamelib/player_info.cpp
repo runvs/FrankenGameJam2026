@@ -11,11 +11,7 @@ PlayerInfo::PlayerInfo()
     m_defense = GP::PlayerInitialDefense();
 };
 
-void PlayerInfo::getDamage(Damage damage)
-{
-    // TODO take count into effect
-    m_hitPoints -= damage.value;
-}
+void PlayerInfo::getDamage(Damage damage) { m_hitPoints -= damage.value * (1.0f - m_defense); }
 
 std::string PlayerInfo::getHealthText()
 {

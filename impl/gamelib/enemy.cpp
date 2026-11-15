@@ -31,6 +31,12 @@ void Enemy::getDamage(Damage const damage)
         if (damage.type == DamageType::Heal) {
             m_animation->flash(0.25f, jt::colors::Green);
             m_enemy_encounter_info.enemyBase.hitPoints -= damage.value;
+
+            if (m_enemy_encounter_info.enemyBase.hitPoints
+                >= m_enemy_encounter_info.enemyBase.hitPointsMax) {
+                m_enemy_encounter_info.enemyBase.hitPoints
+                    = m_enemy_encounter_info.enemyBase.hitPointsMax;
+            }
         }
     }
     // TODO damage resistance

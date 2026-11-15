@@ -1,6 +1,7 @@
 ﻿#include "state_game.hpp"
 
 #include "camera_helpers.hpp"
+#include "drawable_helpers.hpp"
 #include "state_encounter.hpp"
 #include <box2dwrapper/box2d_world_impl.hpp>
 #include <color/color.hpp>
@@ -48,6 +49,27 @@ void StateGame::onCreate()
     m_hud = std::make_shared<Hud>();
     add(m_hud);
 
+    // add visualization of medkits and molotov cocktails
+    m_medkitSprite = std::make_shared<jt::Sprite>("assets/medkit.png", textureManager());
+    m_medkitSprite->setIgnoreCamMovement(true);
+    m_medkitSprite->setZ(GP::LevelZLayerAboveAll());
+    m_medkitSprite->setPosition(m_medkitPosition);
+
+    m_medkitText = jt::dh::createText(renderTarget(), std::to_string(m_playerInfo.m_nMedKits), 18u);
+    m_medkitText->setPosition(m_medkitPosition + jt::Vector2f(20.0f, 0));
+    m_medkitText->setIgnoreCamMovement(true);
+    m_medkitText->setZ(GP::LevelZLayerAboveAll());
+
+    m_molotovSprite = std::make_shared<jt::Sprite>("assets/molotov.png", textureManager());
+    m_molotovSprite->setIgnoreCamMovement(true);
+    m_molotovSprite->setZ(GP::LevelZLayerAboveAll());
+    m_molotovSprite->setPosition(m_molotovPosition);
+
+    m_molotovText
+        = jt::dh::createText(renderTarget(), std::to_string(m_playerInfo.m_nMolotov), 18u);
+    m_molotovText->setPosition(m_molotovPosition + jt::Vector2f(20.0f, 0));
+    m_molotovText->setIgnoreCamMovement(true);
+    m_molotovText->setZ(GP::LevelZLayerAboveAll());
     // StateGame will call drawObjects itself.
     setAutoDraw(false);
 }
@@ -70,6 +92,11 @@ void StateGame::cleanUpLoadedLevel()
         auto const encounter = e.lock();
         encounter->kill();
     }
+    for (auto const& p : *m_levelPickups) {
+        auto const pickup = p.lock();
+        pickup->kill();
+    }
+
     m_level->getColliders().clear();
     m_level->kill();
 }
@@ -100,6 +127,63 @@ void StateGame::loadLevel(std::string const& levelName)
             = std::make_shared<LevelEncounter>(encounterInfo, encounterInfoRect.position);
         m_levelEncounters->push_back(levelEncounter);
         add(levelEncounter);
+    }
+
+    m_levelPickups = std::make_shared<jt::ObjectGroup<LevelPickup>>();
+
+    for (auto const& pickupInfoRect : m_level->getPickups()) {
+
+        auto const lookup = [](std::string const& type) {
+            if (type == "medkit") {
+                return PickupType::Medkit;
+            }
+            if (type == "molotov") {
+                return PickupType::Molotov;
+            }
+            if (type == "armor1") {
+                return PickupType::Armor1;
+            }
+            if (type == "armor2") {
+                return PickupType::Armor2;
+            }
+            if (type == "armor3") {
+                return PickupType::Armor3;
+            }
+            return PickupType::Medkit;
+        };
+
+        PickupType const type = lookup(pickupInfoRect.properties.strings.at("type"));
+        auto pickup = std::make_shared<LevelPickup>(type, pickupInfoRect.position);
+        add(pickup);
+        m_levelPickups->push_back(pickup);
+    }
+}
+
+void StateGame::updateLevelPickups(float const elapsed)
+{
+    m_levelPickups->update(elapsed);
+
+    for (auto const& p : *m_levelPickups) {
+        auto pickup = p.lock();
+        auto const pos = pickup->getPosition();
+        auto const distance = jt::MathHelper::distanceBetween(
+            pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
+        if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.75f) {
+            std::cout << "trigger pickup\n";
+            pickup->kill();
+
+            if (pickup->getPickupType() == PickupType::Medkit) {
+                m_playerInfo.m_nMedKits++;
+            } else if (pickup->getPickupType() == PickupType::Molotov) {
+                m_playerInfo.m_nMolotov++;
+            } else if (pickup->getPickupType() == PickupType::Armor1) {
+                m_playerInfo.m_defense += GP::ArmorDef1();
+            } else if (pickup->getPickupType() == PickupType::Armor2) {
+                m_playerInfo.m_defense += GP::ArmorDef2();
+            } else if (pickup->getPickupType() == PickupType::Armor3) {
+                m_playerInfo.m_defense += GP::ArmorDef3();
+            }
+        }
     }
 }
 
@@ -142,44 +226,53 @@ void StateGame::handleDebugInput()
     }
 }
 
+void StateGame::updateExit(jt::tilemap::InfoRect const& o)
+{
+    auto const pos = o.position;
+    auto const distance = jt::MathHelper::distanceBetween(
+        pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
+    if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.25f) {
+        auto const new_level_name = o.properties.strings.at("new_level_name");
+        auto const door_id = o.properties.ints.at("door_id");
+        std::cout << "trigger level change: " << new_level_name << "\n";
+        loadLevel((std::filesystem::path { "assets" } / new_level_name).string());
+        m_player->setPosition(m_level->getDoorPosition(door_id));
+        getGame()->gfx().camera().setCamOffset(
+            m_player->getPosition() - GP::GetScreenSize() * 0.5f);
+    }
+}
+
 void StateGame::onUpdate(float const elapsed)
 {
     if (m_running) {
         m_world->step(elapsed, GP::PhysicSubSteps());
-        handleDebugInput();
+        // handleDebugInput();
 
         float const margin = GP::CameraMarginTileScaleValue() * GP::LevelTileSize().x;
         jt::CameraHelpers::followWithMargin(getGame()->gfx().camera(), m_player->getPosition(),
             GP::GetScreenSize(), elapsed, margin, GP::CameraSpeed());
 
-        // TODO change level mechanic
         for (auto const& o : m_level->getObjects()) {
             if (!o.properties.strings.contains("type")) {
                 continue;
             }
-            if (o.properties.strings.at("type") != "exit") {
-                continue;
-            }
-
-            auto const pos = o.position;
-            auto const distance = jt::MathHelper::distanceBetween(
-                pos, m_player->getPosition() - GP::LevelTileSize() * 0.5f);
-            if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.25f) {
-                auto const new_level_name = o.properties.strings.at("new_level_name");
-                auto const door_id = o.properties.ints.at("door_id");
-                std::cout << "trigger level change: " << new_level_name << "\n";
-                loadLevel((std::filesystem::path { "assets" } / new_level_name).string());
-                m_player->setPosition(m_level->getDoorPosition(door_id));
-                getGame()->gfx().camera().setCamOffset(
-                    m_player->getPosition() - GP::GetScreenSize() * 0.5f);
+            if (o.properties.strings.at("type") == "exit") {
+                updateExit(o);
             }
         }
 
         updateLevelEncounters(elapsed);
+        updateLevelPickups(elapsed);
     }
 
     m_background->update(elapsed);
     m_vignette->update(elapsed);
+    m_medkitSprite->update(elapsed);
+    m_molotovSprite->update(elapsed);
+    m_medkitText->setText(std::to_string(m_playerInfo.m_nMedKits));
+    m_medkitText->update(elapsed);
+    m_molotovText->setText(std::to_string(m_playerInfo.m_nMolotov));
+    m_molotovText->update(elapsed);
 }
 
 void StateGame::onDraw() const
@@ -190,6 +283,11 @@ void StateGame::onDraw() const
 
     m_vignette->draw();
     m_hud->draw();
+
+    m_medkitSprite->draw(renderTarget());
+    m_medkitText->draw(renderTarget());
+    m_molotovSprite->draw(renderTarget());
+    m_molotovText->draw(renderTarget());
 }
 
 void StateGame::endGame()
