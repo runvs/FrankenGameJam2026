@@ -157,8 +157,10 @@ void BattleMenu::doUpdate(float const elapsed)
         if (kb->justReleased(jt::KeyCode::Space)) {
             auto snd = getGame()->audio().addTemporarySound("event:/menu-space-bar");
             snd->play();
+            m_chosen_enemy = 0;
             m_state = BattleMenuState::Menu2;
             if (m_selectorMenu1Index == 0) {
+
                 m_menu2Text0->setText("Melee");
 
                 m_menu2Text1->setText("Shotgun");
@@ -250,7 +252,7 @@ void BattleMenu::doUpdate(float const elapsed)
                     auto snd = getGame()->audio().addTemporarySound("event:/attack-melee");
                     snd->play();
                     auto const enemy = m_stateEncounter->m_enemies->at(m_chosen_enemy).lock();
-                    enemy->getDamage(Damage { 5.0f, DamageType::Normal });
+                    enemy->getDamage(Damage { 6.0f, DamageType::Normal });
 
                     // std::cout << "!!!!!trigger next actor from battleMenu\n";
                     if (!enemy->isAlive()) {
@@ -268,7 +270,7 @@ void BattleMenu::doUpdate(float const elapsed)
 
                     for (auto const& e : *m_stateEncounter->m_enemies) {
                         auto const enemy = e.lock();
-                        enemy->getDamage(Damage { 1.0f, DamageType::Normal });
+                        enemy->getDamage(Damage { 3.0f, DamageType::Normal });
                         enemy->isChosen(false);
                     }
                     m_state = BattleMenuState::Menu1;
@@ -284,7 +286,7 @@ void BattleMenu::doUpdate(float const elapsed)
                     auto snd = getGame()->audio().addTemporarySound("event:/item-heal");
                     snd->play();
                     if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits > 0) {
-                        m_stateEncounter->damagePlayer(Damage { -17.0f, DamageType::Heal });
+                        m_stateEncounter->damagePlayer(Damage { -20.0f, DamageType::Heal });
                         m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits -= 1;
                         m_state = BattleMenuState::Menu1;
                         m_SpaceWasPressedTimer = GP::BattleSpaceWasPressedTimer();
