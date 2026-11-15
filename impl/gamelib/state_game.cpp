@@ -120,6 +120,8 @@ void StateGame::updateLevelEncounters(float const elapsed)
             auto encounter_state = std::make_shared<StateEncounter>(encounter->getEncounterInfo());
             encounter_state->m_stateGame = this;
             getGame()->stateManager().switchState(encounter_state);
+            auto snd = getGame()->audio().addTemporarySound("event:/enter-fight");
+            snd->play();
         }
     }
 }
