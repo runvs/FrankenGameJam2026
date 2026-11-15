@@ -16,9 +16,13 @@
 #include <text.hpp>
 
 // constructor
-StateEncounter::StateEncounter(EncounterInfo encounter_info) { m_encounter_info = encounter_info; }
+StateEncounter::StateEncounter(EncounterInfo encounter_info)
+{
+    m_encounter_info = encounter_info;
+}
 
 // destructor
+//
 // StateEncounter::~StateEncounter() { }
 
 void StateEncounter::onCreate()
@@ -30,7 +34,8 @@ void StateEncounter::onCreate()
     }
 
     m_background = std::make_shared<jt::Sprite>(
-        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite).string(),
+        (std::filesystem::path { "assets" } / m_encounter_info.backgroundSprite)
+            .string(),
         textureManager());
 
     createPlayer();
@@ -45,9 +50,11 @@ void StateEncounter::onCreate()
     m_battleMenu->setGameInstance(getGame());
     m_battleMenu->create();
 
-    m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
+    m_battleMenu->m_addTween
+        = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
     m_battleMenu->m_triggerNextActor = [this]() { nextActor(); };
-    m_battleMenu->m_addTween = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
+    m_battleMenu->m_addTween
+        = [this](std::shared_ptr<jt::TweenInterface> tw) { add(tw); };
     m_battleMenu->m_triggerNextActor = [this]() {
         m_enemyActionTimer = GP::BattleTimeBetweenActors();
         nextActor();
@@ -58,7 +65,8 @@ void StateEncounter::onCreate()
     add(m_hud);
 
     // instantiate player healtbar
-    m_playerHealthbar = std::make_shared<jt::Bar>(48.0f, 8.0f, true, textureManager());
+    m_playerHealthbar
+        = std::make_shared<jt::Bar>(48.0f, 8.0f, true, textureManager());
     m_playerHealthbar->setBackColor(jt::colors::Gray);
     m_playerHealthbar->setColor(jt::colors::Red);
     m_playerHealthbar->setMaxValue(m_stateGame->m_playerInfo.m_hitPointsMax);
@@ -66,8 +74,8 @@ void StateEncounter::onCreate()
     m_playerHealthbar->setPosition(m_playerHealthbarPosition);
 
     // instantiate player healthtext
-    m_playerHealthtext
-        = jt::dh::createText(renderTarget(), m_stateGame->m_playerInfo.getHealthText(), 10u);
+    m_playerHealthtext = jt::dh::createText(
+        renderTarget(), m_stateGame->m_playerInfo.getHealthText(), 10u);
     m_playerHealthtext->setTextAlign(jt::Text::TextAlign::CENTER);
     m_playerHealthtext->setPosition(m_playerHealthtextPosition);
 
@@ -146,8 +154,10 @@ void StateEncounter::damagePlayer(Damage const damage)
 
         m_player->flash(0.25f, jt::colors::Green);
 
-        if (m_stateGame->m_playerInfo.m_hitPoints >= m_stateGame->m_playerInfo.m_hitPointsMax) {
-            m_stateGame->m_playerInfo.m_hitPoints = m_stateGame->m_playerInfo.m_hitPointsMax;
+        if (m_stateGame->m_playerInfo.m_hitPoints
+            >= m_stateGame->m_playerInfo.m_hitPointsMax) {
+            m_stateGame->m_playerInfo.m_hitPoints
+                = m_stateGame->m_playerInfo.m_hitPointsMax;
         }
     }
 
@@ -179,21 +189,24 @@ void StateEncounter::onUpdate(float const elapsed)
             m_battleMenu->update(elapsed);
         }
 
-        if (m_enemies->size() == 0 || getGame()->input().keyboard()->justPressed(jt::KeyCode::F7)) {
+        if (m_enemies->size() == 0
+            || getGame()->input().keyboard()->justPressed(jt::KeyCode::F7)) {
             m_running = false;
             getGame()->stateManager().switchToStoredState("beforeEncounter");
         }
         // update healhbar
-        m_playerHealthbar->setMaxValue(m_stateGame->m_playerInfo.m_hitPointsMax);
+        m_playerHealthbar->setMaxValue(
+            m_stateGame->m_playerInfo.m_hitPointsMax);
         // TODO: healthbar position wrong
         // TODO: healthbar does not display correct value
-        m_playerHealthbar->setCurrentValue(m_stateGame->m_playerInfo.m_hitPoints);
+        m_playerHealthbar->setCurrentValue(
+            m_stateGame->m_playerInfo.m_hitPoints);
         m_playerHealthbar->setPosition(m_playerHealthbarPosition);
         m_playerHealthbar->update(elapsed);
 
         // update player healthtext
-        m_playerHealthtext
-            = jt::dh::createText(renderTarget(), m_stateGame->m_playerInfo.getHealthText(), 10u);
+        m_playerHealthtext = jt::dh::createText(
+            renderTarget(), m_stateGame->m_playerInfo.getHealthText(), 10u);
         m_playerHealthtext->setTextAlign(jt::Text::TextAlign::CENTER);
         m_playerHealthtext->setPosition(m_playerHealthtextPosition);
         m_playerHealthtext->update(elapsed);

@@ -112,7 +112,7 @@
                         {
                          "name":"encounter_info",
                          "type":"string",
-                         "value":"encouter_2-2.json"
+                         "value":"encounter_4.json"
                         }],
                  "rotation":0,
                  "type":"",
@@ -307,8 +307,8 @@
                  "type":"",
                  "visible":true,
                  "width":104.25,
-                 "x":304.375,
-                 "y":298
+                 "x":305.708333333333,
+                 "y":298.666666666667
                 }],
          "opacity":1,
          "properties":[
