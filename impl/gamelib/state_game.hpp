@@ -26,6 +26,8 @@ public:
 
     PlayerInfo m_playerInfo;
 
+    bool m_running { true };
+
 private:
     std::shared_ptr<jt::Shape> m_background;
     std::shared_ptr<jt::Stars> m_stars { nullptr };
@@ -33,7 +35,6 @@ private:
     std::shared_ptr<Hud> m_hud;
     std::shared_ptr<jt::Box2DWorldInterface> m_world { nullptr };
 
-    bool m_running { true };
     bool m_hasEnded { false };
 
     std::shared_ptr<Level> m_level { nullptr };

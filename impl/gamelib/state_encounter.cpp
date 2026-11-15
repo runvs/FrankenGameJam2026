@@ -152,6 +152,12 @@ void StateEncounter::damagePlayer(Damage const damage)
     } else if (damage.type == DamageType::Heal) {
         m_player->flash(0.25f, jt::colors::Green);
     }
+
+    // Are you dead yet? - Avril Lavigne 19XX bis 2020
+    if (m_stateGame->m_playerInfo.m_hitPoints <= 0) {
+        m_stateGame->m_running = false;
+        getGame()->stateManager().switchState(std::make_shared<StateMenu>());
+    }
 }
 
 void StateEncounter::onUpdate(float const elapsed)
