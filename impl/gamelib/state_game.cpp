@@ -177,6 +177,8 @@ void StateGame::updateLevelPickups(float const elapsed)
         if (distance <= jt::MathHelper::length(GP::LevelTileSize()) * 0.75f) {
             std::cout << "trigger pickup\n";
             pickup->kill();
+            auto snd = getGame()->audio().addTemporarySound("event:/pickup-item");
+            snd->play();
 
             if (pickup->getPickupType() == PickupType::Medkit) {
                 m_playerInfo.m_nMedKits++;

@@ -250,6 +250,42 @@
                  "width":24,
                  "x":1152,
                  "y":168
+                }, 
+                {
+                 "height":24,
+                 "id":157,
+                 "name":"molotov",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"molotov"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":24,
+                 "x":1485,
+                 "y":575
+                }, 
+                {
+                 "height":24,
+                 "id":158,
+                 "name":"molotov",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"molotov"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":24,
+                 "x":1081,
+                 "y":457
                 }],
          "opacity":1,
          "tintcolor":"#00ff00",
@@ -381,8 +417,8 @@
                  "type":"",
                  "visible":true,
                  "width":72,
-                 "x":1224,
-                 "y":528
+                 "x":911,
+                 "y":338
                 }],
          "opacity":1,
          "properties":[
@@ -397,7 +433,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":157,
+ "nextobjectid":159,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

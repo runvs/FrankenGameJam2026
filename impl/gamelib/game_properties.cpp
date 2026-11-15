@@ -121,4 +121,4 @@ float GP::ArmorDef3() { return 0.2f; }
 
 float GP::MolotovDamage() { return 5.0f; }
 
-float GP::CameraMarginTileScaleValue() { return 3.0f; }
+float GP::CameraMarginTileScaleValue() { return 1.8f; }

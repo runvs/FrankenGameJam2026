@@ -88,7 +88,7 @@ void Enemy::doAction(StateEncounter& state_encounter)
                     if (info.hitPoints >= info.hitPointsMax) {
                         continue;
                     }
-                    e->getDamage(Damage { -3.0f, DamageType::Heal });
+                    e->getDamage(Damage { -2.0f, DamageType::Heal });
                     break;
                 }
             }

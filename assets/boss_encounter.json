@@ -13,7 +13,7 @@
     {
       "enemyBase": "assets/enemies/healer.json",
       "level": 1,
-      "position": 1
+      "position": 2
     }
   ],
   "level_sprite": "enemy_boss.aseprite",
