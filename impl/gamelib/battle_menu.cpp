@@ -284,7 +284,7 @@ void BattleMenu::doUpdate(float const elapsed)
                     auto snd = getGame()->audio().addTemporarySound("event:/item-heal");
                     snd->play();
                     if (m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits > 0) {
-                        m_stateEncounter->damagePlayer(Damage { -4.0f, DamageType::Heal });
+                        m_stateEncounter->damagePlayer(Damage { -10.0f, DamageType::Heal });
                         m_stateEncounter->m_stateGame->m_playerInfo.m_nMedKits -= 1;
                         m_state = BattleMenuState::Menu1;
                         m_SpaceWasPressedTimer = GP::BattleSpaceWasPressedTimer();

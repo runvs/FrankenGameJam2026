@@ -103,9 +103,9 @@ float GP::BattleMenuTweenTime() { return 0.2f; }
 
 float GP::BattleTimeBetweenActors() { return 0.7f; }
 
-float GP::PlayerInitialHitPointsMax() { return 100.0f; }
+float GP::PlayerInitialHitPointsMax() { return 50.0f; }
 
-float GP::PlayerInitialHitPoints() { return 100.0f; }
+float GP::PlayerInitialHitPoints() { return 50.0f; }
 
 float GP::PlayerInitialAttack() { return 10.0f; }
 
