@@ -148,10 +148,14 @@ void Text::renderOneLineOfText(std::shared_ptr<jt::RenderTargetLayer> const& spt
 {
     // render text on full white, so coloring can be done afterwards
     SDL_Color const col { 255u, 255u, 255u, 255u };
-    SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, text.c_str(), col);
+    SDL_Surface* textSurface = TTF_RenderUTF8_Blended(m_font, text.c_str(), col);
+    if (textSurface == nullptr) {
+        return;
+    }
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(
         sptr.get(), textSurface); // now you can convert it into a texture
+    SDL_SetTextureBlendMode(textTexture, SDL_BLENDMODE_NONE);
 
     int w { 0 };
     int h { 0 };
@@ -178,19 +182,11 @@ void Text::renderOneLineOfText(std::shared_ptr<jt::RenderTargetLayer> const& spt
 }
 
 jt::Vector2u Text::getSizeForLine(
-    std::shared_ptr<jt::RenderTargetLayer> const& sptr, std::string const& text) const
+    std::shared_ptr<jt::RenderTargetLayer> const& /*sptr*/, std::string const& text) const
 {
-    SDL_Color const col { 255u, 255u, 255u, 255u };
-    SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, text.c_str(), col);
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(
-        sptr.get(), textSurface); // now you can convert it into a texture
     int w { 0 };
     int h { 0 };
-    SDL_QueryTexture(
-        textTexture, nullptr, nullptr, &w, &h); // get the width and height of the texture
-    SDL_FreeSurface(textSurface);
-    SDL_DestroyTexture(textTexture);
+    TTF_SizeUTF8(m_font, text.c_str(), &w, &h);
     return jt::Vector2u { static_cast<unsigned int>(w), static_cast<unsigned int>(h) };
 }
 
