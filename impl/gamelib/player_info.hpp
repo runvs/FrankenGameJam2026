@@ -6,7 +6,7 @@ class PlayerInfo {
 public:
     explicit PlayerInfo();
 
-    void getDamage(Damage damage);
+    void getDamage(Damage const& damage);
     float m_hitPointsMax;
     float m_hitPoints;
     float m_attack;

@@ -11,7 +11,14 @@ PlayerInfo::PlayerInfo()
     m_defense = GP::PlayerInitialDefense();
 };
 
-void PlayerInfo::getDamage(Damage damage) { m_hitPoints -= damage.value * (1.0f - m_defense); }
+void PlayerInfo::getDamage(Damage const& damage)
+{
+    if (damage.type == DamageType::Heal) {
+        m_hitPoints -= damage.value;
+    } else {
+        m_hitPoints -= damage.value * (1.0f - m_defense);
+    }
+}
 
 std::string PlayerInfo::getHealthText()
 {
