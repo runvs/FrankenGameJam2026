@@ -146,9 +146,9 @@ void Text::doRotate(float /*rot*/) noexcept
 void Text::renderOneLineOfText(std::shared_ptr<jt::RenderTargetLayer> const& sptr, std::string text,
     std::size_t i, std::size_t lineCount) const
 {
-    // render text on full white, so coloring can be done afterwards
+    // render text on full white, so coloring can be done afterwards.
     SDL_Color const col { 255u, 255u, 255u, 255u };
-    SDL_Surface* textSurface = TTF_RenderUTF8_Blended(m_font, text.c_str(), col);
+    SDL_Surface* textSurface = TTF_RenderUTF8_Solid(m_font, text.c_str(), col);
     if (textSurface == nullptr) {
         return;
     }

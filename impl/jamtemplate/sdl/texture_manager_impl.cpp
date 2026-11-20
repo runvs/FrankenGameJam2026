@@ -3,8 +3,8 @@
 #include <sdl_helper.hpp>
 #include <sprite_functions.hpp>
 #include <strutils.hpp>
-#include <SDL_image.h>
 #include <tracy/Tracy.hpp>
+#include <SDL_image.h>
 #include <array>
 #include <iostream>
 #include <limits>
@@ -14,11 +14,37 @@ namespace jt {
 
 namespace {
 
-std::shared_ptr<SDL_Texture> createImageFromAse(
-    std::string const& filename, std::shared_ptr<jt::RenderTargetLayer> renderTarget)
+std::shared_ptr<SDL_Texture> createTextureFromSurface(
+    std::shared_ptr<SDL_Surface> const& image, std::shared_ptr<jt::RenderTargetLayer> renderTarget)
+{
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+    return std::shared_ptr<SDL_Texture>(
+        SDL_CreateTextureFromSurface(renderTarget.get(), image.get()),
+        [](SDL_Texture* t) { SDL_DestroyTexture(t); });
+}
+
+// Turns every non fully transparent pixel into opaque white, so the flash color can be applied
+// via color mod.
+void makeFlashSurface(SDL_Surface* image)
+{
+    auto const white = SDL_MapRGBA(image->format, 255u, 255u, 255u, 255u);
+    for (int x = 0; x != image->w; ++x) {
+        for (int y = 0; y != image->h; ++y) {
+            uint8_t r = 0u;
+            uint8_t g = 0u;
+            uint8_t b = 0u;
+            uint8_t a = 0u;
+            SDL_GetRGBA(jt::getPixel(image, x, y), image->format, &r, &g, &b, &a);
+            if (a != 0) {
+                jt::setPixel(image, x, y, white);
+            }
+        }
+    }
+}
+
+std::shared_ptr<SDL_Surface> createSurfaceFromAse(std::string const& filename)
 {
     auto const asepritePos = filename.rfind(".aseprite");
-    auto const splittedFilename = filename.substr(0, asepritePos + 9);
     auto const postFix = filename.substr(asepritePos + 9);
     aselib::AsepriteData aseData { filename };
 
@@ -41,14 +67,6 @@ std::shared_ptr<SDL_Texture> createImageFromAse(
         SDL_CreateRGBSurfaceWithFormat(0, wAsInt, hAsInt, 32, SDL_PIXELFORMAT_RGBA32),
         [](SDL_Surface* s) { SDL_FreeSurface(s); });
 
-    auto const transparent = SDL_MapRGBA(image->format, 0, 0, 0, 0);
-
-    for (auto i = 0u; i != w; ++i) {
-        for (auto j = 0u; j != h; ++j) {
-            jt::setPixel(image.get(), i, j, transparent);
-        }
-    }
-
     for (auto i = 0u; i != w; ++i) {
         for (auto j = 0u; j != h; ++j) {
             auto const& p = aseImage->getPixelAt(i, j);
@@ -56,9 +74,7 @@ std::shared_ptr<SDL_Texture> createImageFromAse(
             jt::setPixel(image.get(), i, j, col);
         }
     }
-    return std::shared_ptr<SDL_Texture>(
-        SDL_CreateTextureFromSurface(renderTarget.get(), image.get()),
-        [](SDL_Texture* t) { SDL_DestroyTexture(t); });
+    return image;
 }
 
 std::shared_ptr<SDL_Texture> createButtonImage(
@@ -192,29 +208,8 @@ std::shared_ptr<SDL_Texture> createFlashImage(
     if (!image) {
         return nullptr;
     }
-    int const w = image->w;
-    int const h = image->h;
-
-    auto const white = SDL_MapRGBA(image->format, 255u, 255u, 255u, 255u);
-
-    for (int x = 0; x != w; ++x) {
-        for (int y = 0; y != h; ++y) {
-
-            uint8_t r = 0u;
-            uint8_t g = 0u;
-            uint8_t b = 0u;
-            uint8_t a = 0u;
-            SDL_GetRGBA(jt::getPixel(image.get(), x, y), image->format, &r, &g, &b, &a);
-            if (a != 0) {
-                jt::setPixel(image.get(), x, y, white);
-            }
-        }
-    }
-
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-    return std::shared_ptr<SDL_Texture>(
-        SDL_CreateTextureFromSurface(renderTarget.get(), image.get()),
-        [](SDL_Texture* t) { SDL_DestroyTexture(t); });
+    makeFlashSurface(image.get());
+    return createTextureFromSurface(image, renderTarget);
 }
 
 std::shared_ptr<SDL_Texture> loadTextureFromDisk(
@@ -259,8 +254,10 @@ std::shared_ptr<SDL_Texture> TextureManagerImpl::get(std::string const& str)
 
     // Check if special ase parsing is required
     if (strutil::contains(str, ".aseprite")) {
-        m_textures[str] = createImageFromAse(str, renderer);
-        m_textures[getFlashName(str)] = createFlashImage(str, renderer);
+        auto const image = createSurfaceFromAse(str);
+        m_textures[str] = createTextureFromSurface(image, renderer);
+        makeFlashSurface(image.get());
+        m_textures[getFlashName(str)] = createTextureFromSurface(image, renderer);
         return m_textures[str];
     }
 
